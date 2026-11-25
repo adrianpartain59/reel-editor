@@ -1,5 +1,12 @@
 # reel-editor
 
+
+
+https://github.com/user-attachments/assets/f22f6d04-c352-481f-9c6f-5d3ca7e3079f
+
+
+
+
 A Claude Code skill that edits raw talking-head phone takes into finished Instagram Reels, TikToks and YouTube Shorts.
 
 Drop in your clips and say "edit my reel". Claude picks the takes, plans the edit and checks its own frames; the scripts
