@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The split screen reel's thumbnail: the speaker's cut-out face with a white edge, the reel's blurred cards beside the speaker, a League
+"""The Split Screen thumbnail: the speaker's cut-out face with a white edge, the reel's blurred cards beside the speaker, a League
 Gothic line on top and one under the speaker's chin. Everything sits in the middle 1080x1440, which is what the Instagram grid shows.
 
   split_thumb.py PROJECT candidates     -> work/thumb/candidates.jpg: faces numbered in seconds (pick eyes open, mouth mid-word, no blur, no hand)

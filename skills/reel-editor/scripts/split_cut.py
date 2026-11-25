@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Cut a split screen reel's takes: tight to the first word, with no click, breath or dead air left at the front of a clip.
+"""Cut a Split Screen's takes: tight to the first word, with no click, breath or dead air left at the front of a clip.
 
   split_cut.py PROJECT            selects.json -> work/parts/body, work/body_words.json, work/clip_edges.txt
   split_cut.py PROJECT --as-is    keep selects.json exactly as written (after hand-setting a boundary), still report the edges

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Set up the drawn half of a reel: copy the starter settings and scenes into the project, pointing at this copy of the skill.
 
-  canvas_init.py PROJECT roadmap     the step roadmap: canvas_reel.json + canvas/scenes.js
-  canvas_init.py PROJECT split       the split screen: split_reel.json + canvas/scenes.js
+  canvas_init.py PROJECT [roadmap]   Drawn Roadmap (the default): canvas_reel.json + canvas/scenes.js
+  canvas_init.py PROJECT split       Split Screen: split_reel.json + canvas/scenes.js
   canvas_init.py PROJECT --relink    point an existing canvas/scenes.js at this copy of the skill (after a plugin update)
 
 Existing files are kept. Runs `npm install` for the drawing library and fonts the first time.
@@ -26,8 +26,9 @@ def ensure_node():
 
 
 def main():
-    if len(sys.argv) != 3 or sys.argv[2] not in ("roadmap", "split", "--relink"): die(__doc__)
-    proj = Path(sys.argv[1]).expanduser().resolve(); kind = sys.argv[2]; sc = proj / "canvas/scenes.js"; ensure_node()
+    kind = sys.argv[2] if len(sys.argv) > 2 else "roadmap"
+    if len(sys.argv) not in (2, 3) or sys.argv[1].startswith("-") or kind not in ("roadmap", "split", "--relink"): die(__doc__)
+    proj = Path(sys.argv[1]).expanduser().resolve(); sc = proj / "canvas/scenes.js"; ensure_node()
     if kind == "--relink":
         if not sc.exists(): die(f"{sc} missing")
         sc.write_text(link(sc.read_text())); print(f"{sc} now uses {GS / 'canvas'}"); return

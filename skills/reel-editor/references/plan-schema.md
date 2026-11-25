@@ -1,4 +1,4 @@
-# plan.json schema
+# plan.json schema (Talking Head)
 
 `PROJECT/plan.json` drives compose.py. The reel is one hook part followed by the body part. Every time is
 relative to its own part and is either seconds (`2.4`) or a word reference from `work/timeline.txt`:
@@ -13,7 +13,7 @@ relative to its own part and is either seconds (`2.4`) or a word reference from 
 ```json
 {
   "slug": "paywall-tips",                      // output file names: out/<slug>-<variant>.mp4
-  "style": "cinematic",                        // look + sound preset: cinematic (default) | classic (on request) | your own. See references/styles/
+  "style": "cinematic",                        // the look: cinematic (default) | bright (on request) | your own. See references/looks/
   "seed": 7,                                   // optional: changes the automatic picks (transitions, animations, sound files)
   "style_overrides": {"music": {"level": -17}},  // optional: deep-merged over the preset (any key in assets/styles/<name>.json)
                                                // a downloaded beat instead of the synth pad: {"music": {"bed": "track:mixkit-358", "level": -16, "duck": 3}}
@@ -55,7 +55,7 @@ relative to its own part and is either seconds (`2.4`) or a word reference from 
 
 ## Shots
 Common keys: `t` (start), `lay`, `capy` (caption centre y override), `bounce` (zoom kick at the cut, style
-default: 0.045 classic, 0 cinematic), `sfx: false` (no automatic cue), `drop: true` (a music drop on this cut:
+default: 0.045 Bright, 0 Cinematic), `sfx: false` (no automatic cue), `drop: true` (a music drop on this cut:
 the bed's low end cuts out for 0.5 s before it, then suck + impact land on it), `captions: true` (show captions
 on an overlay shot even when the style hides them), `tr` (the transition INTO this shot: a name, `"cut"`, or
 `{"name": ..., "d": ..., "dir": ...}`; omitted = the style default, `auto` in cinematic; every name and option
@@ -63,9 +63,9 @@ in references/effects.md), `bg` (face shots: a contextual background behind the 
 
 | lay | keys |
 |---|---|
-| `face` | `z` zoom (1.0 to 1.6, centred on the detected face), `push` slow push-in (classic: fraction over the shot, 0.03; cinematic: per second, 0.03), `settle` (true or an amount like 0.16: the cut lands that much tighter and eases out over ~1.1 s; the reveal move), `smash: true` (zooms in from 0.62x in 0.24 s with motion blur), `bg` (below) |
+| `face` | `z` zoom (1.0 to 1.6, centred on the detected face), `push` slow push-in (Bright: fraction over the shot, 0.03; Cinematic: per second, 0.03), `settle` (true or an amount like 0.16: the cut lands that much tighter and eases out over ~1.1 s; the reveal move), `smash: true` (zooms in from 0.62x in 0.24 s with motion blur), `bg` (below) |
 | `letterbox` | 16:9 window of the face with content in the bars: `top` / `bottom` each `{"title": [[text, colour, size], ...], "label", "accent", "frame"}` or `{"img": mockup}` (at least one is required: an empty letterbox is refused), `z`, `bh` window height (608), `cy` window centre (900). The bars close in; captions go in a free bar |
-| `phone3d` | a mockup floating in 3D over the shot's own blurred, dimmed frame, drifting. `img`, `swaps`, `enter` (0.45), `exit`, `enter_anim` rise / side / far / drop / flip, `exit_anim` sink / side / far / flip (both rotate when left out), `yaw` [from, to] degrees ([14, 5]), `pitch` ([7, 3]), `ph` phone height px (1380), `cy` centre y (980), `dx`, `push` (0.04), `glow` backdrop glow RGB. In the cinematic style every `fullpw` renders as `phone3d` |
+| `phone3d` | a mockup floating in 3D over the shot's own blurred, dimmed frame, drifting. `img`, `swaps`, `enter` (0.45), `exit`, `enter_anim` rise / side / far / drop / flip, `exit_anim` sink / side / far / flip (both rotate when left out), `yaw` [from, to] degrees ([14, 5]), `pitch` ([7, 3]), `ph` phone height px (1380), `cy` centre y (980), `dx`, `push` (0.04), `glow` backdrop glow RGB. In Cinematic every `fullpw` renders as `phone3d` |
 | `split` | `img` mockup name (PNG in mock/ without .png), `pw` phone width px (660), `focus` fraction of the phone height to centre in the visible safe area (0 = top, 0.72 = price selector on paywalls) or `[from, to]` to scroll during the shot, `py` raw `[from, to]` panel y instead of focus, `enter` slide-up seconds, `exit` drop-out seconds at the end, `zf` face zoom in the top half, `swaps` `[[t, img], ...]` change the mockup mid-shot (highlights), `swap_sfx: false` silences the swap clicks when a riser carries a fast montage of swaps |
 | `fullpw` | `img`, `enter` (0.3), `exit` (0.28, recommended), `swaps`, `bubble: true` adds the face in a circle, `push` |
 | `video` | screen recording inside the phone frame: `src` (path, relative to the project or absolute), `src_in` seconds, `speed`, `enter`, `exit`, `bubble`. Needs mock/frame.png |
@@ -85,7 +85,7 @@ no decorative sets. Consecutive shots with the same `bg` keep it.
 Line = `[text, font, size, colour]`. Fonts: `cblack` (SF Compressed Black: huge words), `cheavy`, `black`,
 `heavy`, `bold`, `xblack` (expanded), `serif`. Captions pause while a punch is up unless `keep_captions`.
 `y` defaults per layout (1330 face, 960 split, 380 full-screen). `sfx` defaults to `thud`; `false` for none.
-In styles with neon titles (cinematic) punches render as neon titles and take `anim` / `out` like a glow_title.
+In looks with neon titles (Cinematic) punches render as neon titles and take `anim` / `out` like a glow_title.
 
 ## Stickers
 All have `t0`, `t1`, optional `sfx` (name or false), `hold_out: true` to skip the exit shrink. Position is
@@ -130,7 +130,7 @@ titles) stays lit.
 | `invert` / `bw` / `pulse` | `t`, `d`: negative frame(s) / black and white with text in colour / small zoom pulse |
 
 ## Caption styles
-`pop`, `box`, `serif`, `neon`, `word` (classic), and `cine`: SF Expanded Black caps, white with a slight
+`pop`, `box`, `serif`, `neon`, `word` (Bright), and `cine`: SF Expanded Black caps, white with a slight
 metallic falloff and a soft shadow, keywords in the section accent with a glow, built word by word (only the
 words said so far show, re-centred), placed just inside the top of the head on face shots (head-tracked) and in the top band on every other layout
 (HARD RULE, playbook rule 26). Max words per group comes from

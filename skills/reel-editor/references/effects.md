@@ -1,7 +1,7 @@
 # Effects library
 
 Everything the compositor can do to the picture, with the sound each move makes. Read this before planning a
-reel in the cinematic style, then pick moves on purpose: each one should answer "what does the viewer get from
+reel in Cinematic, then pick moves on purpose: each one should answer "what does the viewer get from
 this here?".
 
 ## The four rules
@@ -16,7 +16,7 @@ this here?".
 ## Transitions (shot key `tr`)
 
 `"tr": "whip"`, or `{"name": "whip", "d": 0.3, "dir": "r"}`, on the shot being cut TO. `"tr": "cut"` is a hard
-cut. Left out, the style decides: cinematic uses `"auto"`, which picks from the pool for the context
+cut. Left out, the look decides: Cinematic uses `"auto"`, which picks from the pool for the context
 (`face>face`, `face>overlay`, `overlay>face`, `overlay>overlay`, plus `:drop` pools for shots with `drop` or
 `smash`), never one of the last 4, and always a hard cut next to a shot shorter than 0.9 s (two transitions
 half a second apart read as noise). The window is centred on the cut. A transition replaces the outgoing
@@ -51,10 +51,10 @@ Options: `dir` (whip, slide, wipe; auto-alternates), `cx`/`cy` (zoom_in, zoom_ou
 screen), `color` (flash, wipe, iris, dip), `amp` (glitch, rgb_split), `block` (pixelate), `sgn` (spin, card).
 Energy 3 on the 3-4 biggest moments only; mostly 1-2. Catalog stills: `assets/examples/fx-transitions-*.jpg`.
 
-## Titles: `glow_title`, cinematic `text` stickers, punches
+## Titles: `glow_title`, Cinematic `text` stickers, punches
 
 `anim` (in), `out`, `d_in` (seconds, default per anim), `shine` (light sweep after landing, default on),
-`spotlight` (see below). Left open, cinematic rotates through its `variety.title_in` / `title_out` pools; a
+`spotlight` (see below). Left open, Cinematic rotates through its `variety.title_in` / `title_out` pools; a
 title followed immediately by another gets `out: "cut"`. Coloured lines are lit neon (whitened core in a
 three-layer bloom); white lines get a shadow and a faint accent bloom.
 
@@ -77,7 +77,7 @@ Out: `fade`, `pop`, `slide`, `blur`, `glitch`, `flicker`, `drop`, `cut`.
 Fit the move to the words: warnings `glitch` / `scramble`; the fix or the rule `stamp`; a list `slide` /
 `drop` / `scramble` / `stamp` (vary within the list, end on the heaviest); the CTA `type`; curiosity `reveal`.
 
-## Phones (`phone3d`, and `fullpw` in the cinematic style)
+## Phones (`phone3d`, and `fullpw` in Cinematic)
 
 `enter_anim`: `rise` (rises turning to camera), `side` (swings in), `far` (flies in from the distance), `drop`
 (falls and bounces), `flip` (turns from edge-on). `exit_anim`: `sink`, `side`, `far`, `flip`. Sounds by mode

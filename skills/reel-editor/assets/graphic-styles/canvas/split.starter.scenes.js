@@ -1,5 +1,5 @@
 // Copy to PROJECT/canvas/scenes.js and draw your own cells. Every time is seconds of the cut (split_reel.py PROJECT words). Guide:
-// references/split-screen-reel.md.
+// references/split-screen.md.
 const { make, p } = require('./panel_engine');
 const { C, FILL, K, mk, hatch, box, card, write, tag, pop, label, face, line, spline, txt, pr, E, lerp, head, brackets, tick, star, bar, count, icon } = p;
 

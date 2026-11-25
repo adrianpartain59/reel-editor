@@ -1,8 +1,10 @@
-# The step roadmap reel
+# Drawn Roadmap
+
+The default format.
 
 A talking-head list video ("I walked a million steps, here's the ten-step roadmap") made of an edited hook, a hand-drawn canvas that runs most
-of the body, and the face cut back in at a few moments. Use it when the take is a numbered list, a roadmap, a framework or a process, and the user
-asks for the canvas or for drawn graphics over the steps. One style for the art: the canvas (`canvas-style.md`). `canvas-reel-schema.md` documents
+of the body, and the face cut back in at a few moments. Use it unless the user wants another format or the take can't carry it: it needs at least two points to draw
+(a numbered list, roadmap, framework or process is ideal) and a number said in the hook. The art style is Sketch (`sketch.md`). `canvas-reel-schema.md` documents
 `canvas_reel.json`.
 
 It replaces compose.py, mix.py, build.py and qa.py for the whole reel: there is no plan.json. ingest, cut and track are shared. The scripts need
@@ -29,7 +31,8 @@ the title card may hold to the last frame (`title.out` = the hook's length); the
 
 ## Steps
 
-1. **Find the kept takes.** One long take with retakes: `python3 scripts/ingest.py PROJECT --hook RAW --body RAW --slug name` (the same file twice is
+1. **Find the kept takes.** Separate clips: ingest them as usual (SKILL.md step 1) and call the hook `main` in `selects.json`. Several hooks are several reels: give each its own name,
+   set `hook.variant` and `slug` to match, and re-run `countup_hook.py` and `canvas_sound.py` for each. One long take with retakes: `python3 scripts/ingest.py PROJECT --hook RAW --body RAW --slug name` (the same file twice is
    fine: ids `h1` and `b1`), then `utterances.py PROJECT RAW`. The kept take of a line is the last complete one before the speaker moves to the
    next line. Write `selects.json` (`{"hooks": {"main": [["h1", in, out], ...]}, "body": [["b1", in, out], ...]}`), cutting tight to the words.
    Say which scripted lines were never said; don't invent around them.
@@ -39,7 +42,7 @@ the title card may hold to the last frame (`title.out` = the hook's length); the
 3. **Set up.** `canvas_init.py PROJECT roadmap` writes `canvas_reel.json` and `canvas/scenes.js` (and installs the drawing library the first time).
 4. **Hook.** Fill `hook` (beats on the spoken words, the value, the label, the title). Leave `zoom`, `face` and `blur` out and list `punch`: they are
    made for you. `countup_hook.py PROJECT preview 0.1,1.0,1.5,2.2,2.8,3.12,3.3,4.0,5.3,6.0,7.0,7.9`, look, fix, `render`.
-5. **Canvas.** Draw one scene per step by `canvas-style.md`. `cd PROJECT && node canvas/scenes.js sheet 1,2.5,... work/sheet.jpg` while you
+5. **Canvas.** Draw one scene per step by `sketch.md`. `cd PROJECT && node canvas/scenes.js sheet 1,2.5,... work/sheet.jpg` while you
    draw (two or three stills per step; each is stamped with its time), then `node canvas/scenes.js check canvas_reel.json` and a `still` of every finished scene. Fix every `stop N:` and `nothing new` line. Ink in the
    like/share column or at an edge is a judgement call: a line of art may brush it, words may not.
 6. **Face moments.** Fill `faces` and `outro`, then `canvas_body.py PROJECT preview` at every in + 0.1, in + 0.5 and out + 0.1. `render`.
@@ -68,7 +71,7 @@ Pick the moments from the transcript before drawing anything. A moment qualifies
 Aim for one every 8 to 12 s, 15 to 20% of the body, never two in a row and never as a step begins (the step's drawing needs its first word).
 The canvas comes back `left` or `right` in the direction it left off; the flight to the next step hides under the face moment.
 
-## Rules for this kind of reel
+## Rules for this format
 
 - Captions on the face only. The canvas writes its own words, so a caption over it says everything twice.
 - Text on the canvas is written on, not typed: no key sounds there. Key sounds belong to the typed comment.

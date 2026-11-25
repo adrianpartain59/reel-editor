@@ -1,6 +1,6 @@
-// The split screen reel's top half: the hand-drawn canvas redrawn wide and short (1080 x 764), the face is under it.
+// Split Screen's top half: the hand-drawn canvas redrawn wide and short (1080 x 764), the face is under it.
 // One cell per beat in a row, a dotted road between them, the camera flies along it. A reel only writes scenes.js
-// (canvas_init.py PROJECT split copies split.starter.scenes.js). Guide: references/split-screen-reel.md.
+// (canvas_init.py PROJECT split copies split.starter.scenes.js). Guide: references/split-screen.md.
 //
 //   const { make, p } = require('<skill>/assets/graphic-styles/canvas/panel_engine');
 //   module.exports = make({ cells: [{ id, n, at, draw }], recap: { at, first, names } });   // last line

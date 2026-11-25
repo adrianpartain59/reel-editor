@@ -5,9 +5,9 @@ A Claude Code skill that edits raw talking-head phone takes into finished Instag
 Drop in your clips and say "edit my reel". Claude picks the takes, plans the edit and checks its own frames; the scripts
 do the cutting, captions, motion, sound and quality checks. Everything runs on your Mac and costs nothing.
 
-![A standard reel: captions, a spotlit title, a phone with a tap on it, a plan screen, the typed comment at the end](docs/standard.jpg)
+![Four drawn scenes from a Drawn Roadmap](docs/roadmap.jpg)
 
-*Frames from the test reel in this repo. The speaker is drawn, so nobody's face is in it.*
+*Four scenes from a Drawn Roadmap, the default format.*
 
 ## What it does
 
@@ -23,21 +23,39 @@ do the cutting, captions, motion, sound and quality checks. Everything runs on y
 7. **Checks itself:** frame count, loudness, dead air, pacing, silent moves, repeated effects, and the voice against the
    original recording.
 
-## Three kinds of reel
+## Formats
 
-**Standard.** Your takes with captions, phones, titles and transitions. The default.
+Say the name of the one you want. If you don't, you get a Drawn Roadmap.
 
-**Step roadmap.** A number counts up on a graph in the hook, then a hand-drawn canvas the camera flies across, one
-drawing per step, landing on the words, with your face cut back in for the lines that need it.
+| Format | What you get | Say |
+|---|---|---|
+| **Drawn Roadmap** (default) | A number counts up on a graph in the hook, then a hand-drawn canvas the camera flies across, one drawing per step, landing on your words, with your face cut back in for the lines that need it | "edit my reel", "draw the steps" |
+| **Talking Head** | Your takes with captions, app screens as 3D phones, titles, transitions and sound effects | "make it a Talking Head", "show the app when I say it" |
+| **Split Screen** | Your face full frame for the hook, then the drawing above your face for each point, with the word you're saying highlighted | "make it a Split Screen" |
 
-![Four drawn scenes from a step roadmap](docs/roadmap.jpg)
+A Drawn Roadmap needs at least two points to draw and a number in the hook. Without both, Claude makes a Talking Head and
+tells you why.
 
-**Split screen.** Your face full frame for the hook, then the drawn canvas over it for each point, with the word you're
-saying highlighted.
+![A Talking Head: captions, a spotlit title, a phone with a tap on it, a plan screen, the typed comment at the end](docs/standard.jpg)
 
-There are also three more drawn styles to put over a reel: blueprint, neon sign and stick figures.
+*A Talking Head, from the test reel in this repo. The speaker is drawn, so nobody's face is in it.*
 
-![The four drawn styles moving: canvas, blueprint, neon, stick figures](docs/styles.gif)
+### Looks for a Talking Head
+
+| Look | What you get |
+|---|---|
+| **Cinematic** (default) | Contrasty grade, glowing titles, 3D phones, a transition on most cuts, a beat that drops on the reveal |
+| **Bright** | Your room bright and natural, bouncy cuts, mixed caption styles, no music |
+
+### Art styles for the drawings
+
+| **Sketch** (default) | **Blueprint** | **Neon** | **Stick Figures** |
+|---|---|---|---|
+| Hand-drawn on dark | White technical lines on blue | Glowing tubes on black | White marker on black |
+
+![The four art styles moving, left to right: Sketch, Blueprint, Neon, Stick Figures](docs/styles.gif)
+
+Sketch draws whole reels. The other three come with sample scenes to build on.
 
 ## Install
 
@@ -57,7 +75,7 @@ xcode-select --install
 mkdir -p ~/.cache/whisper.cpp && curl -L -o ~/.cache/whisper.cpp/ggml-large-v3-turbo.bin https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
 ```
 
-and Google Chrome for the app mockups. Node is only for the drawn kinds. The whisper model is 1.6 GB; a smaller one works
+and Google Chrome for the app mockups. Node draws the Drawn Roadmap and the Split Screen. The whisper model is 1.6 GB; a smaller one works
 with less exact word timings (`REEL_WHISPER_MODEL` points at any ggml file). Ask Claude to "check the reel-editor setup",
 or run `python3 skills/reel-editor/scripts/doctor.py`, to see what's missing.
 
@@ -69,16 +87,16 @@ or run `python3 skills/reel-editor/scripts/doctor.py`, to see what's missing.
 
 > Here's a ten-step list I recorded, draw the steps
 
-> Split screen style, here's the full take
+> Make this one a Split Screen, here's the full take
 
 > I like how this reel is edited, make mine look like that (screen recording attached)
 
-A 40 s reel takes about 5 minutes to render in the default style.
+A 40 s Talking Head takes about 5 minutes to render.
 
 ## Your own rules
 
 Tell Claude how you want your reels and it keeps your rules in `~/.config/reel-editor/preferences.md`. They win over the
-skill's defaults and survive updates. Your own style presets go in `~/.config/reel-editor/styles/` and rooms for background
+skill's defaults and survive updates. Your own looks go in `~/.config/reel-editor/looks/` and rooms for background
 replacement in `~/.config/reel-editor/rooms/`.
 
 ## Sound and music
@@ -87,7 +105,8 @@ The sound effects are synthesized by `scripts/sfx_pack.py`, so there is nothing 
 over them ([how](skills/reel-editor/references/sfx-library.md)).
 
 The beats aren't in this repository: Mixkit's free licence lets you use them in your videos but not hand the files on.
-`python3 scripts/music_lib.py fetch` downloads your own copies (33 MB). Until then a synthesized pad plays.
+`python3 scripts/music_lib.py fetch` downloads your own copies (33 MB). Until then a Talking Head plays a
+synthesized pad and a Drawn Roadmap has no beat.
 
 ## Scripts
 
@@ -98,11 +117,11 @@ All of them also work without Claude.
 | `ingest.py`, `utterances.py` | Finds the speech, transcribes it with word timings, finds the face |
 | `cut.py`, `speechmap.py` | Cuts the takes to the speech, white balance, gentle grade |
 | `mockups.py` | App screens as transparent phones, from one HTML file |
-| `compose.py`, `fx.py` | Renders the reel from `plan.json`, or stills of any moment |
+| `compose.py`, `fx.py` | Renders a Talking Head from `plan.json`, or stills of any moment |
 | `mix.py`, `audiomap.py`, `sfx_pack.py`, `music.py` | Voice, effects, beat, master |
 | `qa.py`, `audio_check.py` | The checks |
-| `countup_hook.py`, `canvas_body.py`, `canvas_sound.py` | The step roadmap |
-| `split_cut.py`, `split_reel.py`, `split_thumb.py` | The split screen |
+| `countup_hook.py`, `canvas_body.py`, `canvas_sound.py` | Drawn Roadmap |
+| `split_cut.py`, `split_reel.py`, `split_thumb.py` | Split Screen |
 | `analyze_ref.py` | Measures a reference reel: pacing, zooms, loudness, caption sheets |
 | `room.py` | Replaces the room behind you, no green screen |
 
@@ -113,7 +132,7 @@ tests/run.sh
 ```
 
 Makes takes of a drawn speaker with a macOS voice (one has a flub in it), edits them into a reel, runs the checks and
-draws the canvas starters. About 4 minutes.
+draws the starter scenes. About 4 minutes.
 
 ## Good to know
 
@@ -122,5 +141,5 @@ draws the canvas starters. About 4 minutes.
 - The app mockups are for fictional apps. Don't put a real company's name or a made-up review of a real product on them.
 - Macs only: fonts, face finding and person masks come from macOS.
 
-MIT licensed. The drawn kinds install [@napi-rs/canvas](https://github.com/Brooooooklyn/canvas) (MIT) and open-licence
-Google fonts from npm.
+MIT licensed. The drawings use [@napi-rs/canvas](https://github.com/Brooooooklyn/canvas) (MIT) and open-licence
+Google fonts, installed from npm.

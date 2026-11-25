@@ -1,5 +1,5 @@
 // Copy to PROJECT/canvas/scenes.js and draw your own steps. Every time is seconds on the body's clock, from work/body_words.json
-// (seg_words.py). Guide: references/canvas-style.md. A finished ten-step reel: roadmap.scenes.js, next to the engine.
+// (seg_words.py). Guide: references/sketch.md. A finished ten-step reel: roadmap.scenes.js, next to the engine.
 const { make, h } = require('./engine');
 const { C, FILL, K, headline, card, box, write, tag, label, land, count, play, face, hearts, bar, dots, slice, line, ell, spline, txt, pr, E, lerp, clamp } = h;
 

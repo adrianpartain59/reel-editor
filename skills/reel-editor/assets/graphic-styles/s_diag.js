@@ -1,4 +1,4 @@
-// Diagram styles: hand-drawn canvas with a travelling camera, blueprint.
+// Diagram art styles: Sketch (a hand-drawn canvas with a travelling camera), Blueprint.
 const K = require('./kit'); const { W, H, T, clamp, lerp, pr, E, rng, hash, line, ell, rectP, spline, Sk, words, txt, cached, noiseTex, money } = K;
 
 function hatch(c, x, y, w, h, col, gap, u, seed = 1) { if (u <= 0) return; c.save(); c.beginPath(); c.rect(x, y, w, h); c.clip(); c.strokeStyle = col; c.lineWidth = 4; c.lineCap = 'round'; const n = Math.ceil((w + h) / gap); for (let i = 0; i < n * u; i++) { const q = x + i * gap - h, j = (hash(i, seed) - .5) * 8; c.beginPath(); c.moveTo(q + j, y + h); c.lineTo(q + h + j, y); c.stroke(); } c.restore(); }
@@ -6,7 +6,7 @@ function box(c, sk, x, y, w, h, o) { const u = pr(sk.t, o.t0 + .1, o.t0 + .45); 
 
 // ---------- infinite canvas: the three steps sit on one board, the camera flies along the arrow between them
 const POS = [[0, 0], [1500, 900], [-100, 2400]];
-const canvasS = { id: 'canvas', name: 'Hand-drawn infinite canvas', frame(c, t) {
+const canvasS = { id: 'sketch', name: 'Sketch', frame(c, t) {
   c.fillStyle = '#121212'; c.fillRect(0, 0, W, H);
   let x, y, z = 1; const mv = (a, b, i) => { const u = E.io(pr(t, a, b)); return [lerp(POS[i][0], POS[i + 1][0], u), lerp(POS[i][1], POS[i + 1][1], u), 1 - Math.sin(u * Math.PI) * .42]; };
   if (t < T.s3 - .4) [x, y, z] = t < T.s2 - .35 ? [0, 0, 1 + .02 * t / 4] : mv(T.s2 - .35, T.s2 + .4, 0); else [x, y, z] = mv(T.s3 - .4, T.s3 + .4, 1);

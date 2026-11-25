@@ -1,6 +1,6 @@
-# Style: cinematic
+# Look: Cinematic
 
-**The house style**, the default when a plan names no style. `"style": "cinematic"` in plan.json. Its techniques were measured
+**Talking Head's default look**, used when a plan names none. `"style": "cinematic"` in plan.json. Its techniques were measured
 on a 39 s reel with 5.6M views (`analyze_ref.py`), then reworked: no decorative backgrounds or empty layouts, many more
 transitions, everything animated, sounded, intentional and varied. The aim is the feel, not a copy: no one else's footage, music,
 fonts or graphics; the user's own takes, system fonts and sounds synthesized here.
@@ -27,7 +27,7 @@ Read `references/effects.md` first: every transition, title animation, backgroun
 | Master | -12.2 LUFS, LRA 1.7 LU | voice: high-pass 80, -1.5 dB at 250 Hz, 4:1 compression, +1.5 dB at 5 kHz, +2.5 dB shelf from 7.5 kHz (the compressor dulls the top end ~2 dB); master -12 LUFS |
 | Pace | 207 words/min, pauses cut | ingest/cut already remove silences; keep selects tight |
 
-## Planning a cinematic reel
+## Planning a reel in Cinematic
 
 1. **Hook (first 3-4 s).** Face first (>= 0.8 s) with building captions, then the visual of the promise (a
    phone with taps on the fields as they are named), then a `drop` back to the face with `settle` and a
@@ -53,7 +53,7 @@ Read `references/effects.md` first: every transition, title animation, backgroun
 Worked example: `assets/examples/cinematic-plan.json` (its words: `cinematic-timeline.txt`).
 
 ## Requirements and costs
-- Rendering is ~2x classic (transitions render two shots, titles bloom): about 5-7 min for a 60 s reel.
+- Rendering is ~2x Bright (transitions render two shots, titles bloom): about 5-7 min for a 60 s reel.
 - `segment.py` (Vision person masks, ~2 min for a 60 s reel, once) runs only when a shot has a `bg`.
 - Footage: one person, face and shoulders in frame. Posters or drawn figures on the wall get half-confidence
   in the mask; `grade.mask_lo` (0.66) drops them. Raise it if one still shows behind a `bg`.

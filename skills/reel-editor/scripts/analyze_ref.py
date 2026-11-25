@@ -12,7 +12,7 @@ Writes to OUTDIR:
   summary.md           the numbers: pace, pauses, loudness, music-bed level, SFX onsets, hard cuts, zoom
                        moves (face size per 0.1 s), brightness
 The interpretation is yours: look at the sheets and spectrograms, then write assets/styles/<name>.json and
-references/styles/<name>.md (see references/styles/README.md for the procedure).
+references/looks/<name>.md (see references/looks/README.md for the procedure).
 """
 import argparse, json, subprocess, tempfile
 from pathlib import Path

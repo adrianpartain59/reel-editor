@@ -1,4 +1,4 @@
-// The hand-drawn canvas: every step of a reel is a scene in one big drawn world, a dotted road
+// Sketch, the hand-drawn canvas: every step of a reel is a scene in one big drawn world, a dotted road
 // winds through them and the camera flies along it. This file owns the world: cells, road, camera, map zoom-out, motion blur.
 // A reel only writes scenes.js (copy starter.scenes.js; roadmap.scenes.js is a finished ten-step reel).
 //

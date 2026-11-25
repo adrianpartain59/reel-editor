@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds a split screen reel (references/split-screen-reel.md): full-frame face for the hook, intro and outro, the drawn canvas over the speaker's
+"""Builds a Split Screen (references/split-screen.md): full-frame face for the hook, intro and outro, the drawn canvas over the speaker's
 face in the body, Instagram captions with the word the speaker is saying in yellow. Reads PROJECT/split_reel.json and PROJECT/canvas/scenes.js.
 
   split_reel.py PROJECT words                     every word with its number and time

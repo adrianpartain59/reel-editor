@@ -1,7 +1,7 @@
-# The split screen reel
+# Split Screen
 
-The user hands over the full video and says "split screen style". Build it end to end and send the finished reel. Ask nothing
-first: every choice below has a default. Not to be confused with `split`, a layout in the standard reel's plan.json.
+The user hands over the full video and says "split screen". Build it end to end and send the finished reel. Ask nothing
+first: every choice below has a default. Not to be confused with `split`, a half-phone layout in a Talking Head's plan.json.
 
 ## The edit, part by part
 
@@ -84,7 +84,7 @@ Times are seconds of the cut. Everything not listed is fixed.
 
 ## Drawing the panel
 
-The look, colours and what-to-draw table in `canvas-style.md` all hold. The frame is different: 1080 x 764, drawn in cells.
+The look, colours and what-to-draw table in `sketch.md` all hold. The frame is different: 1080 x 764, drawn in cells.
 
 - **Header row** (`head`): the yellow #n pill and the point in two to five words, written on as it is said, one key word in colour. It shrinks to fit.
 - **Drawing** between y 325 and 715, x 40 to 1030. Fill it edge to edge, left to right in the order it is said: two or three pictures with an arrow between

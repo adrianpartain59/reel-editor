@@ -1,14 +1,14 @@
 # Music library (downloaded beats)
 
-Instrumental beats for the music bed. A trap beat is the cinematic default (`"bed": "trap"`, picked per reel from `TRAP_POOL` in
+Instrumental beats for the music bed. A trap beat is Cinematic's default (`"bed": "trap"`, picked per reel from `TRAP_POOL` in
 scripts/common.py). The files are not in this repository, because Mixkit's licence doesn't allow handing them on inside a tool. Get your own copies once:
 
 ```
 python3 scripts/music_lib.py fetch
 ```
 
-That downloads 10 tracks (33 MB) from mixkit.co into `~/.cache/reel-editor/music`. Read the licence below first and tell the user what will be downloaded. Until then a cinematic reel plays the
-synthesized `dark_pad` and says so; nothing fails.
+That downloads 10 tracks (33 MB) from mixkit.co into `~/.cache/reel-editor/music`. Read the licence below first and tell the user what will be downloaded. Until then a Talking Head in Cinematic plays the
+synthesized `dark_pad` and a Drawn Roadmap has no beat; both say so and nothing fails.
 
 ## Using one
 

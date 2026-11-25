@@ -1,6 +1,6 @@
 ---
 name: reel-editor
-description: Turns raw talking-head phone takes into a finished, high-retention Instagram Reel, TikTok or YouTube Short (cuts to the speech, word-synced captions, app UI mockups and screen recordings shown as they are mentioned, zooms, titles, transitions, sound effects, music, loudness, hook variants, cover, post copy, QA), plus two drawn kinds of reel, the hand-drawn step roadmap and the split screen. Use it whenever someone drops in clips and wants a reel, short or TikTok edited ("edit my reel", "here are my takes", "these are the hooks", "cut this down to where I'm talking", "add captions and sound effects", "make it engaging", "overlay the app"), sends a reel whose style they like ("make it cinematic", "edit it like this"), asks for "split screen style", or wants a list, roadmap or process drawn as an animated canvas ("draw the steps"), even if they never say "skill". Not for long-form video, AI-generated footage, or designing real app screens.
+description: Turns raw talking-head phone takes into a finished, high-retention Instagram Reel, TikTok or YouTube Short in one of three formats, Drawn Roadmap (the default, a number counting up in the hook, then a hand-drawn canvas with one drawing per step), Talking Head (word-synced captions, app mockups and screen recordings on the word, titles, transitions, sound effects, music) and Split Screen (drawn canvas over the face). Cuts to the speech, sets loudness, makes hook variants, cover, post copy and QA. Use it whenever someone drops in clips and wants a reel, short or TikTok edited ("edit my reel", "here are my takes", "cut this down to where I'm talking", "add captions", "make it engaging", "overlay the app", "draw the steps", "split screen"), sends a reel whose style they like ("make it cinematic", "edit it like this"), or wants a list, roadmap or process drawn, even if they never say "skill". Not for long-form video, AI-generated footage, or designing real app screens.
 ---
 
 # reel-editor
@@ -20,15 +20,26 @@ everything in `references/`. When the user corrects how they want reels made, ad
 never to this skill's files: an update would overwrite them. If the folder has `rooms/`, those are their saved rooms
 (references/rooms.md).
 
-## Three kinds of reel
+## Formats, looks and art styles
 
-| Kind | When | How |
+**Format** is the kind of reel:
+
+| Format | What it is | How |
 |---|---|---|
-| **Standard** (the default) | takes with captions, phones, titles, transitions | the workflow below: plan.json, compose, mix, qa |
-| **Step roadmap** | a numbered list, roadmap, framework or process, or they ask for the canvas or drawn steps | `references/step-roadmap-reel.md`: an edited hook with a number counting up on a graph, then a hand-drawn canvas the camera flies through, the face cut back in at a few moments, a beat that drops on the number. Its own scripts and no plan.json; steps 1 and 2 below (takes, cut) are shared. Read that guide and `references/canvas-style.md` before planning |
-| **Split screen** | they say "split screen style" with a full talking video. Not the `split` layout of the standard reel | `references/split-screen-reel.md`: the face full frame for the hook (text hook, blurred cards popping in), the intro and the outro (follow card); the hand-drawn canvas over the face for the points; captions with the word being said in yellow; almost no effects, no music, no grade. Its own scripts (`split_cut.py`, `split_reel.py`, `split_thumb.py`) and no plan.json. Build it end to end without asking |
+| **Drawn Roadmap** (the default) | an edited hook with a number counting up on a graph, then a hand-drawn canvas the camera flies through, one drawing per step, the face cut back in at a few moments, a beat that drops on the number | `references/drawn-roadmap.md`. Its own scripts and no plan.json; steps 1, 2 and 6 below (takes, cut, deliver) are shared. Read that guide and `references/sketch.md` before planning |
+| **Talking Head** | the takes with captions, phones, titles, transitions and sound effects | steps 3 to 5 below: plan.json, compose, mix, qa |
+| **Split Screen** (not Talking Head's `split` layout) | the face full frame for the hook (text hook, blurred cards popping in), the intro and the outro (follow card); the hand-drawn canvas over the face for the points; captions with the word being said in yellow; almost no effects, no music, no grade | `references/split-screen.md`. Its own scripts (`split_cut.py`, `split_reel.py`, `split_thumb.py`) and no plan.json. Build it end to end without asking |
 
-If the take is a list of steps and they haven't said which kind, recommend the step roadmap and ask once.
+Pick the format without asking:
+1. They name one or describe one ("draw the steps", "split screen", "just captions"): that one.
+2. They ask for something only Talking Head does (app screens, phones or recordings shown on the word, titles, transitions, Cinematic or Bright): Talking Head.
+3. Otherwise: Drawn Roadmap. It needs at least two points to draw and a number said in the hook. A take without both can't carry it, so make a Talking Head and say why in one line.
+
+**Look** is a Talking Head's grade, captions, motion and sound: **Cinematic** (`"style": "cinematic"`, its default) or **Bright** (`"style": "bright"`, only when
+asked). `references/looks/`.
+
+**Art style** is how drawn things look: **Sketch** (the default, and the only one with an engine for a whole reel), **Stick Figures**, **Blueprint** or
+**Neon**. One per reel. `references/art-styles.md`.
 
 ## Inputs
 
@@ -71,19 +82,18 @@ This renders each part (every hook and the body) at 30 fps with the CC pass (per
 on the word itself and survive small re-cuts. Name hook variants in `selects.json` (`"namefirst"` rather than
 `"h1"`) before cutting: the names become the output file names.
 
-### 3. Plan the edit
+### 3. Plan the edit (Talking Head)
 This is where the reel is made. Read `references/edit-playbook.md` first: it holds the house rules and the pacing,
 hook, caption, overlay and sound rules. The ones that matter most: open on the face, full frame; the camera always
 moving, subtly; sound effects only from the pack; everything animated, everything with a sound, everything intentional
 (no decorative backgrounds or empty layouts), everything varied. Then:
 
-0. **The style is `cinematic`**, the default when plan.json has no `"style"`. Read `references/styles/cinematic.md`
+0. **The look is Cinematic**, the default when plan.json has no `"style"`. Read `references/looks/cinematic.md`
    and `references/effects.md` before planning, and match the density of the worked example
-   (`assets/examples/cinematic-plan.json`, its timeline is `cinematic-timeline.txt`). `classic` is the plainer look: only
-   when the user asks for it. If the user points at a reel whose style they like, follow "Adding a style from a
-   reference reel" in the styles README: `scripts/analyze_ref.py` measures the reference, then you write the preset.
-0b. **Drawn art over a reel** uses the graphic styles in `references/graphic-styles.md`: hand-drawn canvas, stick figures
-   on black, blueprint, neon sign. One style per reel.
+   (`assets/examples/cinematic-plan.json`, its timeline is `cinematic-timeline.txt`). **Bright** is the plainer look: only
+   when the user asks for it. If the user points at a reel they want to look like, follow "Adding a look from a
+   reference reel" in the looks README: `scripts/analyze_ref.py` measures the reference, then you write the preset.
+0b. **Drawn art over a Talking Head** uses one art style (`references/art-styles.md`).
 
 1. **Mockups.** Decide what the viewer needs to *see* for each claim (a paywall, an onboarding step, a
    notification, a before/after). Start from the library: `python3 scripts/mockups.py --init PROJECT`, edit
@@ -92,17 +102,17 @@ moving, subtly; sound effects only from the pack; everything animated, everythin
    `python3 scripts/mockups.py PROJECT/mock/screens.html PROJECT/mock paywall-features "paywall-features&hl=3" ...`
    Look at `mock/_sheet.jpg`. Details in `references/mockups.md`.
 2. **Write `PROJECT/plan.json`.** Shots (layouts and zooms), caption sections, punch titles, stickers, fx and
-   extra sfx, per part. Schema and every option: `references/plan-schema.md`. A complete worked example in the
-   classic style: `assets/examples/paywall-plan.json` (its timeline is `paywall-timeline.txt`); in the cinematic
-   style: `assets/examples/cinematic-plan.json`.
-   Sound effects for every visual event are added automatically from the style's table; add only the extra
-   ones. In the cinematic style transitions, title animations and phone entrances are picked automatically
+   extra sfx, per part. Schema and every option: `references/plan-schema.md`. A complete worked example in
+   Bright: `assets/examples/paywall-plan.json` (its timeline is `paywall-timeline.txt`); in
+   Cinematic: `assets/examples/cinematic-plan.json`.
+   Sound effects for every visual event are added automatically from the look's table; add only the extra
+   ones. In Cinematic, transitions, title animations and phone entrances are picked automatically
    when left out; pick them yourself where the moment calls for a specific one (references/effects.md).
 
 **Room replacement (opt-in only).** Only when the user asks for it in this reel: add `"room"` to plan.json
 (references/rooms.md). Never add it by default.
 
-### 4. Preview, then look
+### 4. Preview, then look (Talking Head)
 ```
 python3 scripts/compose.py PROJECT --variant h1 --preview 0.3,1.2,2.5,...
 ```
@@ -114,15 +124,15 @@ is anything under the Instagram UI (bottom ~380 px, top ~200 px, right edge low 
 words?) and `visual` (anything with `sound: false` moves in silence). Fix the plan and preview again. This loop
 is cheap (seconds); a full render is not.
 
-### 5. Build and QA
+### 5. Build and QA (Talking Head)
 ```
 python3 scripts/build.py PROJECT            # every hook variant; --variant h1 for one
 ```
 Composites every frame (a plan with a contextual `bg` runs `segment.py` first: macOS Vision person masks,
-about 2 minutes for a 60 s reel, once), mixes voice, SFX and the style's music bed (the voice kept as recorded in
+about 2 minutes for a 60 s reel, once), mixes voice, SFX and the look's music bed (the voice kept as recorded in
 stereo, SFX and bed calibrated against it, mastered to -12 LUFS, about -1.3 dBTP), writes `out/<slug>-<variant>.mp4`, a phone copy under 30 MB, a cover image if the plan has one,
 and runs `qa.py`. A FAIL must be fixed before delivery. A WARN is a judgement call: fix it or say why not.
-About 1 to 2 minutes per variant for a 40 s reel in classic, 4 to 6 in cinematic. Then look at `out/<slug>-<variant>-sheet.jpg` (one still
+About 1 to 2 minutes per variant for a 40 s reel in Bright, 4 to 6 in Cinematic. Then look at `out/<slug>-<variant>-sheet.jpg` (one still
 every 1.5 s) as the last visual check.
 
 ### 6. Deliver
@@ -160,7 +170,7 @@ A correction about how they want every reel made goes in `~/.config/reel-editor/
 ## Requirements
 macOS with Google Chrome, `ffmpeg`, `whisper-cli` (whisper-cpp) and a ggml model (found automatically, or set
 `REEL_WHISPER_MODEL`), Python 3.9+ with Pillow and numpy, Xcode command-line tools for `swift` (face detection and,
-for contextual backgrounds, person segmentation; without it, framing falls back to the frame centre), and Node 18+ for the
-drawn kinds. If something is missing, run `python3 scripts/doctor.py`, which says what and how to get it. The sounds are synthesized
+for contextual backgrounds, person segmentation; without it, framing falls back to the frame centre), and Node 18+ for
+Drawn Roadmap and Split Screen. If something is missing, run `python3 scripts/doctor.py`, which says what and how to get it. The sounds are synthesized
 (`scripts/sfx_pack.py`). Fonts are macOS system fonts (SF Pro, New York, Apple Color Emoji). Technical gotchas behind the
 scripts' design: `references/lessons.md`.

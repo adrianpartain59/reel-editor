@@ -4,7 +4,7 @@ from pathlib import Path
 
 SKILL = Path(__file__).resolve().parent.parent
 ASSETS = SKILL / "assets"
-CONFIG = Path.home() / ".config" / "reel-editor"          # the user's own: preferences.md, styles/, rooms/
+CONFIG = Path.home() / ".config" / "reel-editor"          # the user's own: preferences.md, looks/, rooms/
 MUSIC = Path.home() / ".cache" / "reel-editor" / "music"  # downloaded beats (outside the skill, so updates keep them)
 W, H, FPS, SR = 1080, 1920, 30, 48000
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
@@ -87,11 +87,11 @@ def deep_merge(a, b):
 
 def load_style(plan):
     """The plan's style preset (assets/styles/<plan.style>.json) with plan.style_overrides on top. The default is
-    cinematic, the house style; classic is the original look, only on request."""
-    name = plan.get("style", "cinematic")
-    p = next((d / f"{name}.json" for d in (CONFIG / "styles", ASSETS / "styles") if (d / f"{name}.json").exists()), None)
+    cinematic (the look called Cinematic); bright (the look called Bright) is stored as classic.json."""
+    name = plan.get("style", "cinematic"); name = {"bright": "classic"}.get(str(name).lower(), name)
+    p = next((d / f"{name}.json" for d in (CONFIG / "looks", ASSETS / "styles") if (d / f"{name}.json").exists()), None)
     if p is None:
-        die(f"unknown style {name!r}; available: {', '.join(sorted({x.stem for d in (CONFIG / 'styles', ASSETS / 'styles') for x in d.glob('*.json')}))}")
+        die(f"unknown style {name!r}; available: {', '.join(sorted({x.stem for d in (CONFIG / 'looks', ASSETS / 'styles') for x in d.glob('*.json')}))}")
     base = load(ASSETS / "styles" / "classic.json") if name != "classic" else {}
     st = deep_merge(deep_merge(base, load(p)), plan.get("style_overrides", {}))
     m = st.get("music") or {}

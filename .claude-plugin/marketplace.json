@@ -6,8 +6,8 @@
     {
       "name": "reel-editor",
       "source": "./",
-      "description": "Cuts your takes to the speech and adds word-synced captions, app mockups on the word, transitions, sound effects, music and loudness, with a QA pass. Also draws step roadmaps and split screens. Runs locally.",
-      "version": "0.1.0"
+      "description": "Cuts your takes to the speech and makes a Drawn Roadmap (default), a Talking Head or a Split Screen, with sound, loudness and a QA pass. Runs locally.",
+      "version": "0.2.0"
     }
   ]
 }

@@ -18,7 +18,7 @@ transparent 1260x2640 PNGs (phone frame included). Copy it into the project with
 | `notification` | lock screen with a push notification | |
 | `frame` | bezel only, transparent screen | for `video` layout screen recordings |
 
-Add `&dark=1` to any variant for the dark theme (the cinematic style uses dark phones throughout; the brand
+Add `&dark=1` to any variant for the dark theme (Cinematic uses dark phones throughout; the brand
 green brightens and selected rows / CTAs glow).
 
 Render: `mockups.py PROJECT/mock/screens.html PROJECT/mock "paywall-features" "paywall-features&hl=3"`.

@@ -115,7 +115,7 @@ MAKE = {"counting": [counting], "glitch": [glitch], "whoosh": [whoosh], "riser":
         "scribble": [lambda a=a: scribble(*a) for a in [(0.33, 1, 1), (0.36, 2, 2), (0.52, 3, 2), (0.70, 4, 3), (0.72, 5, 4), (0.92, 6, 4), (1.10, 7, 5), (1.85, 8, 8)]]}
 
 
-# ---- the step roadmap's count-up: a pitched tap per tick, two whole alternatives, and the landing's ding
+# ---- the Drawn Roadmap's count-up: a pitched tap per tick, two whole alternatives, and the landing's ding
 def tap():
     """a small wooden tap at 1714 Hz; canvas_sound.py repitches it per tick"""
     t = C.T(0.12); n = len(t); return C.st(np.sin(2 * np.pi * 1714 * t) * np.exp(-t * 60) + 0.4 * np.sin(2 * np.pi * 1714 * 2.76 * t) * np.exp(-t * 120) + 0.25 * C.band(C.noise(n), 3000, 12000) * np.exp(-t * 500))

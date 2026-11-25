@@ -1,4 +1,4 @@
-// Line styles: stick figures on black, neon sign.
+// Line art styles: Stick Figures (on black), Neon.
 const K = require('./kit'); const { W, H, T, clamp, lerp, pr, E, rng, hash, line, ell, rectP, spline, Sk, words, txt, cached, noiseTex, pens, money } = K;
 
 // ---------- one storyboard, drawn by any pen. g = {sk opts, ink, hi, bad, good, dim, head, label, reveal, w}
@@ -55,14 +55,14 @@ function S3(c, t, g) {
 const scene = t => t < T.s2 ? [S1, 0] : t < T.s3 ? [S2, T.s2] : [S3, T.s3];
 
 // ---------- 2 stick figures, thick white marker on black, line boil at 8 fps, one accent
-const stick = { id: 'stick', name: 'Stick figures on black', frame(c, t) {
+const stick = { id: 'stick', name: 'Stick Figures', frame(c, t) {
   c.fillStyle = '#000'; c.fillRect(0, 0, W, H); const b = Math.floor(t * 8); const g = { sk: { pen: 'marker', w: 15, ink: '#fff', amp: 3.4, boilFps: 8, boilAmt: 1.9 }, w: 15, ink: '#fff', hi: '#ffd400', bad: '#ff4b3e', good: '#ffd400', dim: '#8d8d8d', head: 'Marker', label: 'Marker', reveal: 'pop', paper: '#000', hs: 100, sb: 56 };
   const [f, t0] = scene(t); c.save(); const tr = [T.s2, T.s3].find(s => t >= s && t < s + .28); if (tr) { const u = E.back(pr(t, tr, tr + .28), 1.4); c.translate(0, (1 - u) * 260); } c.translate(Math.sin(b * 2.1) * 1.6, Math.cos(b * 1.7) * 1.6); f(c, t, g); c.restore();
 } };
 
 // ---------- 5 neon
 const neonBg = () => cached('neon', W, H, x => { x.fillStyle = '#05060b'; x.fillRect(0, 0, W, H); for (const [a, b, r, k] of [[200, 400, 700, 'rgba(255,40,160,.10)'], [900, 1300, 800, 'rgba(30,150,255,.12)']]) { const g = x.createRadialGradient(a, b, 10, a, b, r); g.addColorStop(0, k); g.addColorStop(1, 'rgba(0,0,0,0)'); x.fillStyle = g; x.fillRect(0, 0, W, H); } x.strokeStyle = 'rgba(255,255,255,.02)'; x.lineWidth = 2; for (let y = 0; y < H; y += 96) for (let q = (y / 96 % 2) * 110 - 110; q < W; q += 220) x.strokeRect(q, y, 220, 96); });
-const neon = { id: 'neon', name: 'Neon sign', frame(c, t) {
+const neon = { id: 'neon', name: 'Neon', frame(c, t) {
   c.drawImage(neonBg(), 0, 0); const fl = hash(Math.floor(t * 24)) > .93 ? .72 : 1; c.save(); c.globalAlpha = fl; const g = { sk: { pen: 'neon', w: 9, ink: '#39c6ff', amp: 0 }, w: 9, ink: '#39c6ff', hi: '#ff4fd8', bad: '#ff3b4e', good: '#4dff9d', dim: '#8a7dff', head: 'RajB', label: 'RajB', reveal: 'none', paper: '#05060b', hs: 112 };
   const [f, t0] = scene(t); const tr = [T.s2, T.s3].find(s => t >= s && t < s + .3); if (tr) c.globalAlpha = fl * (hash(Math.floor(t * 30), 3) > .4 ? 1 : .15);
   c.shadowColor = 'rgba(255,80,200,.9)'; c.shadowBlur = 22; f(c, t, g); c.restore();

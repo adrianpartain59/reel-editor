@@ -1,6 +1,7 @@
 # Edit playbook
 
-How to plan a reel that people watch to the end. Read before writing plan.json.
+How to plan a reel that people watch to the end. Written for Talking Head: read before writing plan.json. The other two formats follow it except where
+their guides say so.
 
 ## House rules
 
@@ -21,15 +22,15 @@ Learned by editing real reels and fixing what was wrong with them. The user's ow
    being compared identical (same footer, same selector, same layout below the body). Otherwise viewers think the other
    differences are part of the advice.
 6. **Captions highlight the important words;** punch titles for the one or two words per section that carry the point.
-   In `classic`, caption styles vary through the reel; `cinematic` uses one.
+   In Bright, caption styles vary through the reel; Cinematic uses one.
 7. **SFX audible but under the voice**, and the whole thing at a normal Instagram volume (the mixer does both).
 8. **The voice must sound like the original recording.** No mono fold-down, no default denoise, no low-pass.
    Loudness is raised to Instagram level with gain and a light limiter only (qa.py checks the tone).
 9. **Several hooks = several reels.** When the user hands over more than one hook, build one complete,
    separate reel per hook (h1, h2, h3), identical except for the hook. Never stitch hooks together and never
    pick one for them; they A/B test them.
-10. **A look they like = a style preset.** When they point at a reel, they mean its production style: captions, SFX, shots,
-    grade, pacing. Build or reuse a style preset (references/styles/) from a measured breakdown and re-edit a finished
+10. **A reel they like = a new look.** When they point at a reel, they mean its production style: captions, SFX, shots,
+    grade, pacing. Build or reuse a look (references/looks/) from a measured breakdown and re-edit a finished
     reel in it for a side-by-side, rather than tweaking one reel by hand.
 11. **No decoration: every background and layout must carry content.** No made-up dark set, no bokeh, no empty letterbox. A
     background is only there to show something: the screen being talked about, a profile, a result (`bg` with a `why`).
@@ -52,13 +53,13 @@ Learned by editing real reels and fixing what was wrong with them. The user's ow
       per-reel cap so it never repeats until it grates.
     - **Never altered:** no speeding up, slowing down or cutting a sound short. If it doesn't fit whole, it isn't
       used. Fewer effects beat effects used the wrong way. Scribble picks the file whose length matches the visual.
-14. **The cinematic style is the house style.** Match the worked example's density (`assets/examples/cinematic-plan.json`,
+14. **Cinematic is the default look.** Match the worked example's density (`assets/examples/cinematic-plan.json`,
     ~58 s), scaled to length: a transition on most shot changes (20 transitions, 13 kinds; hard cuts only for zoom cuts and
     next to very short shots); a phone on screen for every screen described, each entering differently (7 phones, 5
     entrances), with a tap per state change; 2 backgrounds that show the screen being described; 3 spotlight moments (hook
     payoff, the viewer's doubt with a neon icon, the recap list); 9 neon titles on the thumbnail phrases with 6 different
     animations; 2 handwritten notes; 4 drops; a notification; a glitch into the loop. Tune one reel with `style_overrides`.
-15. **A beat under the voice, low.** The cinematic bed is `"trap"`: it resolves per reel (by slug) to one of the measured
+15. **A beat under the voice, low.** The Cinematic bed is `"trap"`: it resolves per reel (by slug) to one of the measured
     beats with a trusted beat grid (`TRAP_POOL` in scripts/common.py) at -14.5 dB, ducked 3 dB while the speaker talks, so
     the beat varies between reels and drops land on the downbeat. Pin one with `style_overrides.music.bed = "track:<id>"`;
     `music.bed: null` when the user adds a trending sound in the app. Until the beats are downloaded
@@ -144,7 +145,7 @@ Learned by editing real reels and fixing what was wrong with them. The user's ow
 ## Captions
 Styles: `pop` (white caps, black outline, active word in the accent colour), `box` (black on white pills, active
 word in a coloured chip), `serif` (italic serif, for quotes, reviews, inner voice), `neon` (glow), `word`
-(one huge word at a time, for fast lists or a dramatic line), `cine` (the cinematic default). In classic, change style at
+(one huge word at a time, for fast lists or a dramatic line), `cine` (the Cinematic default). In Bright, change style at
 section breaks of the script (problem → why → fix → proof → CTA), roughly every 5 to 10 s. Accent colours carry meaning: red
 for the wrong way, green for the right way, yellow/purple neutral.
 - `keywords` in plan.json stay highlighted once said: the nouns and verdicts of the topic.

@@ -167,7 +167,7 @@ def main():
     ap.add_argument("--slug", default=None)
     a = ap.parse_args()
     need_tools()
-    if not a.hook and not a.body: die("give --hook clips (the opening line), --body clips, or both (a split screen reel needs only --body)")
+    if not a.hook and not a.body: die("give --hook clips (the opening line), --body clips, or both (a Split Screen needs only --body)")
     if not a.body: die("give the body clips with --body")
     proj = Path(a.project).expanduser().resolve(); (proj / "work").mkdir(parents=True, exist_ok=True)
     model = whisper_model()

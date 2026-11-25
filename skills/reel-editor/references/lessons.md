@@ -147,6 +147,6 @@ changing a script.
   the animations stay on their words. Generate plan.json from a script so `t` and `src_in` can't drift apart.
 - **Two consecutive broll shots from one track can't transition visibly**: both sides render the same frame.
   Change scenes inside the track, or use separate files.
-- **The cinematic style hides captions on overlay shots.** In a reel that is mostly screen, that removes the
+- **Cinematic hides captions on overlay shots.** In a reel that is mostly screen, that removes the
   captions from most of it; set `captions: true` on those shots and keep the content above y 1300 so the captions
   sit under it.
