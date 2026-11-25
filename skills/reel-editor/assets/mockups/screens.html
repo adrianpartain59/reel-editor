@@ -1,0 +1,230 @@
+<!doctype html>
+<!--
+  Mockup library for reel overlays. Copy this file into PROJECT/mock/, change APP (name, colours, copy) and the
+  screens you need, then render variants with:  mockups.py PROJECT/mock/screens.html PROJECT/mock <variant> ...
+  Variant = screen name plus optional &key=value params, e.g.  paywall-features&hl=3   onboarding-question&sel=2
+  Every screen renders inside the same iPhone frame at 3x (1260x2640 PNG, transparent outside the phone).
+  "frame" renders the bezel only with a transparent screen, for compositing screen recordings.
+  Rules: fictional app names only; prices and trial terms always visible on paywalls (no dark patterns).
+-->
+<html><head><meta charset="utf-8">
+<style>
+  :root{--brand:#7c5cff;--brand2:#b44cff;--brand-soft:#efe9ff;--ink:#17141f;--muted:#7a7488;--hl:#fff4c2;--hl-ring:#ffcc00}
+  html,body{margin:0;padding:0;background:transparent;}
+  body{width:420px;height:880px;display:flex;align-items:center;justify-content:center;font-family:-apple-system,"SF Pro Text",Helvetica,sans-serif;-webkit-font-smoothing:antialiased;color:var(--ink)}
+  .phone{width:400px;height:860px;border-radius:64px;background:#0b0b0d;padding:11px;box-sizing:border-box;position:relative;
+         box-shadow:inset 0 0 0 2px #2a2a2e, inset 0 0 0 4px #0b0b0d, inset 0 0 0 5px #3a3a40;}
+  .screen{width:100%;height:100%;border-radius:53px;overflow:hidden;position:relative;background:#fff;}
+  .frame-only .screen{background:transparent}
+  .island{position:absolute;top:11px;left:50%;transform:translateX(-50%);width:112px;height:33px;border-radius:20px;background:#000;z-index:5;}
+  .status{display:flex;justify-content:space-between;padding:16px 30px 0 34px;font-weight:600;font-size:15px;height:38px;box-sizing:border-box;position:relative;z-index:4}
+  .status .r{display:flex;gap:5px;align-items:center}
+  .bars{display:flex;gap:2px;align-items:flex-end}.bars i{display:block;width:3px;background:currentColor;border-radius:1px}
+  .batt{width:24px;height:11px;border:1.5px solid currentColor;border-radius:3.5px;opacity:.9;position:relative}
+  .batt:after{content:"";position:absolute;inset:1.5px;right:5px;background:currentColor;border-radius:1.5px}
+  .close{position:absolute;top:52px;left:22px;width:28px;height:28px;border-radius:14px;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center;font-size:14px;color:#888;z-index:4}
+  .icon{width:64px;height:64px;border-radius:16px;margin:0 auto 12px;background:linear-gradient(135deg,var(--brand),var(--brand2));position:relative;box-shadow:0 8px 20px rgba(124,92,255,.35)}
+  .icon:before{content:"";position:absolute;left:14px;top:22px;width:36px;height:18px;border:3px solid rgba(255,255,255,.85);border-radius:50%;transform:rotate(-20deg)}
+  .icon:after{content:"";position:absolute;left:25px;top:24px;width:14px;height:14px;border-radius:50%;background:#fff}
+  .hlx{background:var(--hl)!important;box-shadow:0 0 0 2.5px var(--hl-ring)!important}
+
+  /* paywall: shared footer (price selector + CTA + links), identical on every paywall variant */
+  .plans{padding:10px 20px 0;display:flex;gap:10px}
+  .plan{flex:1;border:2px solid #e4def2;border-radius:16px;padding:10px 12px;position:relative;background:#fff}
+  .plan .t{font-size:13px;font-weight:700;color:#4a4458}.plan .p{font-size:19px;font-weight:800;margin-top:2px}.plan .s{font-size:11.5px;color:#8a8496}
+  .plan.sel{border-color:var(--brand);background:#faf8ff}
+  .plan.price-hl{box-shadow:0 0 0 4px #ff3b30;border-color:#ff3b30}
+  .save{position:absolute;top:-10px;right:10px;background:var(--brand);color:#fff;font-size:10px;font-weight:800;padding:3px 7px;border-radius:8px}
+  .cta{margin:14px 20px 0;height:54px;border-radius:27px;background:var(--brand);color:#fff;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center}
+  .foot{text-align:center;font-size:11px;color:#a29db0;margin-top:10px}
+  .footer{position:absolute;left:0;right:0;top:567.69px}
+
+  .feat{background:linear-gradient(180deg,#f3efff 0%,#ffffff 34%);height:100%;position:relative}
+  .feat .head{text-align:center;padding:50px 26px 8px}
+  .feat h1{font-size:27px;line-height:1.1;margin:0 0 6px;font-weight:800;letter-spacing:-.5px}
+  .feat .sub{font-size:14px;color:#6b6578;margin:0}
+  .list{padding:14px 20px 0}
+  .row{display:flex;gap:12px;align-items:center;padding:9.5px 10px;border-radius:14px;margin-bottom:2px}
+  .row .ic{width:34px;height:34px;border-radius:10px;background:var(--brand-soft);display:flex;align-items:center;justify-content:center;font-size:17px;flex:none}
+  .row b{display:block;font-size:15px;font-weight:700}.row span{display:block;font-size:12.5px;color:var(--muted);margin-top:1px}
+  .row .ck{margin-left:auto;color:var(--brand);font-weight:800;font-size:16px}
+
+  .testi{background:radial-gradient(120% 70% at 50% 0%,#fff6e6 0%,#fbf1e2 45%,#f5e6d0 100%);height:100%;color:#1d1813;display:flex;flex-direction:column;position:relative}
+  .brandrow{display:flex;align-items:center;gap:8px;justify-content:center;margin-top:34px;font-weight:700;font-size:15px;color:#5a4f43}
+  .brandrow .icon{width:26px;height:26px;border-radius:7px;margin:0;box-shadow:none}
+  .brandrow .icon:before{left:5px;top:8px;width:14px;height:7px;border-width:1.5px}.brandrow .icon:after{left:9px;top:9px;width:6px;height:6px}
+  .stars{text-align:center;font-size:44px;letter-spacing:4px;color:#f5a623;margin-top:50px}
+  .quote{font-family:"New York","Georgia",serif;font-size:33px;line-height:1.18;font-weight:600;padding:0 30px;margin-top:22px;letter-spacing:-.3px;text-align:center}
+  .quote em{font-style:normal;background:linear-gradient(transparent 58%,#ffd666 58%,#ffd666 92%,transparent 92%)}
+  .who{display:flex;align-items:center;justify-content:center;gap:12px;padding:0 30px;margin-top:26px}
+  .av{width:46px;height:46px;border-radius:23px;background:linear-gradient(135deg,#f0a35e,#d9663b);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:17px}
+  .who b{display:block;font-size:16px}.who span{display:block;font-size:13px;color:#7d7064}
+
+  /* onboarding */
+  .ob{height:100%;background:#fff;position:relative}
+  .prog{margin:58px 26px 0 64px;height:6px;border-radius:3px;background:#eeeaf6;overflow:hidden}
+  .prog i{display:block;height:100%;background:var(--brand);border-radius:3px}
+  .back{position:absolute;top:50px;left:22px;font-size:22px;color:#999}
+  .ob h2{font-size:28px;line-height:1.12;font-weight:800;letter-spacing:-.5px;margin:34px 26px 8px}
+  .ob .sub{font-size:15px;color:var(--muted);margin:0 26px 22px}
+  .opt{display:flex;align-items:center;gap:14px;margin:0 22px 12px;padding:16px 16px;border:2px solid #ebe7f3;border-radius:18px;font-size:17px;font-weight:600}
+  .opt .e{font-size:24px}
+  .opt.sel{border-color:var(--brand);background:#f7f4ff}
+  .opt.sel:after{content:"✓";margin-left:auto;color:#fff;background:var(--brand);width:24px;height:24px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:14px}
+  .ob .cta{position:absolute;left:0;right:0;bottom:110px}
+  .ob .cta.off{background:#d9d9de}
+  .plancard{margin:6px 22px 0;padding:18px;border-radius:22px;background:linear-gradient(160deg,#f6f2ff,#fff);border:1.5px solid #ebe5fa}
+  .plancard .k{font-size:13px;color:var(--muted);font-weight:600}.plancard .v{font-size:30px;font-weight:800;margin-top:2px}
+  .chart{height:150px;margin-top:12px;position:relative}
+  .chart svg{width:100%;height:100%}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin:16px 22px 0}
+  .chip{padding:8px 12px;border-radius:12px;background:var(--brand-soft);font-size:13.5px;font-weight:600;color:#4b3aa8}
+
+  /* home */
+  .home{height:100%;background:#f6f5fa;position:relative}
+  .home h3{margin:20px 22px 2px;font-size:30px;font-weight:800;letter-spacing:-.6px}
+  .home .date{margin:0 22px;color:var(--muted);font-size:14px;font-weight:600}
+  .streak{margin:16px 22px 0;padding:16px 18px;border-radius:22px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;display:flex;align-items:center;gap:14px}
+  .streak .n{font-size:38px;font-weight:800}.streak .l{font-size:14px;opacity:.9;font-weight:600}
+  .card{margin:12px 22px 0;padding:14px 16px;border-radius:18px;background:#fff;display:flex;align-items:center;gap:12px;box-shadow:0 1px 0 rgba(0,0,0,.04)}
+  .card .e{font-size:22px;width:40px;height:40px;border-radius:12px;background:var(--brand-soft);display:flex;align-items:center;justify-content:center}
+  .card b{display:block;font-size:16px}.card span{display:block;font-size:13px;color:var(--muted)}
+  .card .done{margin-left:auto;width:28px;height:28px;border-radius:14px;border:2.5px solid #d8d3e6}
+  .card .done.y{background:var(--brand);border-color:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800}
+  .tabbar{position:absolute;left:0;right:0;bottom:0;height:84px;background:#fff;border-top:1px solid #eee;display:flex;justify-content:space-around;padding-top:12px;font-size:22px;color:#b8b3c6}
+  .tabbar .on{color:var(--brand)}
+
+  /* lock screen notification */
+  .lock{height:100%;background:linear-gradient(180deg,#2b2350 0%,#5a3d8f 55%,#d58ab0 100%);color:#fff;position:relative;text-align:center}
+  .lock .time{font-size:88px;font-weight:600;letter-spacing:-2px;margin-top:40px}
+  .lock .day{font-size:19px;font-weight:600;opacity:.9;margin-top:56px}
+  .notif{margin:40px 14px 0;padding:14px;border-radius:22px;background:rgba(245,245,250,.82);color:#111;text-align:left;display:flex;gap:12px;backdrop-filter:blur(20px)}
+  .notif .icon{width:40px;height:40px;border-radius:10px;margin:0;flex:none;box-shadow:none}
+  .notif .icon:before{left:8px;top:14px;width:22px;height:11px;border-width:2px}.notif .icon:after{left:15px;top:15px;width:9px;height:9px}
+  .notif b{font-size:15px}.notif .tm{float:right;font-size:13px;color:#777}.notif p{margin:2px 0 0;font-size:15px;line-height:1.25}
+
+  /* text input with keyboard, multi-field form, personalised message */
+  .field{margin:0 22px 14px;padding:15px 16px;border:2px solid #ebe7f3;border-radius:16px;font-size:18px;color:#b3aec0;display:flex;align-items:center;gap:6px}
+  .field label{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin:0 24px 6px}
+  .field.focus{border-color:var(--brand);color:var(--ink)}
+  .field.focus:after{content:"";width:2px;height:22px;background:var(--brand);animation:none}
+  .field.filled{color:var(--ink);font-weight:600}
+  .kb{position:absolute;left:0;right:0;bottom:0;height:300px;background:#d1d3d9;padding:8px 3px 0;box-sizing:border-box}
+  .kb .r{display:flex;justify-content:center;gap:6px;margin-bottom:11px}
+  .kb .k{width:32px;height:44px;border-radius:6px;background:#fff;box-shadow:0 1px 0 #898a8d;display:flex;align-items:center;justify-content:center;font-size:21px;color:#111}
+  .kb .k.w{width:46px;background:#abb0ba;font-size:15px}.kb .k.sp{width:186px;font-size:15px}
+  .ob .cta.kbup{bottom:316px}
+  .msg{text-align:center;padding:0 26px}
+  .msg .big{font-size:74px;margin-top:70px}
+  .msg h2{margin:18px 0 8px;font-size:29px}
+  .msg .sub{margin:0 0 22px;font-size:16px}
+  .msg .li{display:flex;gap:12px;align-items:center;text-align:left;margin:0 4px 12px;padding:14px;border-radius:16px;background:#f7f5fc;font-size:15.5px;font-weight:600}
+  .msg .li .e{font-size:22px}
+
+  /* dark theme: add &dark=1 to any variant (cinematic style renders every phone dark) */
+  body.dark{--brand:#2fc285;--brand2:#5ee0a4;--brand-soft:rgba(47,194,133,.16);--ink:#f2f2f6;--muted:#8e8e99}
+  .dark .screen,.dark .ob,.dark .home{background:#0c0d10}
+  .dark .feat{background:linear-gradient(180deg,#17151f 0%,#0c0d10 34%)}
+  .dark .opt{border-color:#26272e;background:#15161b}
+  .dark .opt.sel{border-color:var(--brand);background:rgba(47,194,133,.14);box-shadow:0 0 18px rgba(47,194,133,.35)}
+  .dark .field{border-color:#26272e;background:#15161b;color:#6c6c77}
+  .dark .field.focus{border-color:var(--brand);box-shadow:0 0 16px rgba(47,194,133,.35)}
+  .dark .field.filled{color:#fff}
+  .dark .prog{background:#23242a}
+  .dark .cta{box-shadow:0 0 22px rgba(47,194,133,.45)}
+  .dark .cta.off{background:#25262c;color:#62626b;box-shadow:none}
+  .dark .msg .li{background:#15161b}
+  .dark .plancard{background:linear-gradient(160deg,#17161f,#0f1013);border-color:#24252c}
+  .dark .chip{color:#6fe0ab}
+  .dark .card,.dark .tabbar,.dark .plan{background:#15161b;border-color:#26272e}
+  .dark .kb{background:#1d1e22}.dark .kb .k{background:#4a4b51;color:#fff;box-shadow:0 1px 0 #000}.dark .kb .k.w{background:#2e2f34}
+  .dark .back{color:#777}
+</style></head>
+<body>
+<div class="phone" id="ph"><div class="screen" id="scr"><div class="island"></div></div></div>
+<script>
+// ---- edit these per reel (fictional brand) ----
+const APP = {name: "Orbit", tagline: "Everything you need to build better habits",
+  features: [["✅","Unlimited habits","Track as many as you want"],["🔔","Smart reminders","Nudges at just the right moment"],
+             ["📊","Advanced stats","Trends across weeks and months"],["🔥","Streak freeze","Keep your streak on off days"],
+             ["🧩","Home screen widgets","Your habits at a glance"],["☁️","iCloud sync","On every device you own"]],
+  plans: {yearly: ["$59.99", "$5.00 / month", "SAVE 75%"], monthly: ["$19.99", "per month"]},
+  review: {quote: "I’ve downloaded every habit app out there. <em>This is the first one I’ve actually stuck with.</em>", name: "Jess M.", initials: "JM", src: "App Store review"},
+  question: {title: "What’s your main goal?", sub: "We’ll build your plan around it.", opts: [["🧘","Feel less stressed"],["💪","Get fit"],["📚","Read more"],["😴","Sleep better"]]},
+  // extra questions, picked with &q=<key> on onboarding-question
+  questions: {},
+  // text input screens (&f=<key>): title, placeholder, typed value (shown with &typed=1)
+  inputs: {name: {title: "What’s your name?", sub: "So we know what to call you.", ph: "First name", value: "Jess"}},
+  // multi-field form (&hl=N focuses field N, &filled=N fills the first N)
+  form: {title: "A few details", sub: "We use these to set your targets.", fields: [["Age", "Years", "29"], ["Weight", "lbs", "184"], ["Email", "you@email.com", "jess@mail.com"]]},
+  // personalised messages (&m=<key>): emoji, title, subtitle, bullet rows
+  messages: {goal: {e: "🎯", title: "Perfect. We’re built for this.", sub: "Here’s how we’ll help you get there:", li: [["📅","A plan that fits your week"],["📈","Progress you can actually see"],["🤝","Check-ins when motivation dips"]]}},
+  plan: {title: "Your plan is ready", k: "Habits locked in by", v: "Dec 14", chips: ["10 min / day", "Evening reminder", "3 habits to start"]},
+  home: {hello: "Good morning", streak: 12, habits: [["🧘","Meditate","10 min",true],["📚","Read","20 pages",true],["💧","Drink water","6 / 8 glasses",false],["🏃","Walk","8,000 steps",false]]},
+  notif: {title: "Orbit", body: "You’re on a 12-day streak 🔥 Don’t break it tonight.", when: "now"},
+};
+// ------------------------------------------------
+const [screen, ...kv] = (decodeURIComponent(location.hash.slice(1)) || "paywall-features").split("&");
+const P = Object.fromEntries(kv.map(s => s.split("=")));
+const scr = document.getElementById("scr");
+if (P.dark) document.body.classList.add("dark");
+const status = (dark) => `<div class="status" style="color:${dark || P.dark ? '#fff' : '#111'}"><span>9:41</span><span class="r"><span class="bars"><i style="height:4px"></i><i style="height:6px"></i><i style="height:8px"></i><i style="height:10px"></i></span><span class="batt"></span></span></div>`;
+const footer = `<div class="plans"><div class="plan"><div class="save">${APP.plans.yearly[2]}</div><div class="t">Yearly</div><div class="p">${APP.plans.yearly[0]}</div><div class="s">${APP.plans.yearly[1]}</div></div>
+  <div class="plan sel ${P.price ? 'price-hl' : ''}"><div class="t">Monthly</div><div class="p">${APP.plans.monthly[0]}</div><div class="s">${APP.plans.monthly[1]}</div></div></div>
+  <div class="cta">Continue</div><div class="foot">Restore · Terms · Privacy</div>`;
+const add = (html) => scr.insertAdjacentHTML("beforeend", html);
+const S = {
+  "frame": () => { document.getElementById("ph").classList.add("frame-only"); scr.innerHTML = ""; },
+  "paywall-features": () => add(`<div class="feat">${status()}<div class="close">✕</div>
+    <div class="head"><div class="icon"></div><h1>Unlock ${APP.name} Pro</h1><p class="sub">${APP.tagline}</p></div>
+    <div class="list">${APP.features.map((f, i) => `<div class="row ${P.hl == i + 1 ? 'hlx' : ''}"><div class="ic">${f[0]}</div><div><b>${f[1]}</b><span>${f[2]}</span></div><div class="ck">✓</div></div>`).join("")}</div>
+    <div class="footer">${footer}</div></div>`),
+  "paywall-review": () => add(`<div class="testi">${status()}<div class="close">✕</div>
+    <div class="brandrow"><div class="icon"></div>${APP.name}</div><div class="stars">★★★★★</div>
+    <div class="quote">“${APP.review.quote}”</div>
+    <div class="who"><div class="av">${APP.review.initials}</div><div><b>${APP.review.name}</b><span>${APP.review.src}</span></div></div>
+    <div class="footer">${footer}</div></div>`),
+  "onboarding-input": () => { const f = APP.inputs[P.f || "name"]; const step = +(P.step || 1), of = +(P.of || 8);
+    add(`<div class="ob">${status()}<div class="back">‹</div><div class="prog"><i style="width:${100 * step / of}%"></i></div>
+    <h2>${f.title}</h2><p class="sub">${f.sub}</p>
+    <div class="field focus ${P.typed ? 'filled' : ''}">${P.typed ? f.value : f.ph}</div>
+    <div class="cta kbup ${P.typed ? '' : 'off'}">Continue</div>
+    <div class="kb">${["QWERTYUIOP", "ASDFGHJKL", "⇧ZXCVBNM⌫"].map(r => `<div class="r">${[...r].map(k => `<div class="k ${'⇧⌫'.includes(k) ? 'w' : ''}">${k}</div>`).join("")}</div>`).join("")}
+      <div class="r"><div class="k w">123</div><div class="k w">🙂</div><div class="k sp">space</div><div class="k w">return</div></div></div></div>`); },
+  "onboarding-form": () => { const f = APP.form; const step = +(P.step || 6), of = +(P.of || 8), filled = +(P.filled || 0);
+    add(`<div class="ob">${status()}<div class="back">‹</div><div class="prog"><i style="width:${100 * step / of}%"></i></div>
+    <h2>${f.title}</h2><p class="sub">${f.sub}</p>
+    ${f.fields.map((x, i) => `<label class="field" style="border:none;padding:0;margin:0 24px 6px;font-size:12.5px;font-weight:700;color:var(--muted)">${x[0]}</label>
+      <div class="field ${P.hl == i + 1 ? 'focus' : ''} ${i < filled ? 'filled' : ''}">${i < filled ? x[2] : x[1]}</div>`).join("")}
+    <div class="cta ${filled >= f.fields.length ? '' : 'off'}">Continue</div></div>`); },
+  "onboarding-message": () => { const m = APP.messages[P.m || "goal"]; const step = +(P.step || 2), of = +(P.of || 8);
+    add(`<div class="ob">${status()}<div class="back">‹</div><div class="prog"><i style="width:${100 * step / of}%"></i></div>
+    <div class="msg"><div class="big">${m.e}</div><h2>${m.title}</h2><p class="sub">${m.sub}</p>
+    ${m.li.map(x => `<div class="li"><span class="e">${x[0]}</span>${x[1]}</div>`).join("")}</div>
+    <div class="cta">Continue</div></div>`); },
+  "onboarding-question": () => { const q = P.q ? APP.questions[P.q] : APP.question; const step = +(P.step || 3), of = +(P.of || 8);
+    add(`<div class="ob">${status()}<div class="back">‹</div><div class="prog"><i style="width:${100 * step / of}%"></i></div>
+    <h2>${q.title}</h2><p class="sub">${q.sub}</p>
+    ${q.opts.map((o, i) => `<div class="opt ${P.sel == i + 1 ? 'sel' : ''}"><span class="e">${o[0]}</span>${o[1]}</div>`).join("")}
+    <div class="cta ${P.sel ? '' : 'off'}">Continue</div></div>`); },
+  "onboarding-plan": () => { const p = APP.plan;
+    add(`<div class="ob">${status()}<div class="back">‹</div><div class="prog"><i style="width:${P.full ? 100 : 88}%"></i></div>
+    <h2>${p.title}</h2><p class="sub">Based on your answers</p>
+    <div class="plancard"><div class="k">${p.k}</div><div class="v">${p.v}</div>
+      <div class="chart"><svg viewBox="0 0 300 150"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c5cff" stop-opacity=".35"/><stop offset="1" stop-color="#7c5cff" stop-opacity="0"/></linearGradient></defs>
+      <path d="M0,130 C60,125 90,100 140,80 S230,30 300,18 L300,150 L0,150 Z" fill="url(#g)"/><path d="M0,130 C60,125 90,100 140,80 S230,30 300,18" fill="none" stroke="#7c5cff" stroke-width="4" stroke-linecap="round"/>
+      <circle cx="300" cy="18" r="7" fill="#7c5cff"/></svg></div></div>
+    <div class="chips">${p.chips.map(c => `<span class="chip">${c}</span>`).join("")}</div>
+    <div class="cta">Continue</div></div>`); },
+  "home": () => { const h = APP.home;
+    add(`<div class="home">${status()}<h3>${h.hello}</h3><div class="date">Monday, Nov 10</div>
+    <div class="streak"><div class="n">🔥 ${h.streak}</div><div class="l">day streak<br>Keep it going</div></div>
+    ${h.habits.map((x, i) => `<div class="card ${P.hl == i + 1 ? 'hlx' : ''}"><div class="e">${x[0]}</div><div><b>${x[1]}</b><span>${x[2]}</span></div><div class="done ${x[3] ? 'y' : ''}">${x[3] ? '✓' : ''}</div></div>`).join("")}
+    <div class="tabbar"><span class="on">⌂</span><span>◔</span><span>＋</span><span>☰</span></div></div>`); },
+  "notification": () => { const n = APP.notif;
+    add(`<div class="lock">${status(true)}<div class="day">Monday, November 10</div><div class="time">9:41</div>
+    <div class="notif"><div class="icon"></div><div><b>${n.title}</b><span class="tm">${n.when}</span><p>${n.body}</p></div></div></div>`); },
+};
+(S[screen] || S["paywall-features"])();
+</script>
+</body></html>

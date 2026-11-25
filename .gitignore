@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.DS_Store
+node_modules/
+package-lock.json
+tests/out/
+skills/reel-editor/assets/graphic-styles/film/
+skills/reel-editor/assets/graphic-styles/sheets/
+skills/reel-editor/assets/graphic-styles/audio/
+# never commit footage
+*.mov
+*.MOV
+*.m4a

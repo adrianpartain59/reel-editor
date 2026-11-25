@@ -1,0 +1,15 @@
+{
+ "slug": "my-roadmap",
+ "part": "body",
+ "scenes": "canvas/scenes.js",
+ "hook": {
+  "variant": "main",
+  "beats": {"card_in": 1.1, "start": 1.3, "surge": 2.1, "land": 3.1, "card_out": 4.1},
+  "value": 40000, "prefix": "", "label": "Steps walked", "countup": "taps",
+  "under": [],
+  "punch": [],
+  "caps": []
+ },
+ "faces": [],
+ "beat": {"track": "mixkit-403"}
+}

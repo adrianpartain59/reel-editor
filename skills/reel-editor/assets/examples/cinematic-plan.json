@@ -1,0 +1,627 @@
+{
+ "slug": "onboarding-cine",
+ "style": "cinematic",
+ "captions": {
+  "keywords": [
+   "wrong",
+   "reason",
+   "leave",
+   "goal",
+   "personalized",
+   "why",
+   "matters",
+   "skips",
+   "core",
+   "plan",
+   "form",
+   "hard",
+   "save",
+   "worth",
+   "age",
+   "weight",
+   "email",
+   "name"
+  ]
+ },
+ "hooks": {
+  "ageweight": {
+   "shots": [
+    {
+     "t": 0,
+     "lay": "face",
+     "z": 1.06
+    },
+    {
+     "t": "w6-0.02",
+     "lay": "fullpw",
+     "img": "onboarding-form_step_6_hl_1_dark_1",
+     "enter": 0.4,
+     "exit": 0.22,
+     "swaps": [
+      [
+       "w9",
+       "onboarding-form_step_6_hl_2_filled_1_dark_1"
+      ],
+      [
+       "w11",
+       "onboarding-form_step_6_hl_3_filled_2_dark_1"
+      ]
+     ]
+    },
+    {
+     "t": "w12",
+     "lay": "face",
+     "z": 1.18,
+     "drop": true,
+     "settle": 0.16
+    }
+   ],
+   "fix": {
+    "w12": "",
+    "w13": "",
+    "w14": ""
+   },
+   "stickers": [
+    {
+     "type": "tap",
+     "t0": "w9-0.02",
+     "t1": "w11-0.05",
+     "space": "phone",
+     "px": 0.5,
+     "py": 0.42
+    },
+    {
+     "type": "tap",
+     "t0": "w11-0.02",
+     "t1": "w12-0.25",
+     "space": "phone",
+     "px": 0.5,
+     "py": 0.528
+    },
+    {
+     "type": "glow_title",
+     "t0": "w12+0.02",
+     "t1": 3.72,
+     "label": "NO DROP-OFF",
+     "y": 1390,
+     "frame": true,
+     "hide_captions": true,
+     "lines": [
+      [
+       "WITHOUT",
+       "#FFFFFF",
+       96
+      ],
+      [
+       "DROPPING OFF",
+       "#FF3434",
+       128
+      ]
+     ],
+     "accent": "#FF3434",
+     "spotlight": 0.32,
+     "anim": "stamp",
+     "out": "blur"
+    }
+   ],
+   "cover": {
+    "t": 0.6,
+    "lines": [
+     [
+      "STOP ASKING FOR",
+      "xblack",
+      84,
+      "#FFFFFF"
+     ],
+     [
+      "THEIR AGE FIRST",
+      "xblack",
+      104,
+      "#FF3434"
+     ]
+    ],
+    "rot": 0
+   }
+  }
+ },
+ "body": {
+  "shots": [
+   {
+    "t": 0,
+    "lay": "face",
+    "z": 1.1
+   },
+   {
+    "t": "w10-0.1",
+    "lay": "fullpw",
+    "img": "onboarding-input_f_name_step_1_dark_1",
+    "enter": 0.4,
+    "exit": 0.22,
+    "ph": 1240,
+    "cy": 1065
+   },
+   {
+    "t": "w20",
+    "lay": "face",
+    "z": 1.22,
+    "settle": 0.12
+   },
+   {
+    "t": "w33",
+    "lay": "face",
+    "z": 1.0,
+    "tr": "cut"
+   },
+   {
+    "t": "w43",
+    "lay": "face",
+    "z": 1.08
+   },
+   {
+    "t": "w52",
+    "lay": "face",
+    "z": 1.32,
+    "smash": true
+   },
+   {
+    "t": "w58",
+    "lay": "face",
+    "z": 1.05
+   },
+   {
+    "t": "w59",
+    "lay": "face",
+    "z": 1.2,
+    "drop": true,
+    "settle": 0.16
+   },
+   {
+    "t": "w65-0.08",
+    "lay": "fullpw",
+    "img": "onboarding-question_step_1_dark_1",
+    "enter": 0.4,
+    "exit": 0.22,
+    "swaps": [
+     [
+      "w67",
+      "onboarding-question_step_1_sel_1_dark_1"
+     ],
+     [
+      "w71",
+      "onboarding-message_m_goal_step_2_dark_1"
+     ]
+    ]
+   },
+   {
+    "t": "w78",
+    "lay": "face",
+    "z": 1.12,
+    "settle": 0.1,
+    "bg": {
+     "mock": "onboarding-question_step_1_sel_1_dark_1",
+     "why": "the goal question with 'lose weight' picked: the answer being talked about",
+     "dim": 0.45,
+     "focus": 0.42,
+     "scroll": -60
+    }
+   },
+   {
+    "t": "w100",
+    "lay": "face",
+    "z": 1.34,
+    "smash": true
+   },
+   {
+    "t": "w107",
+    "lay": "face",
+    "z": 1.16,
+    "drop": true,
+    "settle": 0.16
+   },
+   {
+    "t": "w112-0.08",
+    "lay": "fullpw",
+    "img": "onboarding-question_q_why_step_3_dark_1",
+    "enter": 0.4,
+    "exit": 0.22,
+    "swaps": [
+     [
+      "w117",
+      "onboarding-question_q_why_step_3_sel_1_dark_1"
+     ]
+    ],
+    "ph": 1240,
+    "cy": 1065
+   },
+   {
+    "t": "w130",
+    "lay": "face",
+    "z": 1.14,
+    "settle": 0.12
+   },
+   {
+    "t": "w141-0.08",
+    "lay": "fullpw",
+    "img": "onboarding-message_m_why_step_4_dark_1",
+    "enter": 0.4,
+    "exit": 0.22
+   },
+   {
+    "t": "w160",
+    "lay": "face",
+    "z": 1.06,
+    "settle": 0.1
+   },
+   {
+    "t": "w167",
+    "lay": "face",
+    "z": 1.24
+   },
+   {
+    "t": "w177",
+    "lay": "face",
+    "z": 1.1,
+    "bg": {
+     "mock": "onboarding-plan_full_1_dark_1",
+     "why": "the personalised plan screen: the 'whole flow' being talked about",
+     "dim": 0.42,
+     "focus": 0.35,
+     "scroll": 140,
+     "in": "zoom"
+    }
+   },
+   {
+    "t": "w189",
+    "lay": "face",
+    "z": 1.18
+   },
+   {
+    "t": "w193-0.08",
+    "lay": "fullpw",
+    "img": "onboarding-form_step_6_hl_1_dark_1",
+    "enter": 0.4,
+    "exit": 0.0,
+    "swaps": [
+     [
+      "w195",
+      "onboarding-form_step_6_hl_2_filled_1_dark_1"
+     ],
+     [
+      "w197",
+      "onboarding-form_step_6_hl_3_filled_2_dark_1"
+     ],
+     [
+      "w200",
+      "onboarding-form_step_6_filled_3_dark_1"
+     ]
+    ]
+   },
+   {
+    "t": "w213",
+    "lay": "fullpw",
+    "img": "onboarding-plan_full_1_dark_1",
+    "enter": 0.32,
+    "exit": 0.22,
+    "drop": true,
+    "glow": [
+     60,
+     220,
+     140
+    ],
+    "enter_anim": "far",
+    "tr": "flash"
+   },
+   {
+    "t": "w217",
+    "lay": "face",
+    "z": 1.12,
+    "settle": 0.12
+   },
+   {
+    "t": "w229",
+    "lay": "face",
+    "z": 1.3,
+    "smash": true
+   }
+  ],
+  "stickers": [
+   {
+    "type": "glow_title",
+    "t0": "w107+0.02",
+    "t1": "w112-0.1",
+    "label": "WARNING",
+    "y": 1390,
+    "frame": true,
+    "hide_captions": true,
+    "lines": [
+     [
+      "EVERYONE",
+      "#FFFFFF",
+      104
+     ],
+     [
+      "SKIPS THIS",
+      "#FF3434",
+      132
+     ]
+    ],
+    "accent": "#FF3434",
+    "anim": "scramble",
+    "out": "blur"
+   },
+   {
+    "type": "tap",
+    "t0": "w117-0.03",
+    "t1": "w124-0.1",
+    "space": "phone",
+    "px": 0.45,
+    "py": 0.334
+   },
+   {
+    "type": "hand_note",
+    "t0": "w124",
+    "t1": "w130-0.25",
+    "text": "the real reason",
+    "x": 560,
+    "y": 300,
+    "arrow": [
+     [
+      420,
+      350
+     ],
+     [
+      0.2,
+      0.334
+     ]
+    ],
+    "space": "phone",
+    "bend": 0.3,
+    "reveal": 0.4
+   },
+   {
+    "type": "hand_note",
+    "t0": "w14",
+    "t1": "w20-0.25",
+    "text": "why would I tell you?",
+    "x": 540,
+    "y": 300,
+    "arrow": [
+     [
+      700,
+      350
+     ],
+     [
+      0.66,
+      0.29
+     ]
+    ],
+    "space": "phone",
+    "bend": -0.35,
+    "reveal": 0.5
+   },
+   {
+    "type": "tap",
+    "t0": "w158",
+    "t1": "w160-0.12",
+    "space": "phone",
+    "px": 0.5,
+    "py": 0.83
+   },
+   {
+    "type": "tap",
+    "t0": "w195-0.03",
+    "t1": "w197-0.05",
+    "space": "phone",
+    "px": 0.5,
+    "py": 0.42
+   },
+   {
+    "type": "tap",
+    "t0": "w197-0.03",
+    "t1": "w200-0.05",
+    "space": "phone",
+    "px": 0.5,
+    "py": 0.528
+   },
+   {
+    "type": "tap",
+    "t0": "w206",
+    "t1": "w209",
+    "space": "phone",
+    "px": 0.5,
+    "py": 0.83
+   },
+   {
+    "type": "glow_title",
+    "t0": "w220-0.05",
+    "t1": "w221-0.04",
+    "label": "STEP 1",
+    "y": 1390,
+    "hide_captions": true,
+    "lines": [
+     [
+      "GOAL",
+      "#2FE38A",
+      150
+     ]
+    ],
+    "accent": "#2FE38A",
+    "anim": "slide",
+    "out": "cut"
+   },
+   {
+    "type": "glow_title",
+    "t0": "w221-0.04",
+    "t1": "w222-0.04",
+    "label": "STEP 2",
+    "y": 1390,
+    "hide_captions": true,
+    "lines": [
+     [
+      "REASSURE",
+      "#FFFFFF",
+      132
+     ]
+    ],
+    "accent": "#5AA9FF",
+    "anim": "drop",
+    "out": "cut"
+   },
+   {
+    "type": "glow_title",
+    "t0": "w222-0.04",
+    "t1": "w224-0.04",
+    "label": "STEP 3",
+    "y": 1390,
+    "hide_captions": true,
+    "lines": [
+     [
+      "ASK WHY",
+      "#FFD23F",
+      140
+     ]
+    ],
+    "accent": "#FFD23F",
+    "anim": "scramble",
+    "out": "cut"
+   },
+   {
+    "type": "glow_title",
+    "t0": "w224-0.04",
+    "t1": "w229-0.1",
+    "label": "STEP 4",
+    "y": 1390,
+    "frame": true,
+    "hide_captions": true,
+    "lines": [
+     [
+      "THE HARD STUFF",
+      "#FF3434",
+      104
+     ]
+    ],
+    "accent": "#FF3434",
+    "anim": "stamp",
+    "out": "cut"
+   },
+   {
+    "type": "glow_title",
+    "t0": "w229",
+    "t1": 54.2,
+    "label": "FOR YOUR NEXT ONBOARDING",
+    "y": 1390,
+    "hide_captions": true,
+    "lines": [
+     [
+      "SAVE THIS",
+      "#FFFFFF",
+      150
+     ]
+    ],
+    "accent": "#5AA9FF",
+    "anim": "type",
+    "out": "cut"
+   },
+   {
+    "type": "emoji",
+    "t0": "w230",
+    "t1": 54.2,
+    "char": "\ud83d\udd16",
+    "x": 860,
+    "y": 1120,
+    "size": 150
+   },
+   {
+    "type": "icon",
+    "name": "question",
+    "t0": "w33",
+    "t1": "w43-0.1",
+    "x": 540,
+    "y": 300,
+    "size": 270,
+    "color": "#FFFFFF",
+    "draw": 0.6,
+    "spotlight": 0.3
+   },
+   {
+    "type": "glow_title",
+    "t0": "w52",
+    "t1": "w58-0.05",
+    "label": "WARNING",
+    "y": 1390,
+    "frame": true,
+    "hide_captions": true,
+    "lines": [
+     [
+      "EASY REASON",
+      "#FF3434",
+      116
+     ],
+     [
+      "TO LEAVE",
+      "#FFFFFF",
+      100
+     ]
+    ],
+    "accent": "#FF3434",
+    "anim": "glitch",
+    "out": "glitch"
+   },
+   {
+    "type": "glow_title",
+    "t0": "w59+0.02",
+    "t1": "w65-0.1",
+    "label": "DO THIS INSTEAD",
+    "y": 1390,
+    "frame": true,
+    "hide_captions": true,
+    "lines": [
+     [
+      "ASK THEIR",
+      "#FFFFFF",
+      100
+     ],
+     [
+      "GOAL",
+      "#2FE38A",
+      150
+     ]
+    ],
+    "accent": "#2FE38A",
+    "anim": "stamp",
+    "out": "fade"
+   },
+   {
+    "type": "tap",
+    "t0": "w67-0.03",
+    "t1": "w71-0.1",
+    "space": "phone",
+    "px": 0.45,
+    "py": 0.297
+   },
+   {
+    "type": "notify",
+    "t0": "w88-0.1",
+    "t1": "w100-0.05",
+    "app": "Fernway",
+    "title": "Fernway is perfect for that.",
+    "body": "Here's how we'll help you lose weight",
+    "color": "#1f9d6b",
+    "y": 330
+   }
+  ],
+  "fx": [
+   {
+    "t": "w220-0.05",
+    "type": "spotlight",
+    "d": 4.4,
+    "level": 0.35
+   },
+   {
+    "t": 53.98,
+    "type": "glitch",
+    "d": 0.22
+   }
+  ]
+ }
+}

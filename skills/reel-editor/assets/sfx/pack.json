@@ -1,0 +1,230 @@
+{
+ "about": "What each sound in the pack is for. sfx_pack.py synthesizes the files, audiomap.py enforces `rules`, qa.py checks them. offset = dB under the voice's speech level.",
+ "sounds": [
+  {
+   "cat": "counting",
+   "offset": -14,
+   "sync": "first",
+   "title": "Counting",
+   "about": "fast ticking count: numbers counting up, text typing on (chat pills), a list filling in",
+   "usage": "only a number counting up on screen",
+   "rules": {
+    "events": [
+     "counter"
+    ],
+    "min_gap": 4,
+    "max": 2
+   }
+  },
+  {
+   "cat": "glitch",
+   "offset": -8,
+   "sync": "hit",
+   "title": "Glitch",
+   "about": "digital glitch: glitch / RGB effects, inverts, a broken or wrong state, a hard stop",
+   "usage": "only on a glitch, RGB split or invert effect; at most 3 a reel, 5 s apart",
+   "rules": {
+    "events": [
+     "glitch",
+     "fx:glitch",
+     "fx:rgb",
+     "fx:invert"
+    ],
+    "min_gap": 5,
+    "max": 3
+   }
+  },
+  {
+   "cat": "whoosh",
+   "offset": -9,
+   "sync": "peak",
+   "title": "Cinematic Whoosh",
+   "about": "cinematic whoosh: transitions, overlays and phones moving in or out, zooms, smash cuts",
+   "usage": "the background sound: every transition and every phone, overlay or background moving in or out. Quiet, so it may repeat freely and may play under other sounds",
+   "rules": {
+    "events": [
+     "tr:",
+     "phone_in",
+     "phone_out",
+     "overlay_enter",
+     "overlay_enter_soft",
+     "overlay_exit",
+     "bg_in",
+     "smash",
+     "letterbox",
+     "reveal",
+     "fx:zoom"
+    ],
+    "background": true,
+    "min_gap": 0.3
+   }
+  },
+  {
+   "cat": "riser",
+   "offset": -9,
+   "sync": "end",
+   "title": "Metallic Riser",
+   "about": "metallic riser that peaks at its end: the hook build and the swell into every drop (sync on the reveal)",
+   "usage": "only in the hook, once, building into the hook's payoff",
+   "rules": {
+    "events": [
+     "riser",
+     "drop"
+    ],
+    "where": "hook",
+    "max": 1
+   }
+  },
+  {
+   "cat": "low_hit",
+   "offset": -3,
+   "sync": "hit",
+   "title": "Low Hit",
+   "about": "deep low hit: drops, punch titles, the key line, shakes, a red X",
+   "usage": "the big reveal (a drop) and a screen shake; at most 4 a reel, 5 s apart",
+   "rules": {
+    "events": [
+     "drop",
+     "fx:shake"
+    ],
+    "min_gap": 5,
+    "max": 4
+   }
+  },
+  {
+   "cat": "flash",
+   "offset": -8,
+   "sync": "hit",
+   "title": "Camera Flash",
+   "about": "camera flash: white flashes, spotlights, a screen lighting up",
+   "usage": "only on an on-screen white flash (fx flash); at most 2 a reel, 10 s apart",
+   "rules": {
+    "events": [
+     "fx:flash"
+    ],
+    "min_gap": 10,
+    "max": 2
+   }
+  },
+  {
+   "cat": "flash_shutter",
+   "offset": -8,
+   "sync": "hit",
+   "title": "Camera Flash & Shutter",
+   "about": "flash plus shutter: before -> after snaps, freeze frames, a screenshot",
+   "usage": "only on a freeze frame / screenshot moment (fx freeze); at most 2 a reel",
+   "rules": {
+    "events": [
+     "fx:freeze"
+    ],
+    "min_gap": 10,
+    "max": 2
+   }
+  },
+  {
+   "cat": "page_flip",
+   "offset": -10,
+   "sync": "peak",
+   "title": "Page Flip",
+   "about": "page flip: a screen changing state, swipes, cards and backgrounds sliding, flips",
+   "usage": "a mockup changing state (a swap); at most 8 a reel, 2.5 s apart; other swaps stay silent",
+   "rules": {
+    "events": [
+     "swap"
+    ],
+    "min_gap": 2.5,
+    "max": 8
+   }
+  },
+  {
+   "cat": "shine",
+   "offset": -10,
+   "sync": "hit",
+   "title": "Shine",
+   "about": "shine / sparkle: a check mark, an icon or result appearing, something done right",
+   "usage": "the loud ding: only when a button is visibly clicked for the call to action (a `tap` sticker with `\"cta\": true`), once a reel. Never on a spoken CTA with nothing clicked on screen",
+   "rules": {
+    "events": [
+     "cta"
+    ],
+    "where": "cta",
+    "max": 1,
+    "must": [
+     "cta"
+    ]
+   }
+  },
+  {
+   "cat": "pop",
+   "offset": -9,
+   "sync": "hit",
+   "title": "Pop",
+   "about": "pop: taps, stickers, emoji, chat bubbles, notes and small things popping in",
+   "usage": "every piece of on-screen text appearing (titles, punch words, text stickers, banners, chat bubbles) gets it, always; small pop-ins (emoji, icons, check marks, taps) only when no text pop is near",
+   "rules": {
+    "events": [
+     "title",
+     "punch",
+     "text",
+     "banner",
+     "chat_pill",
+     "emoji",
+     "image",
+     "thought",
+     "review_card",
+     "icon",
+     "check",
+     "tap",
+     "notify"
+    ],
+    "must": [
+     "title",
+     "punch",
+     "text",
+     "banner",
+     "chat_pill"
+    ],
+    "min_gap": 0.6
+   }
+  },
+  {
+   "cat": "scribble",
+   "offset": -12,
+   "sync": "hit",
+   "title": "Scribble",
+   "about": "pen, pencil and marker: handwritten notes, underline and circle draws",
+   "usage": "only while a hand-drawn note, circle, arrow or underline is being drawn; the file is the one whose length matches the draw",
+   "rules": {
+    "events": [
+     "hand_note",
+     "circle",
+     "arrow",
+     "underline"
+    ],
+    "fit": true,
+    "min_gap": 2,
+    "max": 4
+   }
+  },
+  {
+   "cat": "key",
+   "offset": -15,
+   "sync": "hit",
+   "title": "Key presses",
+   "about": "single keyboard keys",
+   "usage": "computer typing: one key press per letter, on the frame each letter appears (chat pills, typed titles), always. Rotates through the key files so no two in a row match",
+   "rules": {
+    "events": [
+     "chat_key",
+     "title:key"
+    ],
+    "must": [
+     "chat_key",
+     "title:key"
+    ],
+    "run": true,
+    "min_gap": 0.03
+   }
+  }
+ ]
+}

@@ -1,0 +1,5 @@
+node_modules/
+film/
+sheets/
+audio/
+package-lock.json

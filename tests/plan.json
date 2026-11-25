@@ -1,0 +1,36 @@
+{
+ "slug": "onboarding",
+ "style": "cinematic",
+ "captions": {"keywords": ["onboarding", "losing", "half", "nobody", "goal", "question", "plan", "theirs"]},
+ "outro_comment": "trying this today",
+ "hooks": {
+  "h1": {
+   "shots": [{"t": 0, "lay": "face", "z": 1.06}],
+   "sections": [[0, "cine", "#FF3434"]],
+   "stickers": [{"type": "glow_title", "t0": 1.2, "t1": 2.2, "lines": [["HALF", "#FF3434", 190], ["YOUR USERS", "#FFFFFF", 96]], "y": 1330, "anim": "stamp", "spotlight": 0.3, "hide_captions": true}],
+   "drops": [1.2],
+   "risers": [{"id": "riser_01", "t0": 0, "peak": 1.54, "db": 2}]
+  },
+  "h2": {
+   "shots": [{"t": 0, "lay": "face", "z": 1.06}],
+   "sections": [[0, "cine", "#FF3434"]]
+  }
+ },
+ "body": {
+  "shots": [
+   {"t": 0, "lay": "face", "z": 1.1},
+   {"t": 1.6, "lay": "face", "z": 1.22},
+   {"t": 3.3, "lay": "face", "z": 1.12},
+   {"t": 5.0, "lay": "fullpw", "img": "onboarding-question_step_1_dark_1", "swaps": [[6.6, "onboarding-question_step_1_sel_1_dark_1"]]},
+   {"t": 8.6, "lay": "face", "z": 1.18, "drop": true, "settle": 0.16},
+   {"t": 10.2, "lay": "fullpw", "img": "onboarding-plan_full_1_dark_1"},
+   {"t": 12.4, "lay": "face", "z": 1.15}
+  ],
+  "sections": [[0, "cine", "#FF3434"], [5.0, "cine", "#2FE38A"]],
+  "stickers": [
+   {"type": "icon", "t0": 3.5, "t1": 4.7, "name": "cross", "color": "#FF3434", "y": 1300},
+   {"type": "tap", "t0": 6.5, "t1": 7.1, "space": "phone", "px": 0.5, "py": 0.31}
+  ],
+  "fx": [{"t": 12.2, "type": "glitch", "d": 0.2}]
+ }
+}

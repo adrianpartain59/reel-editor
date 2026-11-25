@@ -1,0 +1,372 @@
+{
+ "name": "classic",
+ "about": "The original look: real room, bright, varied caption styles (pop/box/serif/neon/word), bouncy cuts, light synthesized SFX, no music bed.",
+ "grade": {
+  "segment": false
+ },
+ "captions": {
+  "default": "pop",
+  "on_overlays": true
+ },
+ "motion": {
+  "push": 0.03,
+  "push_mode": "per_shot",
+  "bounce": 0.045
+ },
+ "overlays": {
+  "phone_layout": "fullpw"
+ },
+ "sfx": {
+  "arrow": [
+   [
+    "cat:scribble",
+    0,
+    0
+   ]
+  ],
+  "banner": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "bg_in": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "bg_in:slide": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "bg_in:zoom": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "chat_key": [
+   [
+    "cat:key",
+    0,
+    -1
+   ]
+  ],
+  "chat_pill": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "chat_send": [],
+  "chat_type": [],
+  "check": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "circle": [
+   [
+    "cat:scribble",
+    0,
+    0
+   ]
+  ],
+  "counter": [
+   [
+    "cat:counting",
+    0,
+    -2
+   ]
+  ],
+  "counter_land": [],
+  "cta": [
+   [
+    "cat:shine",
+    0,
+    0
+   ]
+  ],
+  "drop": [
+   [
+    "cat:riser",
+    -0.02,
+    0
+   ],
+   [
+    "cat:low_hit",
+    0,
+    0
+   ]
+  ],
+  "emoji": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "fx:bw": [],
+  "fx:dip": [],
+  "fx:flash": [
+   [
+    "cat:flash",
+    0,
+    0
+   ]
+  ],
+  "fx:freeze": [
+   [
+    "cat:flash_shutter",
+    0,
+    0
+   ]
+  ],
+  "fx:invert": [
+   [
+    "cat:glitch",
+    0,
+    0
+   ]
+  ],
+  "fx:pulse": [],
+  "fx:rgb": [
+   [
+    "cat:glitch",
+    0,
+    -2
+   ]
+  ],
+  "fx:shake": [
+   [
+    "cat:low_hit",
+    0,
+    -2
+   ]
+  ],
+  "fx:zoom": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "glitch": [
+   [
+    "cat:glitch",
+    0,
+    0
+   ]
+  ],
+  "hand_note": [
+   [
+    "cat:scribble",
+    0,
+    0
+   ]
+  ],
+  "icon": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "icon_done": [],
+  "image": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "letterbox": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "notify": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "overlay_enter": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "overlay_enter_soft": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "overlay_exit": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "overlay_land": [],
+  "phone_in:drop": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_in:far": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_in:flip": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_in:rise": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_in:side": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_out:far": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "phone_out:flip": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "phone_out:side": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "phone_out:sink": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "punch": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "red_x": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "reveal": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "review_card": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "smash": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "spotlight": [],
+  "swap": [
+   [
+    "cat:page_flip",
+    0,
+    -2
+   ]
+  ],
+  "tap": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "thought": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "title": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "tr": [
+   [
+    "cat:whoosh",
+    0,
+    0
+   ]
+  ]
+ },
+ "music": {
+  "bed": null
+ },
+ "mix": {
+  "lufs": -12,
+  "voice_chain": "highpass=f=70,acompressor=threshold=-24dB:ratio=2.5:attack=8:release=120:makeup=2:link=average"
+ },
+ "sfx_rules_note": "Sounds follow per-sound usage rules (assets/sfx/pack/pack.json; references/sfx-library.md). Keys left empty stay silent on purpose."
+}

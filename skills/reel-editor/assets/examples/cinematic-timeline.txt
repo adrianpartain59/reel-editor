@@ -1,0 +1,53 @@
+## hook-namefirst  (3.67s, 14 words)
+  [  0.06] w0:If w1:your w2:onboarding w3:asks w4:for w5:their w6:name w7:first,
+  [  2.20] w8:you're w9:losing w10:people w11:on w12:screen w13:one.
+
+## hook-onequestion  (4.07s, 18 words)
+  [  0.07] w0:There's w1:only w2:one w3:question w4:that w5:makes w6:people w7:want w8:to w9:finish
+  [  2.04] w10:your w11:onboarding,
+  [  2.85] w12:and w13:it w14:isn't w15:what's w16:your w17:name.
+
+## body  (54.20s, 235 words)
+  [  0.08] w0:What w1:most w2:onboardings w3:get w4:wrong w5:is w6:that w7:they w8:ask w9:for
+  [  2.16] w10:your w11:age w12:or w13:your w14:name w15:before w16:you w17:even w18:have w19:a
+  [  4.40] w20:reason w21:to w22:give w23:an w24:answer.
+  [  5.70] w25:The w26:user w27:just w28:got w29:in w30:and w31:they're w32:still w33:deciding w34:if
+  [  7.52] w35:the w36:app w37:is w38:even w39:worth w40:it w41:for w42:them.
+  [  8.98] w43:So w44:a w45:question w46:that w47:just w48:helps w49:you w50:is w51:an w52:easy
+  [ 10.82] w53:reason w54:for w55:them w56:to w57:leave.
+  [ 12.16] w58:Instead,
+  [ 12.64] w59:ask w60:them w61:what w62:their w63:goal w64:is.
+  [ 13.96] w65:Then w66:you w67:make w68:the w69:next w70:screen w71:a w72:personalized w73:message w74:just
+  [ 16.65] w75:for w76:that w77:goal.
+  [ 17.31] w78:If w79:they w80:said w81:their w82:goal w83:is w84:weight w85:loss,
+  [ 18.98] w86:you w87:say,
+  [ 19.38] w88:"This w89:app w90:is w91:perfect w92:for w93:that.
+  [ 20.88] w94:Here's w95:how w96:we w97:can w98:help w99:you." w100:The w101:next w102:slide w103:is
+  [ 22.68] w104:the w105:one w106:that w107:everyone w108:skips.
+  [ 23.91] w109:You w110:have w111:to w112:ask w113:them w114:why w115:this w116:goal w117:matters w118:to
+  [ 25.74] w119:them.
+  [ 26.06] w120:This w121:digs w122:into w123:the w124:core w125:reason w126:for w127:their w128:goal w129:and
+  [ 27.96] w130:it's w131:really w132:important w133:for w134:the w135:later w136:slides.
+  [ 30.08] w137:Next,
+  [ 30.39] w138:you w139:tell w140:them,
+  [ 31.15] w141:"That's w142:a w143:great w144:reason w145:to w146:want w147:to w148:lose w149:weight.
+  [ 32.96] w150:Here w151:are w152:a w153:few w154:questions w155:to w156:get w157:your w158:plan w159:started."
+  [ 35.20] w160:Now w161:that w162:they w163:know w164:it's w165:worth w166:it,
+  [ 36.40] w167:not w168:only w169:will w170:they w171:be w172:more w173:willing w174:to w175:answer w176:questions,
+  [ 38.64] w177:but w178:you w179:can w180:also w181:personalize w182:the w183:whole w184:flow w185:from w186:that
+  [ 40.97] w187:point w188:onward.
+  [ 41.63] w189:By w190:the w191:time w192:they w193:enter w194:their w195:age,
+  [ 43.04] w196:their w197:weight,
+  [ 43.44] w198:or w199:their w200:email,
+  [ 44.32] w201:it w202:doesn't w203:feel w204:like w205:they're w206:entering w207:a w208:form.
+  [ 45.92] w209:It w210:feels w211:like w212:you're w213:building w214:them w215:a w216:plan.
+  [ 48.16] w217:So w218:start w219:with w220:goal,
+  [ 49.27] w221:reassure,
+  [ 50.40] w222:ask w223:why,
+  [ 51.36] w224:then w225:ask w226:the w227:hard w228:stuff.
+  [ 52.56] w229:Save w230:this w231:for w232:your w233:next w234:onboarding.
+
+## hook-ageweight  (3.73s, 15 words)
+  [  0.10] w0:How w1:to w2:get w3:users w4:to w5:hand w6:over w7:their w8:age,
+  [  1.78] w9:weight,
+  [  2.16] w10:and w11:email w12:without w13:dropping w14:off.

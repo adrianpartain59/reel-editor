@@ -1,0 +1,617 @@
+{
+ "version": 3,
+ "generated": "sfx_pack.py",
+ "categories": {
+  "counting": {
+   "offset": -14,
+   "about": "fast ticking count: numbers counting up, text typing on (chat pills), a list filling in",
+   "usage": "only a number counting up on screen",
+   "rules": {
+    "events": [
+     "counter"
+    ],
+    "min_gap": 4,
+    "max": 2
+   }
+  },
+  "glitch": {
+   "offset": -8,
+   "about": "digital glitch: glitch / RGB effects, inverts, a broken or wrong state, a hard stop",
+   "usage": "only on a glitch, RGB split or invert effect; at most 3 a reel, 5 s apart",
+   "rules": {
+    "events": [
+     "glitch",
+     "fx:glitch",
+     "fx:rgb",
+     "fx:invert"
+    ],
+    "min_gap": 5,
+    "max": 3
+   }
+  },
+  "whoosh": {
+   "offset": -9,
+   "about": "cinematic whoosh: transitions, overlays and phones moving in or out, zooms, smash cuts",
+   "usage": "the background sound: every transition and every phone, overlay or background moving in or out. Quiet, so it may repeat freely and may play under other sounds",
+   "rules": {
+    "events": [
+     "tr:",
+     "phone_in",
+     "phone_out",
+     "overlay_enter",
+     "overlay_enter_soft",
+     "overlay_exit",
+     "bg_in",
+     "smash",
+     "letterbox",
+     "reveal",
+     "fx:zoom"
+    ],
+    "background": true,
+    "min_gap": 0.3
+   }
+  },
+  "riser": {
+   "offset": -9,
+   "about": "metallic riser that peaks at its end: the hook build and the swell into every drop (sync on the reveal)",
+   "usage": "only in the hook, once, building into the hook's payoff",
+   "rules": {
+    "events": [
+     "riser",
+     "drop"
+    ],
+    "where": "hook",
+    "max": 1
+   }
+  },
+  "low_hit": {
+   "offset": -3,
+   "about": "deep low hit: drops, punch titles, the key line, shakes, a red X",
+   "usage": "the big reveal (a drop) and a screen shake; at most 4 a reel, 5 s apart",
+   "rules": {
+    "events": [
+     "drop",
+     "fx:shake"
+    ],
+    "min_gap": 5,
+    "max": 4
+   }
+  },
+  "flash": {
+   "offset": -8,
+   "about": "camera flash: white flashes, spotlights, a screen lighting up",
+   "usage": "only on an on-screen white flash (fx flash); at most 2 a reel, 10 s apart",
+   "rules": {
+    "events": [
+     "fx:flash"
+    ],
+    "min_gap": 10,
+    "max": 2
+   }
+  },
+  "flash_shutter": {
+   "offset": -8,
+   "about": "flash plus shutter: before -> after snaps, freeze frames, a screenshot",
+   "usage": "only on a freeze frame / screenshot moment (fx freeze); at most 2 a reel",
+   "rules": {
+    "events": [
+     "fx:freeze"
+    ],
+    "min_gap": 10,
+    "max": 2
+   }
+  },
+  "page_flip": {
+   "offset": -10,
+   "about": "page flip: a screen changing state, swipes, cards and backgrounds sliding, flips",
+   "usage": "a mockup changing state (a swap); at most 8 a reel, 2.5 s apart; other swaps stay silent",
+   "rules": {
+    "events": [
+     "swap"
+    ],
+    "min_gap": 2.5,
+    "max": 8
+   }
+  },
+  "shine": {
+   "offset": -10,
+   "about": "shine / sparkle: a check mark, an icon or result appearing, something done right",
+   "usage": "the loud ding: only when a button is visibly clicked for the call to action (a `tap` sticker with `\"cta\": true`), once a reel. Never on a spoken CTA with nothing clicked on screen",
+   "rules": {
+    "events": [
+     "cta"
+    ],
+    "where": "cta",
+    "max": 1,
+    "must": [
+     "cta"
+    ]
+   }
+  },
+  "pop": {
+   "offset": -9,
+   "about": "pop: taps, stickers, emoji, chat bubbles, notes and small things popping in",
+   "usage": "every piece of on-screen text appearing (titles, punch words, text stickers, banners, chat bubbles) gets it, always; small pop-ins (emoji, icons, check marks, taps) only when no text pop is near",
+   "rules": {
+    "events": [
+     "title",
+     "punch",
+     "text",
+     "banner",
+     "chat_pill",
+     "emoji",
+     "image",
+     "thought",
+     "review_card",
+     "icon",
+     "check",
+     "tap",
+     "notify"
+    ],
+    "must": [
+     "title",
+     "punch",
+     "text",
+     "banner",
+     "chat_pill"
+    ],
+    "min_gap": 0.6
+   }
+  },
+  "scribble": {
+   "offset": -12,
+   "about": "pen, pencil and marker: handwritten notes, underline and circle draws",
+   "usage": "only while a hand-drawn note, circle, arrow or underline is being drawn; the file is the one whose length matches the draw",
+   "rules": {
+    "events": [
+     "hand_note",
+     "circle",
+     "arrow",
+     "underline"
+    ],
+    "fit": true,
+    "min_gap": 2,
+    "max": 4
+   }
+  },
+  "key": {
+   "offset": -15,
+   "about": "single keyboard keys",
+   "usage": "computer typing: one key press per letter, on the frame each letter appears (chat pills, typed titles), always. Rotates through the key files so no two in a row match",
+   "rules": {
+    "events": [
+     "chat_key",
+     "title:key"
+    ],
+    "must": [
+     "chat_key",
+     "title:key"
+    ],
+    "run": true,
+    "min_gap": 0.03
+   }
+  }
+ },
+ "sounds": [
+  {
+   "id": "counting_01",
+   "cat": "counting",
+   "file": "counting/counting_01.wav",
+   "dur": 1.435,
+   "sync": 0.0,
+   "level_db": -25.6,
+   "centroid_hz": 7665,
+   "low_ratio": 0.003,
+   "rise_db": 54.4,
+   "title": "Counting",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "glitch_01",
+   "cat": "glitch",
+   "file": "glitch/glitch_01.wav",
+   "dur": 0.7,
+   "sync": 0.0,
+   "level_db": -15.0,
+   "centroid_hz": 1722,
+   "low_ratio": 0.0,
+   "rise_db": 57.6,
+   "title": "Glitch",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "whoosh_01",
+   "cat": "whoosh",
+   "file": "whoosh/whoosh_01.wav",
+   "dur": 1.438,
+   "sync": 0.194,
+   "level_db": -13.0,
+   "centroid_hz": 3049,
+   "low_ratio": 0.03,
+   "rise_db": 13.7,
+   "title": "Cinematic Whoosh",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "riser_01",
+   "cat": "riser",
+   "file": "riser/riser_01.wav",
+   "dur": 1.72,
+   "sync": 1.534,
+   "level_db": -11.3,
+   "centroid_hz": 697,
+   "low_ratio": 0.533,
+   "rise_db": 18.0,
+   "title": "Metallic Riser",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "low_hit_01",
+   "cat": "low_hit",
+   "file": "low_hit/low_hit_01.wav",
+   "dur": 1.477,
+   "sync": 0.003,
+   "level_db": -8.2,
+   "centroid_hz": 35,
+   "low_ratio": 0.998,
+   "rise_db": 53.4,
+   "title": "Low Hit",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "flash_01",
+   "cat": "flash",
+   "file": "flash/flash_01.wav",
+   "dur": 1.441,
+   "sync": 0.0,
+   "level_db": -14.3,
+   "centroid_hz": 5227,
+   "low_ratio": 0.0,
+   "rise_db": 60.0,
+   "title": "Camera Flash",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "flash_shutter_01",
+   "cat": "flash_shutter",
+   "file": "flash_shutter/flash_shutter_01.wav",
+   "dur": 1.341,
+   "sync": 0.0,
+   "level_db": -19.8,
+   "centroid_hz": 5126,
+   "low_ratio": 0.003,
+   "rise_db": 59.6,
+   "title": "Camera Flash & Shutter",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "page_flip_01",
+   "cat": "page_flip",
+   "file": "page_flip/page_flip_01.wav",
+   "dur": 0.506,
+   "sync": 0.126,
+   "level_db": -15.0,
+   "centroid_hz": 3859,
+   "low_ratio": 0.0,
+   "rise_db": 11.2,
+   "title": "Page Flip",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "shine_01",
+   "cat": "shine",
+   "file": "shine/shine_01.wav",
+   "dur": 1.951,
+   "sync": 0.037,
+   "level_db": -11.1,
+   "centroid_hz": 2959,
+   "low_ratio": 0.0,
+   "rise_db": 40.3,
+   "title": "Shine",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "pop_01",
+   "cat": "pop",
+   "file": "pop/pop_01.wav",
+   "dur": 0.19,
+   "sync": 0.0,
+   "level_db": -12.7,
+   "centroid_hz": 431,
+   "low_ratio": 0.0,
+   "rise_db": 60.0,
+   "title": "Pop",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "scribble_01",
+   "cat": "scribble",
+   "file": "scribble/scribble_01.wav",
+   "dur": 0.319,
+   "sync": 0.068,
+   "level_db": -13.2,
+   "centroid_hz": 3656,
+   "low_ratio": 0.0,
+   "rise_db": 10.1,
+   "title": "Scribble",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "scribble_02",
+   "cat": "scribble",
+   "file": "scribble/scribble_02.wav",
+   "dur": 0.359,
+   "sync": 0.206,
+   "level_db": -13.5,
+   "centroid_hz": 4761,
+   "low_ratio": 0.0,
+   "rise_db": 22.8,
+   "title": "Scribble",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "scribble_03",
+   "cat": "scribble",
+   "file": "scribble/scribble_03.wav",
+   "dur": 0.52,
+   "sync": 0.052,
+   "level_db": -12.1,
+   "centroid_hz": 4093,
+   "low_ratio": 0.0,
+   "rise_db": 23.4,
+   "title": "Scribble",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "scribble_04",
+   "cat": "scribble",
+   "file": "scribble/scribble_04.wav",
+   "dur": 0.7,
+   "sync": 0.034,
+   "level_db": -13.4,
+   "centroid_hz": 2917,
+   "low_ratio": 0.0,
+   "rise_db": 27.1,
+   "title": "Scribble",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "scribble_05",
+   "cat": "scribble",
+   "file": "scribble/scribble_05.wav",
+   "dur": 0.701,
+   "sync": 0.042,
+   "level_db": -12.5,
+   "centroid_hz": 3572,
+   "low_ratio": 0.0,
+   "rise_db": 25.7,
+   "title": "Scribble",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "scribble_06",
+   "cat": "scribble",
+   "file": "scribble/scribble_06.wav",
+   "dur": 0.92,
+   "sync": 0.033,
+   "level_db": -12.4,
+   "centroid_hz": 4271,
+   "low_ratio": 0.0,
+   "rise_db": 27.1,
+   "title": "Scribble",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "scribble_07",
+   "cat": "scribble",
+   "file": "scribble/scribble_07.wav",
+   "dur": 1.098,
+   "sync": 0.034,
+   "level_db": -12.7,
+   "centroid_hz": 3693,
+   "low_ratio": 0.0,
+   "rise_db": 27.6,
+   "title": "Scribble",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "scribble_08",
+   "cat": "scribble",
+   "file": "scribble/scribble_08.wav",
+   "dur": 1.85,
+   "sync": 0.03,
+   "level_db": -13.1,
+   "centroid_hz": 3775,
+   "low_ratio": 0.0,
+   "rise_db": 28.5,
+   "title": "Scribble",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_01",
+   "cat": "key",
+   "file": "key/key_01.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -20.6,
+   "centroid_hz": 2923,
+   "low_ratio": 0.016,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_02",
+   "cat": "key",
+   "file": "key/key_02.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -20.8,
+   "centroid_hz": 1820,
+   "low_ratio": 0.009,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_03",
+   "cat": "key",
+   "file": "key/key_03.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -19.6,
+   "centroid_hz": 3485,
+   "low_ratio": 0.013,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_04",
+   "cat": "key",
+   "file": "key/key_04.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -19.2,
+   "centroid_hz": 1969,
+   "low_ratio": 0.022,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_05",
+   "cat": "key",
+   "file": "key/key_05.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -21.6,
+   "centroid_hz": 2199,
+   "low_ratio": 0.02,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_06",
+   "cat": "key",
+   "file": "key/key_06.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -22.9,
+   "centroid_hz": 3970,
+   "low_ratio": 0.007,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_07",
+   "cat": "key",
+   "file": "key/key_07.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -20.5,
+   "centroid_hz": 2734,
+   "low_ratio": 0.026,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_08",
+   "cat": "key",
+   "file": "key/key_08.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -21.8,
+   "centroid_hz": 1764,
+   "low_ratio": 0.012,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_09",
+   "cat": "key",
+   "file": "key/key_09.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -18.8,
+   "centroid_hz": 4180,
+   "low_ratio": 0.011,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_10",
+   "cat": "key",
+   "file": "key/key_10.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -21.2,
+   "centroid_hz": 1813,
+   "low_ratio": 0.024,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_11",
+   "cat": "key",
+   "file": "key/key_11.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -19.9,
+   "centroid_hz": 2157,
+   "low_ratio": 0.013,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  },
+  {
+   "id": "key_12",
+   "cat": "key",
+   "file": "key/key_12.wav",
+   "dur": 0.2,
+   "sync": 0.0,
+   "level_db": -22.4,
+   "centroid_hz": 2945,
+   "low_ratio": 0.028,
+   "rise_db": 60.0,
+   "title": "Key presses",
+   "tags": [],
+   "source": "synth"
+  }
+ ]
+}

@@ -1,0 +1,9 @@
+{
+  "name": "reel-editor",
+  "version": "0.1.0",
+  "description": "Edits raw talking-head phone takes into finished Reels, TikToks and Shorts: cuts to the speech, word-synced captions, app UI mockups on the word, transitions, sound effects, music, loudness, hook variants, cover, QA. Plus hand-drawn step roadmaps and split screens. Runs locally, costs nothing.",
+  "author": { "name": "Adrian Partain", "url": "https://github.com/adrianpartain59" },
+  "repository": "https://github.com/adrianpartain59/reel-editor",
+  "license": "MIT",
+  "keywords": ["video-editing", "reels", "tiktok", "youtube-shorts", "captions", "talking-head", "ffmpeg", "whisper", "claude-code", "skill"]
+}

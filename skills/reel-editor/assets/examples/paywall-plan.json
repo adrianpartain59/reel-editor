@@ -1,0 +1,461 @@
+{
+ "slug": "paywall-tips",
+ "style": "classic",
+ "captions": {
+  "keywords": [
+   "paywall",
+   "terrible",
+   "features",
+   "wrong",
+   "worth",
+   "price?",
+   "20",
+   "bucks",
+   "not",
+   "review",
+   "best",
+   "whole",
+   "miles",
+   "better",
+   "someone",
+   "works",
+   "great",
+   "goals"
+  ]
+ },
+ "hooks": {
+  "h1": {
+   "shots": [
+    {
+     "t": 0,
+     "lay": "face",
+     "z": 1.0
+    },
+    {
+     "t": "w6-0.04",
+     "lay": "fullpw",
+     "img": "paywall-features",
+     "enter": 0.3,
+     "exit": 0.28
+    }
+   ],
+   "sections": [
+    [
+     0,
+     "pop",
+     "#FFE14D"
+    ]
+   ],
+   "punches": [
+    {
+     "t0": "w12-0.02",
+     "t1": "w14-0.02",
+     "lines": [
+      [
+       "TERRIBLE",
+       "cblack",
+       250,
+       "#FF3B30"
+      ],
+      [
+       "STRATEGY",
+       "black",
+       84,
+       "#FFFFFF"
+      ]
+     ],
+     "rot": -5,
+     "sfx": false
+    }
+   ],
+   "stickers": [
+    {
+     "type": "red_x",
+     "t0": "w12",
+     "t1": "w14",
+     "space": "phone",
+     "px": 0.5,
+     "py": 0.42
+    }
+   ]
+  }
+ },
+ "body": {
+  "shots": [
+   {
+    "t": 0,
+    "lay": "face",
+    "z": 1.12
+   },
+   {
+    "t": "w7",
+    "lay": "split",
+    "img": "paywall-features",
+    "enter": 0.25,
+    "focus": 0.3
+   },
+   {
+    "t": "w15",
+    "lay": "face",
+    "z": 1.18
+   },
+   {
+    "t": "w19",
+    "lay": "split",
+    "img": "paywall-features",
+    "focus": 0.35,
+    "swaps": [
+     [
+      "w22",
+      "paywall-features_hl_1"
+     ]
+    ]
+   },
+   {
+    "t": "w27",
+    "lay": "face",
+    "z": 1.32
+   },
+   {
+    "t": "w32",
+    "lay": "split",
+    "img": "paywall-features_hl_3",
+    "focus": 0.42
+   },
+   {
+    "t": "w34",
+    "lay": "face",
+    "z": 1.05
+   },
+   {
+    "t": "w39",
+    "lay": "split",
+    "img": "paywall-features_hl_6",
+    "focus": 0.55
+   },
+   {
+    "t": "w43",
+    "lay": "face",
+    "z": 1.45
+   },
+   {
+    "t": "w54",
+    "lay": "split",
+    "img": "paywall-features",
+    "enter": 0.25,
+    "focus": 0.3
+   },
+   {
+    "t": "w64",
+    "lay": "face",
+    "z": 1.0
+   },
+   {
+    "t": "w67",
+    "lay": "face",
+    "z": 1.15
+   },
+   {
+    "t": "w74",
+    "lay": "face",
+    "z": 1.3
+   },
+   {
+    "t": "w79",
+    "lay": "split",
+    "img": "paywall-features",
+    "focus": [
+     0.3,
+     0.72
+    ],
+    "swaps": [
+     [
+      "w89",
+      "paywall-features_price_1"
+     ]
+    ]
+   },
+   {
+    "t": "w95",
+    "lay": "face",
+    "z": 1.2
+   },
+   {
+    "t": "w103-0.3",
+    "lay": "face",
+    "z": 1.5
+   },
+   {
+    "t": "w106",
+    "lay": "face",
+    "z": 1.0
+   },
+   {
+    "t": "w109",
+    "lay": "face",
+    "z": 1.12
+   },
+   {
+    "t": "w119",
+    "lay": "fullpw",
+    "img": "paywall-review",
+    "enter": 0.3,
+    "exit": 0.28
+   },
+   {
+    "t": "w132-0.08",
+    "lay": "face",
+    "z": 1.35
+   },
+   {
+    "t": "w137",
+    "lay": "face",
+    "z": 1.0
+   },
+   {
+    "t": "w143",
+    "lay": "face",
+    "z": 1.16
+   },
+   {
+    "t": "w149",
+    "lay": "split",
+    "img": "paywall-review",
+    "focus": 0.36,
+    "enter": 0.25
+   },
+   {
+    "t": "w159",
+    "lay": "face",
+    "z": 1.15
+   },
+   {
+    "t": "w165",
+    "lay": "face",
+    "z": 1.0
+   }
+  ],
+  "sections": [
+   [
+    0,
+    "box",
+    "#7C5CFF"
+   ],
+   [
+    "w43",
+    "pop",
+    "#FF3B30"
+   ],
+   [
+    "w54",
+    "box",
+    "#7C5CFF"
+   ],
+   [
+    "w67",
+    null
+   ],
+   [
+    "w79",
+    "pop",
+    "#FFE14D"
+   ],
+   [
+    "w95",
+    "box",
+    "#FF3B30"
+   ],
+   [
+    "w103-0.3",
+    null
+   ],
+   [
+    "w106",
+    "serif",
+    "#FFC845"
+   ],
+   [
+    "w119",
+    "pop",
+    "#4CD964"
+   ],
+   [
+    "w132-0.08",
+    null
+   ],
+   [
+    "w137",
+    "box",
+    "#34C759"
+   ],
+   [
+    "w159",
+    "neon",
+    "#FFE14D"
+   ]
+  ],
+  "punches": [
+   {
+    "t0": "w48",
+    "t1": "w51",
+    "lines": [
+     [
+      "WRONG",
+      "cblack",
+      270,
+      "#FF3B30"
+     ],
+     [
+      "WAY TO THINK",
+      "black",
+      76,
+      "#FFFFFF"
+     ]
+    ],
+    "rot": 4
+   },
+   {
+    "t0": "w89",
+    "t1": "w91",
+    "lines": [
+     [
+      "$20",
+      "cblack",
+      300,
+      "#FF3B30"
+     ]
+    ],
+    "rot": -6,
+    "sfx": "cha_ching"
+   },
+   {
+    "t0": "w103-0.05",
+    "t1": "w106",
+    "lines": [
+     [
+      "DO THIS",
+      "cblack",
+      230,
+      "#4CD964"
+     ],
+     [
+      "INSTEAD",
+      "cblack",
+      230,
+      "#FFFFFF"
+     ]
+    ],
+    "rot": -4,
+    "sfx": "ding"
+   },
+   {
+    "t0": "w132-0.08",
+    "t1": "w137",
+    "lines": [
+     [
+      "THIS WILL DO",
+      "black",
+      74,
+      "#FFFFFF"
+     ],
+     [
+      "MILES",
+      "cblack",
+      250,
+      "#4CD964"
+     ],
+     [
+      "BETTER",
+      "cblack",
+      250,
+      "#4CD964"
+     ]
+    ],
+    "rot": -3
+   }
+  ],
+  "stickers": [
+   {
+    "type": "emoji",
+    "char": "🤔",
+    "t0": "w64",
+    "t1": "w67",
+    "x": 820,
+    "y": 560,
+    "size": 190
+   },
+   {
+    "type": "thought",
+    "text": "Is this going to be worth it?",
+    "side": "l",
+    "t0": "w67",
+    "t1": "w79",
+    "x": 470,
+    "y": 1250
+   },
+   {
+    "type": "thought",
+    "text": "Is this worth the price?",
+    "side": "r",
+    "t0": "w74",
+    "t1": "w79",
+    "x": 600,
+    "y": 1440
+   },
+   {
+    "type": "review_card",
+    "t0": "w106",
+    "t1": "w119",
+    "x": 540,
+    "y": 430,
+    "lines": [
+     "“This is the first habit app",
+     "I’ve actually stuck with.”"
+    ],
+    "name": "Jess M."
+   }
+  ],
+  "fx": [
+   {
+    "type": "shake",
+    "t": "w48",
+    "d": 0.25
+   },
+   {
+    "type": "flash",
+    "t": "w103-0.05"
+   }
+  ],
+  "sfx": [
+   [
+    "w43-0.06",
+    "scratch",
+    0
+   ],
+   [
+    "w132-0.75",
+    "riser",
+    0
+   ]
+  ]
+ },
+ "cover": {
+  "part": "hook",
+  "t": "w3",
+  "lines": [
+   [
+    "YOUR PAYWALL",
+    "cblack",
+    190,
+    "#FFFFFF"
+   ],
+   [
+    "IS WRONG",
+    "cblack",
+    230,
+    "#FF3B30"
+   ]
+  ],
+  "y": 760
+ }
+}

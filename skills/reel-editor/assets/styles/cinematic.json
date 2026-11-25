@@ -1,0 +1,491 @@
+{
+ "name": "cinematic",
+ "about": "High-production talking head (techniques measured on a 5.6M-view reel): the real room with a contrasty grade, heavy wide white captions that build word by word, constant slow push-ins, a transition on almost every shot change (rotating so none repeats back to back), UI as dark phones floating in 3D with varied entrances, neon titles with varied animations, spotlight dims, sound effects that follow per-sound rules, a dark music bed that drops out before reveals. Backgrounds only when they show something (bg on a shot).",
+ "grade": {
+  "tone": true,
+  "segment": false,
+  "subject_contrast": 1.08,
+  "subject_warm": 0.02,
+  "highlight_rolloff": 0.84,
+  "vignette": 0.38,
+  "grain": 3.0,
+  "mask_lo": 0.66,
+  "mask_hi": 0.96
+ },
+ "captions": {
+  "default": "cine",
+  "on_overlays": false,
+  "max_words": 4,
+  "size": 84,
+  "accent": "#FF3434"
+ },
+ "motion": {
+  "push": 0.03,
+  "push_mode": "per_second",
+  "bounce": 0.0,
+  "settle": 0.14,
+  "settle_d": 1.1
+ },
+ "overlays": {
+  "phone_layout": "phone3d"
+ },
+ "sfx": {
+  "arrow": [
+   [
+    "cat:scribble",
+    0,
+    0
+   ]
+  ],
+  "banner": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "bg_in": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "bg_in:slide": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "bg_in:zoom": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "chat_key": [
+   [
+    "cat:key",
+    0,
+    -1
+   ]
+  ],
+  "chat_pill": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "chat_send": [],
+  "chat_type": [],
+  "check": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "circle": [
+   [
+    "cat:scribble",
+    0,
+    0
+   ]
+  ],
+  "counter": [
+   [
+    "cat:counting",
+    0,
+    -2
+   ]
+  ],
+  "counter_land": [],
+  "cta": [
+   [
+    "cat:shine",
+    0,
+    0
+   ]
+  ],
+  "drop": [
+   [
+    "cat:riser",
+    -0.02,
+    0
+   ],
+   [
+    "cat:low_hit",
+    0,
+    0
+   ]
+  ],
+  "emoji": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "fx:bw": [],
+  "fx:dip": [],
+  "fx:flash": [
+   [
+    "cat:flash",
+    0,
+    0
+   ]
+  ],
+  "fx:freeze": [
+   [
+    "cat:flash_shutter",
+    0,
+    0
+   ]
+  ],
+  "fx:invert": [
+   [
+    "cat:glitch",
+    0,
+    0
+   ]
+  ],
+  "fx:pulse": [],
+  "fx:rgb": [
+   [
+    "cat:glitch",
+    0,
+    -2
+   ]
+  ],
+  "fx:shake": [
+   [
+    "cat:low_hit",
+    0,
+    -2
+   ]
+  ],
+  "fx:zoom": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "glitch": [
+   [
+    "cat:glitch",
+    0,
+    0
+   ]
+  ],
+  "hand_note": [
+   [
+    "cat:scribble",
+    0,
+    0
+   ]
+  ],
+  "icon": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "icon_done": [],
+  "image": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "letterbox": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "notify": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "overlay_enter": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "overlay_enter_soft": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "overlay_exit": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "overlay_land": [],
+  "phone_in:drop": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_in:far": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_in:flip": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_in:rise": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_in:side": [
+   [
+    "cat:whoosh",
+    0.1,
+    0
+   ]
+  ],
+  "phone_out:far": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "phone_out:flip": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "phone_out:side": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "phone_out:sink": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "punch": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "red_x": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "reveal": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "review_card": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "smash": [
+   [
+    "cat:whoosh",
+    0.05,
+    0
+   ]
+  ],
+  "spotlight": [],
+  "swap": [
+   [
+    "cat:page_flip",
+    0,
+    -2
+   ]
+  ],
+  "tap": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "thought": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "title": [
+   [
+    "cat:pop",
+    0,
+    0
+   ]
+  ],
+  "tr": [
+   [
+    "cat:whoosh",
+    0,
+    0
+   ]
+  ]
+ },
+ "music": {
+  "bed": "trap",
+  "level": -14.5,
+  "duck": 3,
+  "drop_len": 0.5
+ },
+ "mix": {
+  "lufs": -12,
+  "voice_chain": "highpass=f=80,equalizer=f=250:t=q:w=1.0:g=-1.5,acompressor=threshold=-28dB:ratio=4:attack=4:release=90:makeup=4:link=average,equalizer=f=5000:t=q:w=1.2:g=1.5,highshelf=f=7500:g=2.5:t=q:w=0.7"
+ },
+ "titles": "glow",
+ "transitions": {
+  "default": "auto",
+  "avoid_last": 4,
+  "pools": {
+   "face>face": [
+    "zoom_in",
+    "whip",
+    "rgb_split",
+    "flash",
+    "glitch",
+    "blur",
+    "pixelate",
+    "light_leak",
+    "spin",
+    "stretch",
+    "cut"
+   ],
+   "face>face:drop": [
+    "impact",
+    "flash",
+    "zoom_in",
+    "strobe"
+   ],
+   "face>overlay": [
+    "whip",
+    "slide",
+    "card",
+    "zoom_in",
+    "iris",
+    "shutter",
+    "wipe",
+    "glitch"
+   ],
+   "overlay>face": [
+    "whip",
+    "zoom_out",
+    "flash",
+    "glitch",
+    "slide",
+    "blur",
+    "tv_off",
+    "rgb_split"
+   ],
+   "overlay>face:drop": [
+    "impact",
+    "flash",
+    "zoom_in"
+   ],
+   "overlay>overlay": [
+    "slide",
+    "wipe",
+    "whip",
+    "luma",
+    "blur"
+   ],
+   "any": [
+    "whip"
+   ]
+  }
+ },
+ "variety": {
+  "phone_in": [
+   "rise",
+   "side",
+   "far",
+   "drop",
+   "flip"
+  ],
+  "phone_out": [
+   "sink",
+   "side",
+   "far",
+   "flip"
+  ],
+  "bg_in": [
+   "fade",
+   "zoom",
+   "slide"
+  ],
+  "title_in": [
+   "flicker",
+   "scramble",
+   "stamp",
+   "reveal",
+   "slide",
+   "drop",
+   "type",
+   "blur",
+   "zoom",
+   "glitch",
+   "rise",
+   "pop"
+  ],
+  "title_out": [
+   "fade",
+   "blur",
+   "glitch",
+   "slide",
+   "pop",
+   "flicker"
+  ]
+ },
+ "sfx_rules_note": "Sounds follow per-sound usage rules (assets/sfx/pack/pack.json; references/sfx-library.md). Keys left empty stay silent on purpose."
+}

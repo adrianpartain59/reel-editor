@@ -1,0 +1,190 @@
+{
+ "slug": "walking-roadmap",
+ "part": "body",
+ "scenes": "canvas/scenes.js",
+ "hook": {
+  "variant": "main",
+  "beats": {
+   "card_in": 1.12,
+   "start": 1.3,
+   "surge": 2.16,
+   "land": 3.12,
+   "card_out": 4.14
+  },
+  "value": 1000000,
+  "prefix": "",
+  "label": "Steps walked",
+  "countup": "taps",
+  "under": [
+   ["in", 3.14],
+   ["one", 3.26],
+   ["summer", 3.54, 1]
+  ],
+  "zoom": [
+   [0.0, 0.2, 1.35, 1.04, "out"],
+   [0.2, 1.3, 1.04, 1.08, "lin"],
+   [1.3, 1.43, 1.08, 1.23, "back"],
+   [1.43, 2.1, 1.23, 1.25, "lin"],
+   [2.1, 2.22, 1.25, 1.35, "back"],
+   [2.22, 2.5, 1.35, 1.36, "lin"],
+   [2.5, 2.62, 1.36, 1.46, "back"],
+   [2.62, 3.1, 1.46, 1.53, "in"],
+   [3.1, 3.17, 1.53, 1.66, "out"],
+   [3.17, 3.5, 1.66, 1.44, "io"],
+   [3.5, 3.6, 1.44, 1.53, "back"],
+   [3.6, 4.14, 1.53, 1.5, "lin"],
+   [4.14, 4.4, 1.5, 1.06, "io"],
+   [4.4, 5.22, 1.06, 1.1, "lin"],
+   [5.22, 5.34, 1.1, 1.26, "back"],
+   [5.34, 5.82, 1.26, 1.28, "lin"],
+   [5.82, 5.94, 1.28, 1.4, "back"],
+   [5.94, 6.31, 1.4, 1.42, "lin"],
+   [6.31, 6.43, 1.42, 1.34, "io"],
+   [6.43, 7.0, 1.34, 1.42, "lin"],
+   [7.0, 8.0, 1.16, 1.0, "io"]
+  ],
+  "blur": [1.36, 2.15, 2.55, 5.27, 5.87, 6.36],
+  "face": [
+   [0.0, 540, 880],
+   [1.1, 500, 870],
+   [1.34, 400, 812],
+   [4.12, 400, 812],
+   [4.42, 540, 850],
+   [5.2, 540, 850],
+   [5.36, 540, 800],
+   [6.26, 540, 800],
+   [6.42, 540, 935],
+   [6.97, 540, 935],
+   [7.0, 540, 860],
+   [8.1, 540, 860]
+  ],
+  "title": {
+   "in": 5.2,
+   "out": 6.28,
+   "words": [
+    ["10-STEP", 5.22, 1],
+    ["ROADMAP", 5.82]
+   ],
+   "count": 10,
+   "from": 5.3,
+   "to": 6.1
+  },
+  "caps": [
+   [
+    0.0,
+    1.14,
+    [
+     ["I", 0.0],
+     ["STARTED", 0.23],
+     ["WALKING", 0.61]
+    ]
+   ],
+   [
+    4.3,
+    4.88,
+    [
+     ["AND", 4.3],
+     ["I'M", 4.36],
+     ["DROPPING", 4.46]
+    ]
+   ],
+   [
+    4.88,
+    5.22,
+    [
+     ["MY", 4.88],
+     ["FULL", 5.04]
+    ]
+   ],
+   [
+    6.28,
+    6.98,
+    [
+     ["TO", 6.28],
+     ["WALKING", 6.36, 1]
+    ]
+   ],
+   [
+    7.0,
+    8.1,
+    [
+     ["STARTING", 7.0],
+     ["WITH", 7.25],
+     ["SETUP", 7.38, 1]
+    ]
+   ]
+  ]
+ },
+ "faces": [
+  {
+   "why": "first-hand proof",
+   "in": 13.07,
+   "out": 15.13,
+   "enter": "down",
+   "back": "right",
+   "accent": "green",
+   "punch": [14.02],
+   "caps": ["THIS KEPT ME", "GOING", "ALMOST *FOREVER*"]
+  },
+  {
+   "why": "blunt call",
+   "in": 18.42,
+   "out": 19.3,
+   "enter": "cut",
+   "back": "left",
+   "accent": "red",
+   "punch": [18.86],
+   "z0": 1.62,
+   "caps": ["*NO* *ZERO* *DAYS*"]
+  },
+  {
+   "why": "turn of the video",
+   "in": 25.53,
+   "out": 26.47,
+   "enter": "cut",
+   "back": "up",
+   "accent": "yellow",
+   "punch": [25.72],
+   "z0": 1.45,
+   "caps": ["NOW *MOMENTUM*"]
+  },
+  {
+   "why": "first-hand proof",
+   "in": 29.5,
+   "out": 31.57,
+   "enter": "down",
+   "back": "right",
+   "accent": "yellow",
+   "punch": [29.94],
+   "caps": ["I LAID OUT", "MY *WALKING* SHOES", "THE NIGHT BEFORE"]
+  },
+  {
+   "why": "blunt call",
+   "in": 42.82,
+   "out": 44.47,
+   "enter": "through",
+   "back": "left",
+   "accent": "yellow",
+   "punch": [43.32],
+   "caps": ["YOU'RE SORE", "BECAUSE IT IS *WORKING*"]
+  },
+  {
+   "why": "outro",
+   "in": 54.56,
+   "out": 56.7,
+   "enter": "shrink",
+   "accent": "green",
+   "caps": ["IF THIS *HELPED*", "AND *FOLLOW*", "FOR MORE CONTENT", "LIKE THIS"]
+  }
+ ],
+ "outro": {
+  "t0": 54.86,
+  "text": "doing step 2 tonight"
+ },
+ "beat": {
+  "track": "mixkit-403",
+  "shift": 1,
+  "stop": 25.29,
+  "back": 25.79
+ }
+}

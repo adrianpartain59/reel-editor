@@ -1,0 +1,30 @@
+## hook-h1  (4.13s, 17 words)
+  [  0.06] w0:Most w1:apps w2:use w3:a w4:paywall w5:like w6:this,
+  [  1.70] w7:but w8:this w9:is w10:actually w11:a w12:terrible w13:strategy w14:and w15:here's w16:why.
+
+## body  (34.80s, 172 words)
+  [  0.04] w0:A w1:lot w2:of w3:people w4:when w5:making w6:apps w7:make w8:this w9:paywall
+  [  1.94] w10:and w11:they w12:think w13:this w14:will w15:be w16:great w17:because w18:it w19:tells
+  [  3.84] w20:users w21:the w22:features w23:they're w24:going w25:to w26:get w27:and w28:why w29:they
+  [  5.76] w30:should w31:want w32:those w33:features w34:and w35:what w36:it's w37:going w38:to w39:do
+  [  7.69] w40:for w41:their w42:goals.
+  [  8.78] w43:But w44:this w45:is w46:actually w47:the w48:wrong w49:way w50:to w51:think w52:about
+  [ 10.21] w53:it.
+  [ 10.52] w54:By w55:showing w56:users w57:the w58:features w59:that w60:they're w61:going w62:to w63:get,
+  [ 12.56] w64:they w65:are w66:thinking,
+  [ 13.82] w67:is w68:this w69:going w70:to w71:be w72:worth w73:it?
+  [ 15.12] w74:Is w75:this w76:worth w77:the w78:price?
+  [ 16.10] w79:Are w80:these w81:features w82:really w83:going w84:to w85:make w86:it w87:worth w88:the
+  [ 17.85] w89:20 w90:bucks w91:I'm w92:putting w93:into w94:this?
+  [ 19.30] w95:That's w96:not w97:what w98:you w99:want w100:them w101:to w102:think.
+  [ 20.34] w103:Do w104:this w105:instead.
+  [ 21.40] w106:Find w107:a w108:review,
+  [ 21.89] w109:the w110:best w111:review w112:that w113:you w114:can w115:find w116:on w117:your w118:app,
+  [ 24.13] w119:put w120:it w121:on w122:the w123:paywall,
+  [ 25.10] w124:and w125:that's w126:it.
+  [ 26.18] w127:Make w128:that w129:the w130:whole w131:paywall.
+  [ 27.23] w132:This w133:will w134:do w135:miles w136:better w137:because w138:now w139:people w140:aren't w141:trying
+  [ 29.31] w142:to w143:figure w144:out w145:if w146:it's w147:worth w148:it.
+  [ 30.64] w149:They're w150:hearing w151:it w152:from w153:someone w154:who w155:says w156:that w157:it w158:is.
+  [ 32.72] w159:Try w160:testing w161:this w162:in w163:your w164:app w165:and w166:let w167:me w168:know
+  [ 34.01] w169:if w170:it w171:works.

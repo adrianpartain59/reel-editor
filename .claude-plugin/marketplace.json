@@ -1,0 +1,13 @@
+{
+  "name": "reel-editor",
+  "description": "Talking-head takes to finished Reels, TikToks and Shorts, as a Claude Code skill.",
+  "owner": { "name": "Adrian Partain", "url": "https://github.com/adrianpartain59" },
+  "plugins": [
+    {
+      "name": "reel-editor",
+      "source": "./",
+      "description": "Cuts your takes to the speech and adds word-synced captions, app mockups on the word, transitions, sound effects, music and loudness, with a QA pass. Also draws step roadmaps and split screens. Runs locally.",
+      "version": "0.1.0"
+    }
+  ]
+}
