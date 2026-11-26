@@ -10,6 +10,8 @@ python3 scripts/music_lib.py fetch
 That downloads 10 tracks (33 MB) from mixkit.co into `~/.cache/reel-editor/music`. Read the licence below first and tell the user what will be downloaded. Until then a Talking Head in Cinematic plays the
 synthesized `dark_pad` and a Drawn Roadmap has no beat; both say so and nothing fails.
 
+A Split Screen has its own bed, a soft electronic underscore rather than a trap beat, which the user downloads by hand ("Curious underscore", below).
+
 ## Using one
 
 ```json
@@ -74,3 +76,40 @@ non-commercial projects, no attribution.
 - The files can't be handed on inside a tool or template, which is why they aren't here.
 
 A baked-in beat replaces adding a trending sound in the app. Do one or the other, never both.
+
+## Curious underscore (the Split Screen's bed)
+
+The sound: an abstract melody that repeats almost like a trance, soft blips, very soft drums, very simple, introspective, curious, the feeling of
+learning something, never distracting. Libraries call it **minimal electronica / IDM underscore / tech underscore**. Searches that find it: "minimal
+electronica", "IDM glitch", "curious electronic" (never "curious" alone: that gives comedy pizzicato), "minimal technology", "looping arpeggio" /
+"soft plucks", "pulses", "introspective tech", "documentary electronic", "rhythmic underscore". On Mixkit the matching shelves are minimalism,
+rhythmic-underscore, underscore, electronica, downtempo, plucked, mallets and synth; drop club genres and heavy kicks.
+
+**The default bed: "Minimal IDM Ambient Electronic" by Musinova** (3:20) on Pixabay,
+https://pixabay.com/music/upbeat-minimal-idm-ambient-electronic-373348/. Pixabay Content License: commercial use, no credit needed; the track page
+shows no Content ID badge. Pixabay doesn't allow handing its tracks on and refuses scripted downloads, so the file is not in this repository and
+no script fetches it. To use it, the user (not Claude) opens that page in a browser, reads the licence, downloads the MP3 and saves it as
+
+```
+~/.cache/reel-editor/music/pixabay-373348.mp3
+```
+
+From then on `split_reel.py` puts it under every Split Screen that has no `"music"` key: from 0 s, 13 dB under the speech (both measured above 150 Hz,
+what a phone plays), 2.5 dB lower while the speaker talks, fading out over the last 1.5 s. Its quiet first 15 s run under the hook and the intro and its
+drums arrive about when the points start. Without the file the reel renders with no music, and `split_reel.py` prints one line saying how to get it.
+`"music": false` turns it off; `"music": {"file": "media/other.mp3", ...}` uses another track (`split-screen.md`, `split_reel.json`). Levelled full band
+instead, this track sat 21 dB under the voice on a phone speaker and couldn't be heard.
+
+Other candidates (licences change: read each page before using one):
+
+| Track | Source | Licence | Note |
+|---|---|---|---|
+| IDM Electronic Science Technology (Musinova) | pixabay.com/music/electronic-idm-electronic-science-technology-483366/ | Pixabay, no credit | no badge; more intricate, maybe busier |
+| Curious Electronic (Evgeny_Bardyuzha) | pixabay.com/music/beats-curious-electronic-334124/ | Pixabay | Content ID registered: YouTube claims likely |
+| Hypnotic Synth Arpeggio ... (Juraganvisi) | pixabay.com/music/electronic-hypnotic-synth-arpeggio-for-calm-thoughtful-driving-electronic-track-413617/ | Pixabay | no badge, AI-made; closest by tags to "trance-like, repeating" |
+| Ambient Corporate Tech, Soft Plucks (ChrisDjYogi) | pixabay.com/music/beats-ambient-corporate-tech-soft-plucks-amp-digital-pads-426417/ | Pixabay | no badge, AI-made |
+| Into the Cloud / Grassroots Programming (John Bartmann) | freemusicarchive.org/music/John_Bartmann/machine-learning/ | CC0 (a credit is asked) | mbira blips and glitch |
+| Mixkit under the Free License | mixkit.co, the shelves above | Mixkit Stock Music Free License (above) | add it to `library.json`, `music_lib.py fetch`, then `"music": {"file": "lib:mixkit-<id>.mp3"}` |
+
+Pixabay tracks with the Content ID badge are legal to use but draw YouTube claims (a claimed Short over 60 s can be blocked). Uppbeat's free plan
+doesn't cover company use; Bensound's free licence needs a credit per video.

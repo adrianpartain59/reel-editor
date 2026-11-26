@@ -1,7 +1,7 @@
 {
   "name": "reel-editor",
-  "version": "0.2.0",
-  "description": "Edits raw talking-head phone takes into finished Reels, TikToks and Shorts in three formats: Drawn Roadmap (default), Talking Head and Split Screen. Cuts to the speech, captions, drawings or app mockups on the word, sound effects, music, loudness, hook variants, cover, QA. Runs locally, costs nothing.",
+  "version": "0.3.0",
+  "description": "Edits raw talking-head phone takes into finished Reels, TikToks and Shorts in three formats: Split Screen (default), Drawn Roadmap and Talking Head. Cuts to the speech, captions, vector graphics with stock footage, drawings or app mockups on the word, sound effects, music, loudness, hook variants, cover, QA. Runs locally, costs nothing.",
   "author": { "name": "Adrian Partain", "url": "https://github.com/adrianpartain59" },
   "repository": "https://github.com/adrianpartain59/reel-editor",
   "license": "MIT",

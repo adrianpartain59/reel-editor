@@ -1,6 +1,6 @@
 ---
 name: reel-editor
-description: Turns raw talking-head phone takes into a finished, high-retention Instagram Reel, TikTok or YouTube Short in one of three formats, Drawn Roadmap (the default, a number counting up in the hook, then a hand-drawn canvas with one drawing per step), Talking Head (word-synced captions, app mockups and screen recordings on the word, titles, transitions, sound effects, music) and Split Screen (drawn canvas over the face). Cuts to the speech, sets loudness, makes hook variants, cover, post copy and QA. Use it whenever someone drops in clips and wants a reel, short or TikTok edited ("edit my reel", "here are my takes", "cut this down to where I'm talking", "add captions", "make it engaging", "overlay the app", "draw the steps", "split screen"), sends a reel whose style they like ("make it cinematic", "edit it like this"), or wants a list, roadmap or process drawn, even if they never say "skill". Not for long-form video, AI-generated footage, or designing real app screens.
+description: Turns raw talking-head phone takes into a finished, high-retention Instagram Reel, TikTok or YouTube Short in one of three formats, Split Screen (the default: vector graphics with real stock footage above the face, a soft music bed), Drawn Roadmap (a number counting up in the hook, then a hand-drawn canvas, one drawing per step) and Talking Head (word-synced captions, app mockups and screen recordings on the word, titles, transitions, sound effects, music). Cuts to the speech, sets loudness, makes hook variants, cover, post copy and QA. Use it whenever someone drops in clips and wants a reel, short or TikTok edited ("edit my reel", "here are my takes", "cut this down to where I'm talking", "add captions", "make it engaging", "overlay the app", "draw the steps", "split screen"), sends a reel whose style they like ("make it cinematic", "edit it like this"), or wants a list, roadmap or process drawn, even if they never say "skill". Not for long-form video, AI-generated footage, or designing real app screens.
 ---
 
 # reel-editor
@@ -26,20 +26,22 @@ never to this skill's files: an update would overwrite them. If the folder has `
 
 | Format | What it is | How |
 |---|---|---|
-| **Drawn Roadmap** (the default) | an edited hook with a number counting up on a graph, then a hand-drawn canvas the camera flies through, one drawing per step, the face cut back in at a few moments, a beat that drops on the number | `references/drawn-roadmap.md`. Its own scripts and no plan.json; steps 1, 2 and 6 below (takes, cut, deliver) are shared. Read that guide and `references/sketch.md` before planning |
+| **Split Screen** (the default; not Talking Head's `split` layout) | split screen from the first frame: graphics in the Vector style (dark cards, red tags, real stock footage, phones with a made-up app) over the face in a rounded card, under the Instagram text hook; the face full frame for the intro (App Store page when the speaker names their app) and the outro (follow card); captions with the word being said in yellow; a soft music bed, one pop, no other effects, no grade | `references/split-screen.md`, then `references/vector-style.md` before drawing. Its own scripts (`split_cut.py`, `split_reel.py`, `split_thumb.py`, `stock.py`) and no plan.json. Build it end to end without asking |
+| **Drawn Roadmap** | an edited hook with a number counting up on a graph, then a hand-drawn canvas the camera flies through, one drawing per step, the face cut back in at a few moments, a beat that drops on the number | `references/drawn-roadmap.md`. Its own scripts and no plan.json; steps 1, 2 and 6 below (takes, cut, deliver) are shared. Read that guide and `references/sketch.md` before planning |
 | **Talking Head** | the takes with captions, phones, titles, transitions and sound effects | steps 3 to 5 below: plan.json, compose, mix, qa |
-| **Split Screen** (not Talking Head's `split` layout) | the face full frame for the hook (text hook, blurred cards popping in), the intro and the outro (follow card); the hand-drawn canvas over the face for the points; captions with the word being said in yellow; almost no effects, no music, no grade | `references/split-screen.md`. Its own scripts (`split_cut.py`, `split_reel.py`, `split_thumb.py`) and no plan.json. Build it end to end without asking |
 
 Pick the format without asking:
-1. They name one or describe one ("draw the steps", "split screen", "just captions"): that one.
+1. They name one or describe one ("draw the steps", "a roadmap", "split screen", "just captions"): that one.
 2. They ask for something only Talking Head does (app screens, phones or recordings shown on the word, titles, transitions, Cinematic or Bright): Talking Head.
-3. Otherwise: Drawn Roadmap. It needs at least two points to draw and a number said in the hook. A take without both can't carry it, so make a Talking Head and say why in one line.
+3. Otherwise: Split Screen, music included (`references/music-library.md`, "Curious underscore"). A numbered list goes in it as cells; the Drawn
+   Roadmap only when they ask for drawn steps or a roadmap.
 
 **Look** is a Talking Head's grade, captions, motion and sound: **Cinematic** (`"style": "cinematic"`, its default) or **Bright** (`"style": "bright"`, only when
 asked). `references/looks/`.
 
-**Art style** is how drawn things look: **Sketch** (the default, and the only one with an engine for a whole reel), **Stick Figures**, **Blueprint** or
-**Neon**. One per reel. `references/art-styles.md`.
+**Art style** is how the graphics look: **Vector** (the Split Screen's default: flat vector graphics with real footage, `references/vector-style.md`),
+**Sketch** (the hand-drawn canvas: the Drawn Roadmap's, and the Split Screen's when asked for), **Stick Figures**, **Blueprint** or **Neon**. One per
+reel. `references/art-styles.md`.
 
 ## Inputs
 
@@ -86,7 +88,8 @@ on the word itself and survive small re-cuts. Name hook variants in `selects.jso
 This is where the reel is made. Read `references/edit-playbook.md` first: it holds the house rules and the pacing,
 hook, caption, overlay and sound rules. The ones that matter most: open on the face, full frame; the camera always
 moving, subtly; sound effects only from the pack; everything animated, everything with a sound, everything intentional
-(no decorative backgrounds or empty layouts), everything varied. Then:
+(no decorative backgrounds or empty layouts), everything varied; a text hook is always Instagram's own text (black on a white
+box or white on black, as its editor draws it); every graphic has one clear main focus (rules 33 and 34). Then:
 
 0. **The look is Cinematic**, the default when plan.json has no `"style"`. Read `references/looks/cinematic.md`
    and `references/effects.md` before planning, and match the density of the worked example
@@ -171,6 +174,7 @@ A correction about how they want every reel made goes in `~/.config/reel-editor/
 macOS with Google Chrome, `ffmpeg`, `whisper-cli` (whisper-cpp) and a ggml model (found automatically, or set
 `REEL_WHISPER_MODEL`), Python 3.9+ with Pillow and numpy, Xcode command-line tools for `swift` (face detection and,
 for contextual backgrounds, person segmentation; without it, framing falls back to the frame centre), and Node 18+ for
-Drawn Roadmap and Split Screen. If something is missing, run `python3 scripts/doctor.py`, which says what and how to get it. The sounds are synthesized
+Split Screen and Drawn Roadmap. The Split Screen's music bed is a Pixabay track the user downloads by hand (`references/music-library.md`,
+"Curious underscore"); without it the reel has no music and says so. Stock footage comes from Mixkit through `scripts/stock.py`. If something is missing, run `python3 scripts/doctor.py`, which says what and how to get it. The sounds are synthesized
 (`scripts/sfx_pack.py`). Fonts are macOS system fonts (SF Pro, New York, Apple Color Emoji). Technical gotchas behind the
 scripts' design: `references/lessons.md`.

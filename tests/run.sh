@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# End to end on takes with nobody in them: make takes, ingest, cut, mock up, render, mix, QA, then the two drawn formats' engines.
+# End to end on takes with nobody in them: make takes, ingest, cut, mock up, render, mix, QA, then the graphics engines' starters.
 #   tests/run.sh            everything (about 4 minutes)   tests/run.sh fast   no full render (about 1 minute)
 # Uses $PYTHON (default python3). Leaves its files in tests/out/.
 set -euo pipefail
@@ -28,6 +28,9 @@ cp "$here/plan.json" "$P/plan.json"
 say_ "preview"; "$PY" "$S/scripts/compose.py" "$P" --variant h1 --preview 0.05,0.4,1.5,3.6,6.2,7.4,9.0,11.4,13.2,14.9 | tail -2
 if [ "$mode" != fast ]; then say_ "render, mix, QA"; "$PY" "$S/scripts/build.py" "$P" --variant h1; fi
 say_ "drawn canvas"; R="$out/road"; mkdir -p "$R/work"; "$PY" "$S/scripts/canvas_init.py" "$R" roadmap; (cd "$R" && node canvas/scenes.js info > work/info.json && node canvas/scenes.js sheet 1.5,3.2,5.6,7.2,9.6,10.4,11.8,12.8 work/sheet.jpg && ls -la work/sheet.jpg)
-mkdir -p "$R/split/work"; "$PY" "$S/scripts/canvas_init.py" "$R/split" split; (cd "$R/split" && node canvas/scenes.js sheet 5,6.2,7.2,9.4,10.8,12.4 work/sheet.jpg && node canvas/scenes.js check)
+say_ "split screen, Vector (the default)"; mkdir -p "$R/split/work"; "$PY" "$S/scripts/canvas_init.py" "$R/split" split
+(cd "$R/split" && export PANEL_H=1240 && node canvas/scenes.js sheet 1,2.5,9.5,10.6,14.5,16.8 work/sheet.jpg && node canvas/scenes.js check | tee work/check.txt && grep -q '^OK' work/check.txt)
+say_ "split screen, Sketch"; mkdir -p "$R/split-sketch/work"; "$PY" "$S/scripts/canvas_init.py" "$R/split-sketch" split sketch
+(cd "$R/split-sketch" && node canvas/scenes.js sheet 5,6.2,7.2,9.4,10.8,12.4 work/sheet.jpg && node canvas/scenes.js check | tee work/check.txt && grep -q '^OK' work/check.txt)
 say_ "art styles"; (cd "$S/assets/graphic-styles" && node render.js list)
 printf '\nall done: %s\n' "$out"

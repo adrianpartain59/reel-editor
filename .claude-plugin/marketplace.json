@@ -6,8 +6,8 @@
     {
       "name": "reel-editor",
       "source": "./",
-      "description": "Cuts your takes to the speech and makes a Drawn Roadmap (default), a Talking Head or a Split Screen, with sound, loudness and a QA pass. Runs locally.",
-      "version": "0.2.0"
+      "description": "Cuts your takes to the speech and makes a Split Screen (default: vector graphics with real stock footage over your face), a Drawn Roadmap or a Talking Head, with sound, music, loudness and a QA pass. Runs locally.",
+      "version": "0.3.0"
     }
   ]
 }

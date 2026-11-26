@@ -1,8 +1,9 @@
 {
  "slug": "my-reel",
  "scenes": "canvas/scenes.js",
- "hook": {"end": 0, "out": 0, "text": ["LINE ONE", "LINE TWO"], "cards": [["first", "point"], ["second", "point"], ["third", "point"]], "first": 0.86, "every": 0.18, "face_x": 445},
- "split": {"in": 0, "out": 0},
+ "layout": {"kind": "card"},
+ "hook": {"end": 0, "out": 0, "text": ["LINE ONE", "LINE TWO"], "cards": [], "first": 0.86, "every": 0.18, "face_x": 540},
+ "split": {"hook_out": 0, "in": 0, "out": 0},
  "follow": {"in": 0, "tap": 0, "name": ""},
  "fix": {},
  "join": [],

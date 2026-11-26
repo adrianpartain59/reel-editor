@@ -1,5 +1,7 @@
-// Copy to PROJECT/canvas/scenes.js and draw your own cells. Every time is seconds of the cut (split_reel.py PROJECT words). Guide:
-// references/split-screen.md.
+// Sketch, the drawn look for a Split Screen: canvas_init.py PROJECT split sketch writes this to PROJECT/canvas/scenes.js. Draw your own cells.
+// Every time is seconds of the cut (split_reel.py PROJECT words). Guide: references/split-screen.md, "Drawing the panel (Sketch)".
+// The card layout (the starter's "layout": {"kind": "card"}) makes the panel 1080 x 1240, so draw from y 340 to DB (990), labels at y 950. The
+// example cells below are sized for the seam layout (y 325 to 715, "layout" left out): make them taller for the card.
 const { make, p } = require('./panel_engine');
 const { C, FILL, K, mk, hatch, box, card, write, tag, pop, label, face, line, spline, txt, pr, E, lerp, head, brackets, tick, star, bar, count, icon } = p;
 

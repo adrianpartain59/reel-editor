@@ -1,10 +1,10 @@
 # Drawn Roadmap
 
-The default format.
+Made when the user asks for drawn steps or a roadmap (the default format is the Split Screen, `split-screen.md`).
 
 A talking-head list video ("I walked a million steps, here's the ten-step roadmap") made of an edited hook, a hand-drawn canvas that runs most
-of the body, and the face cut back in at a few moments. Use it unless the user wants another format or the take can't carry it: it needs at least two points to draw
-(a numbered list, roadmap, framework or process is ideal) and a number said in the hook. The art style is Sketch (`sketch.md`). `canvas-reel-schema.md` documents
+of the body, and the face cut back in at a few moments. It needs at least two points to draw (a numbered list, roadmap, framework or process is
+ideal) and a number said in the hook; a take without both can't carry it, so say so and make a Split Screen. The art style is Sketch (`sketch.md`). `canvas-reel-schema.md` documents
 `canvas_reel.json`.
 
 It replaces compose.py, mix.py, build.py and qa.py for the whole reel: there is no plan.json. ingest, cut and track are shared. The scripts need

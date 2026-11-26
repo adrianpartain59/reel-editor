@@ -12,6 +12,9 @@ Learned by editing real reels and fixing what was wrong with them. The user's ow
    nothing else on screen, for at least 0.8 s. No split, no phone, no title in that window. The face stops the scroll
    and makes the advice feel like it comes from a person. Never open on a mockup. Don't override this for a planned
    hook element: put the element after the first 0.8 s instead.
+   **Exception: a Split Screen opens in the split** (`split-screen.md`, "Opening in the split"): the face in the card under
+   the hook's pictures, with the Instagram text hook from the first frame, so the hook can carry as much movement as possible.
+   It goes against the evidence for face-first openings, so compare its skip rate with the user's face-first reels.
 2. **Show the thing on the word.** When the speaker says "this paywall" / "like this", the overlay lands on that
    word ("this"), not before. Use the word index (`"t": "w6-0.04"`) so the slide-in finishes as they say it.
 3. **First showing of each mockup is full-screen** (`fullpw`) and holds long enough to read: at least 1.5 s,
@@ -113,6 +116,16 @@ Learned by editing real reels and fixing what was wrong with them. The user's ow
 32. **Room replacement only when asked.** `"room"` in plan.json swaps the room behind the speaker for another one
     (references/rooms.md). Never add it on your own initiative and never suggest it as a default. A reel with a generated
     room gets the AI disclosure when posted.
+33. **HARD RULE: a text hook is Instagram's own text.** A text hook on screen always looks as if it was added in Instagram's
+    editor: black SF Pro Bold on a white box (or white on black, `hook.style: "black"`), the box hugging each line with rounded
+    corners (`split_reel.py` `hook_text`). Never set the text hook in a graphic style's own type, even when the reel opens on graphics.
+34. **HARD RULE: signal over noise in every graphic.** There has to be one thing that is clearly the main focus; with too much
+    going on the viewer's eyes get tired. One main thing per picture; nothing on screen too briefly to read (if it can't be read,
+    cut it); no label that repeats the caption or names what's already obvious; app screens show the question and blank answer rows,
+    words only on the row being talked about; no gradients (a subtle glow round a thing is the only one), no colour wash behind
+    everything; labels sit clear of the clip or phone they name, never on its edge; every picture stands alone, its title a phrase
+    that makes sense without the voice, typed out at once rather than word by word as it is said. A comparison is shown as a
+    measure (a scale, an axis with 1x and 2x), not written out (`vector-style.md`).
 
 ## The first 3 seconds
 - First word within 0.6 s of the first frame (ingest already trims dead air).

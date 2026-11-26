@@ -14,15 +14,15 @@ do the cutting, captions, motion, sound and quality checks. Everything runs on y
 
 ![Four drawn scenes from a Drawn Roadmap](docs/roadmap.jpg)
 
-*Four scenes from a Drawn Roadmap, the default format.*
+*Four scenes from a Drawn Roadmap. The default format is the Split Screen (below).*
 
 ## What it does
 
 1. **Cuts to the speech.** Finds where you're actually talking (not room hum, breaths or lip smacks), drops flubs and
    retakes, and refuses to leave a pause over a quarter of a second.
 2. **Captions every word as you say it**, above your face and clear of Instagram's buttons.
-3. **Shows what you're talking about on the word you say it:** app screens rendered as 3D phones, your own screen
-   recordings, b-roll, handwritten notes, neon titles and icons.
+3. **Shows what you're talking about on the word you say it:** vector graphics with real stock footage, app screens
+   rendered as phones, your own screen recordings, b-roll, handwritten notes, neon titles and icons.
 4. **Keeps it moving:** head tracking, slow pushes, 22 transitions, 12 title animations, none repeating back to back.
 5. **Does the sound:** your voice kept as recorded in stereo, effects that each have one job, a beat that drops on the
    reveal, mastered to -12 LUFS.
@@ -32,16 +32,13 @@ do the cutting, captions, motion, sound and quality checks. Everything runs on y
 
 ## Formats
 
-Say the name of the one you want. If you don't, you get a Drawn Roadmap.
+Say the name of the one you want. If you don't, you get a Split Screen.
 
 | Format | What you get | Say |
 |---|---|---|
-| **Drawn Roadmap** (default) | A number counts up on a graph in the hook, then a hand-drawn canvas the camera flies across, one drawing per step, landing on your words, with your face cut back in for the lines that need it | "edit my reel", "draw the steps" |
+| **Split Screen** (default) | Graphics above your face from the first frame, under an Instagram-style text hook: dark cards, charts, phones with a made-up app and real stock footage, one clear focus at a time, landing on your words. Your face goes full frame for your intro and the outro (a follow card), your footage sits in a rounded card for the points, the word you're saying is highlighted, and a soft electronic bed runs underneath | "edit my reel", "make it a Split Screen" |
+| **Drawn Roadmap** | A number counts up on a graph in the hook, then a hand-drawn canvas the camera flies across, one drawing per step, landing on your words, with your face cut back in for the lines that need it | "draw the steps", "make it a roadmap" |
 | **Talking Head** | Your takes with captions, app screens as 3D phones, titles, transitions and sound effects | "make it a Talking Head", "show the app when I say it" |
-| **Split Screen** | Your face full frame for the hook, then the drawing above your face for each point, with the word you're saying highlighted | "make it a Split Screen" |
-
-A Drawn Roadmap needs at least two points to draw and a number in the hook. Without both, Claude makes a Talking Head and
-tells you why.
 
 ![A Talking Head: captions, a spotlit title, a phone with a tap on it, a plan screen, the typed comment at the end](docs/standard.jpg)
 
@@ -54,15 +51,22 @@ tells you why.
 | **Cinematic** (default) | Contrasty grade, glowing titles, 3D phones, a transition on most cuts, a beat that drops on the reveal |
 | **Bright** | Your room bright and natural, bouncy cuts, mixed caption styles, no music |
 
-### Art styles for the drawings
+### Art styles for the graphics
 
-| **Sketch** (default) | **Blueprint** | **Neon** | **Stick Figures** |
+**Vector** is the Split Screen's: flat graphics on near-black, heavy titles with one word on a red or green pill, dark cards, bar charts,
+numbered lists, phones with a made-up app (the question and blank answer rows) and real stock footage in rounded frames. No gradients,
+one main thing per picture. Free stock clips come from Mixkit (Stock Video Free License only) through `scripts/stock.py`.
+
+The drawn styles:
+
+| **Sketch** | **Blueprint** | **Neon** | **Stick Figures** |
 |---|---|---|---|
 | Hand-drawn on dark | White technical lines on blue | Glowing tubes on black | White marker on black |
 
-![The four art styles moving, left to right: Sketch, Blueprint, Neon, Stick Figures](docs/styles.gif)
+![The four drawn art styles moving, left to right: Sketch, Blueprint, Neon, Stick Figures](docs/styles.gif)
 
-Sketch draws whole reels. The other three come with sample scenes to build on.
+Sketch draws whole reels (the Drawn Roadmap, and a Split Screen when you ask for the drawn look). The other three come with sample
+scenes to build on.
 
 ## Install
 
@@ -82,7 +86,7 @@ xcode-select --install
 mkdir -p ~/.cache/whisper.cpp && curl -L -o ~/.cache/whisper.cpp/ggml-large-v3-turbo.bin https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
 ```
 
-and Google Chrome for the app mockups. Node draws the Drawn Roadmap and the Split Screen. The whisper model is 1.6 GB; a smaller one works
+and Google Chrome for the app mockups. Node draws the Split Screen and the Drawn Roadmap. The whisper model is 1.6 GB; a smaller one works
 with less exact word timings (`REEL_WHISPER_MODEL` points at any ggml file). Ask Claude to "check the reel-editor setup",
 or run `python3 skills/reel-editor/scripts/doctor.py`, to see what's missing.
 
@@ -92,9 +96,9 @@ or run `python3 skills/reel-editor/scripts/doctor.py`, to see what's missing.
 
 > Show the onboarding screen when I say "like this", and hold it longer
 
-> Here's a ten-step list I recorded, draw the steps
+> Here's the full take, edit my reel
 
-> Make this one a Split Screen, here's the full take
+> Here's a ten-step list I recorded, draw the steps
 
 > I like how this reel is edited, make mine look like that (screen recording attached)
 
@@ -111,9 +115,16 @@ replacement in `~/.config/reel-editor/rooms/`.
 The sound effects are synthesized by `scripts/sfx_pack.py`, so there is nothing to license. You can put your own recordings
 over them ([how](skills/reel-editor/references/sfx-library.md)).
 
-The beats aren't in this repository: Mixkit's free licence lets you use them in your videos but not hand the files on.
-`python3 scripts/music_lib.py fetch` downloads your own copies (33 MB). Until then a Talking Head plays a
-synthesized pad and a Drawn Roadmap has no beat.
+No music is in this repository: the licences let you use the tracks in your videos but not hand the files on.
+
+**The Split Screen's bed** is "Minimal IDM Ambient Electronic" by Musinova on Pixabay (Pixabay Content License: commercial use,
+no credit). Pixabay doesn't allow scripted downloads, so get it yourself once: open
+[its page](https://pixabay.com/music/upbeat-minimal-idm-ambient-electronic-373348/) in your browser, read the licence, download the MP3
+and save it as `~/.cache/reel-editor/music/pixabay-373348.mp3`. Every Split Screen then has it under the voice, levelled for a phone
+speaker. Without it a Split Screen renders with no music and says how to get it; `"music": false` in `split_reel.json` turns it off.
+
+**The beats** for a Talking Head and a Drawn Roadmap come from Mixkit: `python3 scripts/music_lib.py fetch` downloads your own copies
+(33 MB). Until then a Talking Head plays a synthesized pad and a Drawn Roadmap has no beat.
 
 ## Scripts
 
@@ -129,6 +140,7 @@ All of them also work without Claude.
 | `qa.py`, `audio_check.py` | The checks |
 | `countup_hook.py`, `canvas_body.py`, `canvas_sound.py` | Drawn Roadmap |
 | `split_cut.py`, `split_reel.py`, `split_thumb.py` | Split Screen |
+| `stock.py` | Finds free stock video on Mixkit (Free License only) and downloads the clips you pick, with their credits |
 | `analyze_ref.py` | Measures a reference reel: pacing, zooms, loudness, caption sheets |
 | `room.py` | Replaces the room behind you, no green screen |
 

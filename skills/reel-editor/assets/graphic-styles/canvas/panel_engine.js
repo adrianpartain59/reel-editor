@@ -1,6 +1,6 @@
-// Split Screen's top half: the hand-drawn canvas redrawn wide and short (1080 x 764), the face is under it.
-// One cell per beat in a row, a dotted road between them, the camera flies along it. A reel only writes scenes.js
-// (canvas_init.py PROJECT split copies split.starter.scenes.js). Guide: references/split-screen.md.
+// Split Screen's top half in Sketch, the drawn look (Vector, vector_engine.js, is the default): the hand-drawn canvas redrawn wide,
+// 1080 x 1240 over the card layout or 1080 x 764 over the seam layout. One cell per beat in a row, a dotted road between them, the camera
+// flies along it. A reel only writes scenes.js (canvas_init.py PROJECT split sketch copies split.starter.scenes.js). Guide: references/split-screen.md.
 //
 //   const { make, p } = require('<skill>/assets/graphic-styles/canvas/panel_engine');
 //   module.exports = make({ cells: [{ id, n, at, draw }], recap: { at, first, names } });   // last line
@@ -11,7 +11,10 @@
 //   node scenes.js render out.mp4 t0 t1         the panel between those seconds (split_reel.py calls this)
 //   node panel_engine.js cards names.json dir   the hook's blurred cards (split_reel.py calls this)
 const { h } = require('./engine'); const { C, FILL, FONT, K, mk, hatch, box, write, tag, pop, label, face, line, ell, spline, txt, pr, E, lerp, clamp } = h;
-const fs = require('fs'), path = require('path'), PW = 1080, PH = 764, CW = 1260, HY = 248, Z0 = .965;
+const fs = require('fs'), path = require('path'), PW = 1080, CW = 1260, HY = 248, Z0 = .965;
+// PANEL_H: the panel's height. 764 is the seam layout (the face under the panel); the card layout (split_reel.py sets 1240) makes it taller and puts
+// the face in a rounded card at the bottom, so the drawing runs down to DB (the caption sits above the head, just over the card)
+const PH = +(process.env.PANEL_H || 764), DB = PH === 764 ? 735 : PH - 250;
 const COL = [C.green, C.yellow, C.violet, C.orange, C.blue, C.red, C.grey];                             // the hook cards and the recap, in order
 
 // ---------- pieces (coordinates in a cell: x 34 to 1040, the header row at y 248, the drawing between y 325 and 715)
@@ -30,13 +33,13 @@ const bar = (c, S, x, y, w, hh, t, t0, col, fill, val, size = 100) => { const u 
 const count = (c, v, x, y, size, t, t0, t1, col, fmt) => { if (t > t0) pop(c, x, y, E.back(pr(t, t0, t0 + .25)), () => txt(c, (fmt || (n => n.toLocaleString('en-US')))(Math.round(v * E.out(pr(t, t0, t1)))), 0, 0, FONT, size, col)); };
 // a ready-made app icon (rounded square) popping in; on = lit in colour
 const icon = (c, x, y, s, t, t0, col, fn) => pop(c, x + s / 2, y + s / 2, E.back(pr(t, t0, t0 + .24)), () => { c.save(); c.translate(-x - s / 2, -y - s / 2); const k = mk(c, 99); k.rect(x, y, s, s, -1, -1, { c: col, w: 8, r: s * .24 }); if (fn) fn(k); c.restore(); });
-const p = { ...h, head, pill, wide, brackets, tick, star, bar, count, icon, COL, PW, PH };
+const p = { ...h, head, pill, wide, brackets, tick, star, bar, count, icon, COL, PW, PH, DB };
 
 // ---------- one reel
 function make(R) {
   const cells = R.cells.map(q => ({ ...q })); if (R.recap) cells.push({ id: 'recap', at: R.recap.at, fly: R.recap.fly, draw: recap(R.recap) });
   const FL = cells.slice(1).map((q, i) => [...(q.fly || [q.at - .10, q.at + .36]), i, i + 1]);              // after the last word of the scene before, which is cut tight to it
-  function recap(r) { const n = r.names.length, gap = Math.min(108, 540 / n), y0 = 462 - gap * (n - 1) / 2; return (c, t) => { c.font = `${78 * gap / 108}px "${FONT}"`; const w = Math.max(...r.names.map(s => c.measureText(s).width)), k = gap / 108 * Math.min(1, 752 / w); r.names.forEach((s, i) => { const y = y0 + i * gap, a = r.first + i * (r.every || .17); pop(c, 196, y, E.back(pr(t, a, a + .24)), () => { c.fillStyle = COL[i % COL.length]; c.beginPath(); c.arc(0, 0, 44 * k, 0, 7); c.fill(); txt(c, String(i + 1), 0, 4 * k, FONT, 58 * k, C.bg); }); write(c, [[s, a + .05]], 276, y - 41 * k, 78 * k, t, { align: 'left', maxW: 4000 }); }); }; }
+  function recap(r) { const RG = PH === 764 ? [108, 540, 462] : [140, 640, (330 + DB) / 2], n = r.names.length, gap = Math.min(RG[0], RG[1] / n), y0 = RG[2] - gap * (n - 1) / 2; return (c, t) => { c.font = `${78 * gap / 108}px "${FONT}"`; const w = Math.max(...r.names.map(s => c.measureText(s).width)), k = gap / 108 * Math.min(1, 752 / w); r.names.forEach((s, i) => { const y = y0 + i * gap, a = r.first + i * (r.every || .17); pop(c, 196, y, E.back(pr(t, a, a + .24)), () => { c.fillStyle = COL[i % COL.length]; c.beginPath(); c.arc(0, 0, 44 * k, 0, 7); c.fill(); txt(c, String(i + 1), 0, 4 * k, FONT, 58 * k, C.bg); }); write(c, [[s, a + .05]], 276, y - 41 * k, 78 * k, t, { align: 'left', maxW: 4000 }); }); }; }
   const drift = (t, s) => Z0 * (1 + .005 * Math.max(0, Math.min(6, t - s)));                            // a touch under full size so the labels clear the caption on the seam
   function cam(t) { let cur = 0, s0 = cells[0].at - .4; for (const [a, b, f, g] of FL) { if (t >= b) { cur = g; s0 = b; continue; } if (t >= a) { const u = E.io(pr(t, a, b)), zA = drift(a, s0); return [lerp(f * CW + 540, g * CW + 540, u), Math.exp(lerp(Math.log(zA), Math.log(Z0), u)) * (1 - Math.sin(u * Math.PI) * .2)]; } break; } return [cur * CW + 540, drift(t, s0)]; }
   const where = t => FL.reduce((k, f) => t >= f[1] ? f[3] : k, 0), left = k => { const f = FL.find(q => q[2] === k); return f ? f[0] : 1e9; };
@@ -62,8 +65,8 @@ function check(A, c) { const msgs = []; const snap = (i, t) => { c.setTransform(
   const texts = (i, t) => { const out = [], fill = c.fillText; c.fillText = function (s, x, y) { const m = c.getTransform(), w = c.measureText(s).width, z = parseFloat(c.font), al = c.textAlign, x0 = al === 'center' ? x - w / 2 : al === 'right' ? x - w : x, mid = c.textBaseline === 'middle'; if (c.globalAlpha > .4 && String(s).trim()) out.push({ s, x0: m.a * x0 + m.e, x1: m.a * (x0 + w) + m.e, y0: m.d * (mid ? y - z * .36 : y - z * .7) + m.f, y1: m.d * (mid ? y + z * .36 : y + z * .12) + m.f }); return fill.apply(c, arguments); }; snap(i, t); c.fillText = fill; return out; };
   const bounds = d => { let x0 = PW, x1 = 0, y0 = PH, y1 = 0, n = 0; for (let y = 0; y < PH; y += 2) for (let x = 0; x < PW; x += 2) { const i = (y * PW + x) * 4; if (Math.max(d[i], d[i + 1], d[i + 2]) > 80) { n++; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); } } return { x0, x1, y0, y1, n }; };
   A.cells.forEach((q, i) => { if (q.id === 'recap') { const b = bounds(snap(i, q.at + 6)); if (b.x1 > 1046) msgs.push(`recap: a name runs to x ${b.x1}; shorten it`); return; } const end = Math.min(A.left(i), q.at + 12) - .04, b = bounds(snap(i, end)); if (!b.n) return msgs.push(`cell ${q.id}: nothing is drawn`);
-    if (b.x0 < 34) msgs.push(`cell ${q.id}: ink at x ${b.x0}, keep it right of 34`); if (b.x1 > 1046) msgs.push(`cell ${q.id}: ink at x ${b.x1}, keep it left of 1040`); if (b.y0 < 190) msgs.push(`cell ${q.id}: ink at y ${b.y0}, nothing above 195 (Instagram's header)`); if (b.y1 > 738) msgs.push(`cell ${q.id}: ink at y ${b.y1}, nothing below 735 (the caption sits on the seam)`);
-    if (b.y1 < 600) msgs.push(`cell ${q.id}: the drawing ends at y ${b.y1}; fill down to about 690 to 715`); if (b.x1 < 900) msgs.push(`cell ${q.id}: the drawing ends at x ${b.x1}; use the whole width, to about 980 to 1030`);
+    if (b.x0 < 34) msgs.push(`cell ${q.id}: ink at x ${b.x0}, keep it right of 34`); if (b.x1 > 1046) msgs.push(`cell ${q.id}: ink at x ${b.x1}, keep it left of 1040`); if (b.y0 < 190) msgs.push(`cell ${q.id}: ink at y ${b.y0}, nothing above 195 (Instagram's header)`); if (b.y1 > DB + 3) msgs.push(`cell ${q.id}: ink at y ${b.y1}, nothing below ${DB} (the caption sits under the drawing)`);
+    if (b.y1 < DB - 135) msgs.push(`cell ${q.id}: the drawing ends at y ${b.y1}; fill down to about ${DB - 45} to ${DB - 20}`); if (b.x1 < 900) msgs.push(`cell ${q.id}: the drawing ends at x ${b.x1}; use the whole width, to about 980 to 1030`);
     const tx = texts(i, end), seen = new Set(); for (let a = 0; a < tx.length; a++) for (let z = a + 1; z < tx.length; z++) { const A1 = tx[a], B1 = tx[z], ox = Math.min(A1.x1, B1.x1) - Math.max(A1.x0, B1.x0), oy = Math.min(A1.y1, B1.y1) - Math.max(A1.y0, B1.y0), key = A1.s + '|' + B1.s; if (ox > 6 && oy > 8 && !seen.has(key)) { seen.add(key); msgs.push(`cell ${q.id}: "${A1.s}" and "${B1.s}" sit on top of each other`); } }
     const nx = A.left(i) < 1e8 ? A.left(i) : null; if (nx && nx - q.at > 7) msgs.push(`cell ${q.id}: ${(nx - q.at).toFixed(1)} s on one drawing; give the second half its own cell (3 to 6 s each)`);
     let first = null, last = null, still = 0, at = null, sig = null; for (let t = q.at - .4; t < end; t += .1) { const d = snap(i, t), s = bounds(d).n; let diff = 0; if (sig) for (let k = 1; k < d.length; k += 148) diff += (d[k] >> 4) !== sig[(k - 1) / 148]; const now = new Uint8Array(Math.ceil((d.length - 1) / 148)); for (let k = 1, z = 0; k < d.length; k += 148, z++) now[z] = d[k] >> 4; if (first === null && s > 40) first = t; if (first !== null && sig && diff < 2) { if (at === null) at = t - .1; still = Math.max(still, t - at); } else { if (at !== null && t - at > 1.6) msgs.push(`cell ${q.id}: nothing new from ${at.toFixed(1)} to ${t.toFixed(1)} s; draw something on those words`); at = null; } sig = now; }

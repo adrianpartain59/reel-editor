@@ -1,6 +1,6 @@
 # Drawing in Sketch
 
-Sketch is one of the four art styles (`art-styles.md`), the default, and the only one with a full engine. The surface it draws on is called the canvas. Code: `assets/graphic-styles/canvas/`
+Sketch is one of the drawn art styles (`art-styles.md`): the Drawn Roadmap's, and the Split Screen's when the user asks for the drawn look. It has a full engine. The surface it draws on is called the canvas. Code: `assets/graphic-styles/canvas/`
 (`engine.js` draws the world, `starter.scenes.js` to copy with `canvas_init.py PROJECT roadmap`, `roadmap.scenes.js` a finished ten-step reel). A reel writes only `scenes.js`.
 Look at `assets/examples/canvas-roadmap/sheet.jpg` before drawing: that is the bar.
 

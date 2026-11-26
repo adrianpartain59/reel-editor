@@ -13,7 +13,7 @@ face in the body, Instagram captions with the word the speaker is saying in yell
 
 The numbers in here are the style. Change them only when the user asks for a different look.
 """
-import difflib, json, math, re, subprocess, sys
+import difflib, json, math, os, re, subprocess, sys
 from functools import lru_cache
 from pathlib import Path
 import numpy as np
@@ -23,6 +23,13 @@ import fx
 from common import ASSETS, die, run, whisper_model
 
 W, H, FPS, PH = 1080, 1920, 30, 764
+# "layout": {"kind": "card"} (the default, in the starter): in the split the speaker's footage sits in a rounded card at the bottom, inset from
+# the sides, and the canvas gets the rest of the height. Left out, the seam layout (canvas on top, the face under it).
+CARD = None
+CARD_DEFAULT = {"top": 1200, "inset": 170, "r": 46, "z": .72, "over": -34, "cutout": False}
+# top 1200 = the card is 37.5% of the screen. No cut-out (over < 0 keeps the hair inside the card: a head poking out of the frame distracts and
+# takes up room), a narrow card (inset 170, 740 wide) and smaller footage (z .72, the least that still fills that width).
+# "cutout": true, "over": 70, "inset": 60, "z": .9 is the other card look: a wider card with the head cut out over its top edge.
 MOVE = 0.36                                              # the canvas slides down (and back up) in this long, the footage with it
 YELLOW, SIZE = (255, 212, 59, 255), 70
 WFULL, WSPLIT = 700, 900                                 # widest caption line: full shot (clear of the like column), split
@@ -35,13 +42,15 @@ def back(u, s=1.9): u = clamp(u) - 1; return 1 + (s + 1) * u ** 3 + s * u ** 2
 
 
 def setup(arg):
-    global PROJ, R, P, SEG, N, DUR, TRK, HOOK, SPLIT, STORE, FOLLOW, SHOTS, CAPY, SLUG
+    global PROJ, R, P, SEG, N, DUR, TRK, HOOK, SPLIT, STORE, FOLLOW, SHOTS, CAPY, SLUG, PH, CARD
     PROJ = Path(arg).expanduser().resolve(); f = PROJ / "split_reel.json"
     if not f.exists(): die(f"{f} missing (run canvas_init.py PROJECT split and fill it in)")
     R = json.loads(f.read_text()); P = PROJ / "work/parts" / R.get("part", "body")
     if not (P / "track.json").exists(): die("run split_cut.py first")
     SEG = json.loads((P / "segs.json").read_text()); N, DUR = SEG["frames"], SEG["duration"]; TRK = json.loads((P / "track.json").read_text())["segs"]
     SLUG, HOOK, SPLIT, STORE, FOLLOW = R["slug"], R["hook"], R["split"], R.get("store"), R.get("follow"); CAPY = R.get("cap_y"); SHOTS = R.get("shots") or auto_shots()
+    L = R.get("layout") or {}; CARD = {**CARD_DEFAULT, **{k: v for k, v in L.items() if k != "kind"}} if L.get("kind") == "card" else None
+    PH = CARD["top"] + 40 if CARD else 764; os.environ["PANEL_H"] = str(PH)               # the canvas engine reads it too
 
 
 # ------------------------------------------------------------------ face track and camera
@@ -59,14 +68,24 @@ def over_head(a, b):
     o = [(0, HOOK["out"])] + ([(STORE["in"], STORE["out"])] if STORE else []) + ([(FOLLOW["in"], DUR)] if FOLLOW else []); return any(x < b and y > a for x, y in o)
 
 
+def cards_span():
+    """(first card, when they leave). On the hook by default; "first" and "cards_out" put them on a later line, the one that names the count."""
+    n = len(HOOK.get("cards") or []); return (HOOK.get("first", .86), HOOK.get("cards_out", HOOK["out"])) if n else (9e9, 9e9)
+
+
+def beside(a, b):
+    """do the cards sit beside the speaker's face in this shot?"""
+    x, y = cards_span(); return x < b and y > a
+
+
 def auto_shots():
     """One slow push per full-frame clip. Wide (1.00) when something sits above the speaker's head, a little tighter when nothing does, so the
     jump cuts change size."""
     out = []
     for s in SEG["segs"]:
         a, b = s["t0"], s["t1"]
-        if a >= SPLIT["in"] + MOVE and b <= SPLIT["out"]: continue
-        z = 1.0 if over_head(a, b) else 1.03; out.append([a, b + .4, z, z + min(.045, .008 * (b - a)), HOOK.get("face_x", 445) if a < HOOK["end"] - .05 and HOOK.get("cards") else 540])
+        if any(a >= p + MOVE and b <= q for p, q in spans()): continue
+        z = 1.0 if over_head(a, b) else 1.03; out.append([a, b + .4, z, z + min(.045, .008 * (b - a)), HOOK.get("face_x", 445) if beside(a, b) else 540])
     return out
 
 
@@ -78,8 +97,8 @@ def room(t0):
     if not sh or R.get("room") is False: return 0, 0, 0, 0
     a, b = sh[0], min(sh[1], DUR - .05); fr = lambda t: (full_cam(t), face(t)); ds = lambda x, y, st: [t for t in np.arange(max(a, x), min(b, y), st) if seg_at(t)["t0"] <= a + .05]
     dx = dy = kx = ky = 0
-    if HOOK.get("cards") and a < HOOK["end"] - .05:
-        T = card_times(); right = max([(f[0] - c[1]) * c[0] + .46 * f[2] * c[0] for c, f in map(fr, ds(T[0], HOOK["out"], .1))] or [0]); dx = int(clamp(right - 752, 0, 140)) if right > 771 else 0; kx = right - dx + 14
+    if beside(a, b - .4):
+        right = max([(f[0] - c[1]) * c[0] + .46 * f[2] * c[0] for c, f in map(fr, ds(*cards_span(), .1))] or [0]); dx = int(clamp(right - 752, 0, 140)) if right > 771 else 0; kx = right - dx + 14
     for x, y, low, k in ([(0.2, HOOK["out"], 226 + 100 * len(HOOK.get("text") or []), .98)] if HOOK.get("text") else []) + ([(STORE["in"], STORE["out"], 464, .90)] if STORE else []) + ([(FOLLOW["in"], DUR, 394, .90)] if FOLLOW else []):
         hair = min([(f[1] - c[2]) * c[0] - k * f[2] * c[0] for c, f in map(fr, ds(x, y, .1))] or [9e9])
         if hair < low + 4 and low + 12 - hair > dy: dy = int(clamp(low + 12 - hair, 0, 130)); ky = hair + dy - 14
@@ -102,7 +121,14 @@ def make_room(im, dx, dy, kx, ky):
 def shot_t0(t): return next((x[0] for x in reversed(SHOTS) if x[0] <= t + .001), SHOTS[0][0])
 
 
-def split(t): return eio((t - SPLIT["in"]) / MOVE) if t < SPLIT["in"] + MOVE else 1 - eio((t - SPLIT["out"]) / MOVE)
+def spans():
+    """[[in, out], ...]: the body's split, and the hook's when split.hook_out is set (the reel opens in the split and goes full frame
+    at hook_out for the speaker's intro: the hook gets as much movement as possible, and the face comes in when the speaker says who they are)"""
+    if SPLIT.get("hook_out") and SPLIT["hook_out"] >= SPLIT["in"] - MOVE: return [[-MOVE, SPLIT["out"]]]   # no intro: the split runs on from the first frame
+    return ([[-MOVE, SPLIT["hook_out"]]] if SPLIT.get("hook_out") else []) + [[SPLIT["in"], SPLIT["out"]]]
+
+
+def split(t): return max(eio((t - a) / MOVE) if t < a + MOVE else 1 - eio((t - b) / MOVE) for a, b in spans())
 
 
 def full_cam(t):
@@ -115,11 +141,73 @@ def full_cam(t):
 def camera(t):
     """(zoom, x0, y0): output pixel = (source - (x0, y0)) * zoom. In the split the speaker's hair sits just under the seam."""
     fx_, fy, fh = face(t); s = split(t); f = full_cam(t); g = seg_at(t); zs = 1.0 + 0.006 * max(0, t - g["t0"]); sp = (zs, clamp(fx_ - 540 / zs, 0, W - W / zs), fy - (824 + 0.90 * fh * zs) / zs)
+    if CARD:                                                            # card: the hair rises CARD["over"] px above the card's top edge
+        z = CARD["z"] * zs; i = CARD["inset"]; sp = (z, clamp(fx_ - 540 / z, -i / z, W - (W - i) / z), min((fy - .85 * fh) - (CARD["top"] - CARD["over"]) / z, H - H / z))
     if f is None or s >= 1: return sp
     return f if s <= 0 else tuple(lerp(p, q, s) for p, q in zip(f, sp))
 
 
+def card_rect(s):
+    """the footage's rounded rectangle, from the full frame (s=0) to the card (s=1)"""
+    i, r = CARD["inset"], CARD["r"]; return (lerp(0, i, s), lerp(0, CARD["top"], s), lerp(W, W - i, s), lerp(H, H + r, s), r * s)
+
+
+def footage_card(fr, t):
+    z, x0, y0 = camera(t); s = split(t)
+    out = fr.transform((W, H), Image.AFFINE, (1 / z, 0, x0, 0, 1 / z, y0), Image.BICUBIC, fillcolor=(18, 18, 18))
+    if s < 1:
+        dx, dy, kx, ky = room(shot_t0(t)); dx, dy = int(round(dx * (1 - s))), int(round(dy * (1 - s)))
+        if dx or dy: out = make_room(out, dx, dy, int(kx), int(ky))
+    return out, s
+
+
+@lru_cache(None)
+def not_him():
+    """Things Vision marks as person that are really the room: a ceiling light above the head, say, touching the hair in most frames, so being
+    joined to the face doesn't separate them. The camera doesn't move, so: find the split frame where the least is marked above the face (the
+    light left out), and treat what other frames add above the head as the room, unless it differs from that frame's pixels (the hair moving
+    into it). Returns (box, region, plate) at 540x960, or None; made once."""
+    f = P / "notme.npz"
+    if f.exists() and f.stat().st_mtime >= mask_path().stat().st_mtime:
+        z = np.load(f); return (tuple(int(v) for v in z["box"]), z["region"], z["plate"]) if z["box"].size else None
+    a0, b0 = int(SPLIT["in"] * FPS) + 10, int(SPLIT["out"] * FPS) - 10; ns = np.linspace(a0, b0, 48).astype(int)
+    mk = np.stack([np.asarray(grab(mask_path(), int(n), 540, 960).convert("L"), np.float32) > 96 for n in ns])
+    top = [(m[: int(max(0, (face(n / FPS)[1] - .5 * face(n / FPS)[2]) / 2))].sum(), i) for i, (n, m) in enumerate(zip(ns, mk))]; _, iy = min(top); ny = int(ns[iy])
+    fy, fh = face(ny / FPS)[1:]; ycut = int((fy - .5 * fh) / 2)
+    mine = np.asarray(Image.fromarray((mk[iy] * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(5))) > 0
+    reg = (mk.mean(0) > .25) & ~mine; reg[ycut:] = False
+    reg = np.asarray(Image.fromarray((reg * 255).astype(np.uint8)).filter(ImageFilter.MinFilter(3)).filter(ImageFilter.MaxFilter(11))) > 0
+    if reg.sum() < 150: np.savez(f, box=np.array([]), region=np.zeros(1), plate=np.zeros(1)); return None
+    ys, xs = np.where(reg); box = (int(xs.min()), int(ys.min()), int(xs.max()) + 1, int(ys.max()) + 1)
+    plate = np.asarray(grab(P / "base.mp4", ny, W, H).resize((540, 960), Image.BILINEAR), np.float32)[box[1]:box[3], box[0]:box[2]]; region = reg[box[1]:box[3], box[0]:box[2]].astype(np.float32)
+    np.savez(f, box=np.array(box), region=region, plate=plate); return box, region, plate
+
+
+@lru_cache(None)
+def grid(): return np.mgrid[0:H, 0:W].astype(np.float32)
+
+
+def cutout(mask, t, fr=None):
+    """the speaker's head and hands where they rise over the card's top edge: the person mask, through the same camera, above the card only"""
+    s = split(t); u = clamp((s - .8) / .2)
+    if mask is None or u <= 0: return None
+    z, x0, y0 = camera(t); k = mask.size[0] / W
+    nh = not_him()
+    if nh and fr is not None:                                          # the room's look-alikes: keep only pixels that differ from the empty room
+        (bx0, by0, bx1, by1), reg, plate = nh; m = np.asarray(mask, np.float32).copy()
+        cur = np.asarray(fr.crop((bx0 * 2, by0 * 2, bx1 * 2, by1 * 2)).resize((bx1 - bx0, by1 - by0), Image.BILINEAR), np.float32)
+        keep = np.clip((np.abs(cur - plate).max(2) - 16) / 14, 0, 1); m[by0:by1, bx0:bx1] *= 1 - reg * (1 - keep); mask = Image.fromarray(m.astype(np.uint8))
+    m = mask.transform((W, H), Image.AFFINE, (k / z, 0, k * x0, 0, k / z, k * y0), Image.BILINEAR, fillcolor=0)
+    a = np.asarray(m, np.float32); top = int(CARD["top"] + CARD["r"]); a[top:] = 0
+    fx_, fy, fh = face(t); ex, ey, rx, ry = (fx_ - x0) * z, (fy - .12 * fh - y0) * z, .68 * fh * z, .84 * fh * z      # the head, from the face track
+    yy, xx = grid(); d = np.sqrt(((xx - ex) / rx) ** 2 + ((yy - ey) / ry) ** 2)
+    lim = CARD["top"] - CARD["over"] - 16; band = np.clip((yy - lim) / 14 + 1, 0, 1)                       # nothing much higher than the hair should reach
+    a = np.clip((a - 40) * 1.4, 0, 255) * u * np.clip((1.06 - d) / .08, 0, 1) * band            # the head only: the room behind it (a ceiling light) stays out
+    return Image.fromarray(a.astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.0))
+
+
 def footage(fr, t):
+    if CARD: return footage_card(fr, t)
     z, x0, y0 = camera(t); s = split(t); top = int(round(PH * s)); out = Image.new("RGB", (W, H), (18, 18, 18)); ya = y0 + top / z; yb = y0 + H / z
     if ya < 0: top2 = int(math.ceil(-y0 * z)); ya = y0 + top2 / z; top = max(top, top2)
     yb = min(yb, H); h = int(round((yb - ya) * z)); out.paste(fr.resize((W, min(h, H - top)), Image.BICUBIC, box=(x0, ya, x0 + W / z, yb)), (0, top))
@@ -146,7 +234,7 @@ def words():
 
 @lru_cache(None)
 def fnt(): return C.font("semibold", SIZE)
-def in_split(t): return SPLIT["in"] + .25 < t < SPLIT["out"] + .2
+def in_split(t): return any(a + .25 < t < b + .2 for a, b in spans())
 
 
 @lru_cache(None)
@@ -223,7 +311,7 @@ def cap_y(t):
     s = split(t)
     if CAPY: full = [y for a, y in CAPY if a <= t + .001][-1]
     else: full = chin_y(shot_t0(t))
-    return (PH + 12 if s > .5 else full), clamp((abs(2 * s - 1) - .35) / .4), s <= .5
+    return ((CARD["top"] - CARD["over"] - 80 if CARD and CARD["over"] > 0 else CARD["top"] - 62 if CARD else PH + 12) if s > .5 else full), clamp((abs(2 * s - 1) - .35) / .4), s <= .5
 
 
 def captions(im, t):
@@ -238,18 +326,30 @@ def captions(im, t):
 def card_times(): n = len(HOOK.get("cards") or []); return [HOOK.get("first", .86) + i * HOOK.get("every", .18) for i in range(n)]
 
 
+def ENGINE():
+    """The engine the reel's scenes.js is built on: vector_engine.js (Vector, the default) or panel_engine.js (Sketch, drawn)."""
+    sc = PROJ / R.get("scenes", "canvas/scenes.js")
+    return "vector_engine.js" if sc.exists() and "vector_engine" in sc.read_text() else "panel_engine.js"
+
+
+@lru_cache(None)
+def GROUND():
+    """What shows beside the card under the panel: the vector style's near-black field, or the drawn canvas's grey."""
+    return (5, 5, 5) if ENGINE() == "vector_engine.js" else (18, 18, 18)
+
+
 @lru_cache(None)
 def cards():
     names = HOOK.get("cards") or []
     if not names: return []
-    d = PROJ / "work/cards"; d.mkdir(parents=True, exist_ok=True); (d / "names.json").write_text(json.dumps(names)); run(["node", str(CANVAS / "panel_engine.js"), "cards", str(d / "names.json"), str(d)]); out = []
+    d = PROJ / "work/cards"; d.mkdir(parents=True, exist_ok=True); (d / "names.json").write_text(json.dumps(names)); run(["node", str(CANVAS / ENGINE()), "cards", str(d / "names.json"), str(d)]); out = []
     for i in range(len(names)):
         c = Image.open(d / f"card{i + 1}.png").convert("RGBA"); n = Image.open(d / f"name{i + 1}.png").convert("RGBA").filter(ImageFilter.GaussianBlur(19)); n.putalpha(n.getchannel("A").point(lambda v: min(255, int(v * 2.3)))); c.alpha_composite(n); out.append(c.resize((c.width // 2, c.height // 2), Image.LANCZOS))
     return out
 
 
 def hook_cards(im, t):
-    T, o0 = card_times(), HOOK["out"]
+    T, o0 = card_times(), cards_span()[1]
     if not T or not T[0] <= t < o0 + .4: return
     n = len(T); pitch = min(147, 735 / n); k = min(1, pitch / 147); y0 = 806 - pitch * (n - 1) / 2 if n != 5 else 512       # beside the speaker's face, under the text hook
     for i in range(n):
@@ -262,12 +362,14 @@ def hook_cards(im, t):
 
 @lru_cache(None)
 def hook_text():
-    """Black SF Pro Bold on white; the background hugs each line and the corners between lines are rounded, as Instagram draws it."""
+    """Black SF Pro Bold on white (hook.style "black": white on black); the background hugs each line and the corners between lines are rounded,
+    as Instagram's editor draws it. HARD RULE (edit-playbook rule 33): a text hook is always this, never a graphic style's own type."""
+    bg, ink = ((16, 16, 16, 255), (250, 250, 250, 255)) if HOOK.get("style") == "black" else ((255, 255, 255, 255), (12, 12, 12, 255))
     L = HOOK["text"]; S = 3; size = 74; f = C.font("bold", size * S); lh = 100; px, r, pad = 30, 22, 40; ws = [f.getlength(l) / S for l in L]; w = int(max(ws) + px * 2 + pad * 2); h = lh * len(L) + pad * 2; m = Image.new("L", (w * S, h * S), 0); d = ImageDraw.Draw(m)
     for i, lw in enumerate(ws): d.rounded_rectangle([(w / 2 - lw / 2 - px) * S, (pad + i * lh) * S, (w / 2 + lw / 2 + px) * S, (pad + (i + 1) * lh + (1 if i < len(ws) - 1 else 0)) * S], r * S, fill=255)
     for i in range(len(ws) - 1): n = min(ws[i], ws[i + 1]) / 2 + px; d.rectangle([(w / 2 - n) * S, (pad + (i + 1) * lh - r) * S, (w / 2 + n) * S, (pad + (i + 1) * lh + r) * S], fill=255)
-    m = m.filter(ImageFilter.GaussianBlur(7 * S)).point(lambda v: 255 if v > 127 else 0).filter(ImageFilter.GaussianBlur(1.2)); im = Image.new("RGBA", m.size, (0, 0, 0, 0)); sh = Image.new("RGBA", m.size, (0, 0, 0, 0)); sh.paste((0, 0, 0, 70), (0, 0), m); im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(9 * S)), (0, 4 * S)); im.paste((255, 255, 255, 255), (0, 0), m); d = ImageDraw.Draw(im)
-    for i, l in enumerate(L): d.text((w * S / 2, (pad + i * lh + lh / 2) * S), l, font=f, fill=(12, 12, 12, 255), anchor="mm")
+    m = m.filter(ImageFilter.GaussianBlur(7 * S)).point(lambda v: 255 if v > 127 else 0).filter(ImageFilter.GaussianBlur(1.2)); im = Image.new("RGBA", m.size, (0, 0, 0, 0)); sh = Image.new("RGBA", m.size, (0, 0, 0, 0)); sh.paste((0, 0, 0, 70), (0, 0), m); im.alpha_composite(sh.filter(ImageFilter.GaussianBlur(9 * S)), (0, 4 * S)); im.paste(bg, (0, 0), m); d = ImageDraw.Draw(im)
+    for i, l in enumerate(L): d.text((w * S / 2, (pad + i * lh + lh / 2) * S), l, font=f, fill=ink, anchor="mm")
     return im.resize((w, h), Image.LANCZOS)
 
 
@@ -339,7 +441,8 @@ def follow_card(im, t):
 
 
 # ------------------------------------------------------------------ one frame
-def frame(fr, panel, t):
+def frame(fr, panel, t, mask=None):
+    if CARD: return frame_card(fr, panel, t, mask)
     im, s = footage(fr, t)
     if t < .2:                                                           # the snap-out every reel opens with
         u = eoc((t + .5 / FPS) / .2); z = lerp(1.35, 1, u); w, h = W / z, H / z; im = im.resize((W, H), Image.BICUBIC, box=((W - w) / 2, (H - h) * .45, (W + w) / 2, (H - h) * .45 + h)); b = clamp(1 - t / .13)
@@ -349,14 +452,40 @@ def frame(fr, panel, t):
     hook_cards(im, t); text_hook(im, t); store_card(im, t); captions(im, t); follow_card(im, t); return im.convert("RGB")
 
 
+def frame_card(fr, panel, t, mask=None):
+    f, s = footage(fr, t)
+    if t < .2 and s <= 0:                                                # the snap-out every reel opens with
+        u = eoc((t + .5 / FPS) / .2); z = lerp(1.35, 1, u); w, h = W / z, H / z; f = f.resize((W, H), Image.BICUBIC, box=((W - w) / 2, (H - h) * .45, (W + w) / 2, (H - h) * .45 + h)); b = clamp(1 - t / .13)
+        if b > 0: f = fx.zoom_blur(f.filter(ImageFilter.GaussianBlur(16 * b)), 1.0, .12 * b)
+    if s <= 0: im = f.convert("RGBA")
+    else:
+        im = Image.new("RGBA", (W, H), GROUND() + (255,))
+        if panel is not None: im.paste(panel, (0, int(round(PH * s)) - PH))
+        x0, y0, x1, y1, r = card_rect(s); cm = Image.new("L", (W * 2, H * 2), 0); ImageDraw.Draw(cm).rounded_rectangle((x0 * 2, y0 * 2, x1 * 2, y1 * 2), r * 2, fill=255)
+        im.paste(f, (0, 0), cm.resize((W, H), Image.LANCZOS)); cut = cutout(mask, t, fr) if CARD.get("cutout") else None
+        if cut is not None: im.paste(f, (0, 0), cut)
+    hook_cards(im, t); text_hook(im, t); store_card(im, t); captions(im, t); follow_card(im, t); im = im.convert("RGB")
+    if t < .2 and s > 0:                                                 # opening in the split: the whole frame snaps out
+        u = eoc((t + .5 / FPS) / .2); z = lerp(1.35, 1, u); w, h = W / z, H / z; im = im.resize((W, H), Image.BICUBIC, box=((W - w) / 2, (H - h) * .45, (W + w) / 2, (H - h) * .45 + h)); b = clamp(1 - t / .13)
+        if b > 0: im = fx.zoom_blur(im.filter(ImageFilter.GaussianBlur(16 * b)), 1.0, .12 * b)
+    return im
+
+
+@lru_cache(None)
+def mask_path():
+    """the person masks for the card's cut-out (segment.py, macOS Vision), made once per cut"""
+    from segment import segment_part
+    return segment_part(P)
+
+
 def grab(path, n, w, h): return Image.frombytes("RGB", (w, h), run(["ffmpeg", "-v", "error", "-ss", f"{max(0, (n - .5) / FPS):.4f}", "-i", str(path), "-frames:v", "1", "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], text=False).stdout)
 
 
-def panel_span(): a = math.floor((SPLIT["in"] - .05) * FPS) / FPS; b = math.ceil((SPLIT["out"] + MOVE + .2) * FPS) / FPS; return a, b, int(round((b - a) * FPS))
+def panel_span(): a = max(0, math.floor((spans()[0][0] - .05) * FPS) / FPS); b = math.ceil((SPLIT["out"] + MOVE + .2) * FPS) / FPS; return a, b, int(round((b - a) * FPS))
 
 
 def panel_video():
-    sc = PROJ / R.get("scenes", "canvas/scenes.js"); out = PROJ / "work/panel.mp4"; a, b, n = panel_span(); key = f"{a:.4f} {b:.4f} {max(sc.stat().st_mtime, (CANVAS / 'panel_engine.js').stat().st_mtime)}"; mark = PROJ / "work/panel.key"
+    sc = PROJ / R.get("scenes", "canvas/scenes.js"); out = PROJ / "work/panel.mp4"; a, b, n = panel_span(); key = f"{a:.4f} {b:.4f} {PH} {max(sc.stat().st_mtime, (CANVAS / ENGINE()).stat().st_mtime)}"; mark = PROJ / "work/panel.key"
     if not out.exists() or not mark.exists() or mark.read_text() != key: run(["node", str(sc), "render", str(out), f"{a:.4f}", f"{b:.4f}"]); mark.write_text(key)
     return out
 
@@ -371,7 +500,7 @@ def panel_still(t):
 
 def preview(ts, name="preview.jpg", w=360):
     h = w * 16 // 9; cols = min(7, len(ts)); sheet = Image.new("RGB", (cols * (w + 8), ((len(ts) + cols - 1) // cols) * (h + 8)), (70, 70, 70))
-    for k, t in enumerate(ts): n = min(N - 1, int(round(t * FPS))); t = n / FPS; im = frame(grab(P / "base.mp4", n, W, H), panel_still(t) if split(t) > 0 else None, t); ImageDraw.Draw(im).text((20, 60), f"{t:.2f}", fill=(0, 255, 255), font=C.font("bold", 40)); sheet.paste(im.resize((w, h), Image.LANCZOS), ((k % cols) * (w + 8), (k // cols) * (h + 8)))
+    for k, t in enumerate(ts): n = min(N - 1, int(round(t * FPS))); t = n / FPS; im = frame(grab(P / "base.mp4", n, W, H), panel_still(t) if split(t) > 0 else None, t, grab(mask_path(), n, 540, 960).convert("L") if CARD and CARD.get("cutout") and split(t) > .8 else None); ImageDraw.Draw(im).text((20, 60), f"{t:.2f}", fill=(0, 255, 255), font=C.font("bold", 40)); sheet.paste(im.resize((w, h), Image.LANCZOS), ((k % cols) * (w + 8), (k // cols) * (h + 8)))
     sheet.save(PROJ / "work" / name, quality=90); print(PROJ / "work" / name)
 
 
@@ -387,8 +516,51 @@ def add_pops(pre, db=-9.0):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", "48000", "-ac", "2", "-i", "-", "-c:a", "pcm_f32le", pre + ".tmp.wav"], input=x.tobytes(), check=True); Path(pre + ".tmp.wav").replace(pre)
 
 
+# The default bed: "Minimal IDM Ambient Electronic" by Musinova on Pixabay (Pixabay Content License: commercial use, no credit; the track page shows
+# no Content ID badge). Pixabay doesn't allow handing its tracks on and refuses scripted downloads, so the file is never in this repository and
+# nothing here fetches it: the user downloads it in a browser and saves it as ~/.cache/reel-editor/music/pixabay-373348.mp3 (music-library.md).
+DEFAULT_MUSIC = {"file": "lib:pixabay-373348.mp3", "start": 0, "level": -13, "duck": 2.5}
+MUSIC_PAGE = "https://pixabay.com/music/upbeat-minimal-idm-ambient-electronic-373348/"
+
+
+def lib_path(name):
+    """a "lib:" music file: downloaded tracks live in ~/.cache/reel-editor/music, outside the skill, so updates keep them"""
+    from common import MUSIC
+    return MUSIC / name
+
+
+def add_music(pre):
+    """A bed under the speaker's voice: minimal electronica, soft and curious, made for videos (music-library.md, "Curious underscore").
+    split_reel.json "music": {"file": "media/music.mp3", "level": -14.5 (dB under the speech, both measured above 150 Hz: what a phone plays), "start": 0,
+    "duck": 2.5 (dB lower while the speaker talks), "pocket": -4 (dB at 2.4 kHz, where the consonants are), "fade_out": 1.5}. Left out: the default bed
+    at -13 if it has been downloaded, none if not. "music": false for none."""
+    M = R.get("music")
+    if M is None:
+        if not lib_path(DEFAULT_MUSIC["file"][4:]).exists():
+            print(f"music: none. For the default bed, download \"Minimal IDM Ambient Electronic\" from {MUSIC_PAGE} in a browser and save it as {lib_path(DEFAULT_MUSIC['file'][4:])} (or set \"music\": false)"); return
+        M = DEFAULT_MUSIC
+    if not M: return                                                                  # "music": false for none
+    sr = 48000; rd = lambda f, a=(): np.frombuffer(run(["ffmpeg", "-v", "error", *a, "-i", str(f), "-ar", str(sr), "-ac", "2", "-f", "f32le", "-"], text=False).stdout, np.float32).reshape(-1, 2).copy()
+    v = rd(pre); n = len(v); src = lib_path(M["file"][4:]) if M["file"].startswith("lib:") else PROJ / M["file"]
+    m = rd(src, ["-ss", str(M.get("start", 0))]) if src.exists() else die(f"music file {src} missing")
+    m = np.frombuffer(run(["ffmpeg", "-v", "error", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", f"equalizer=f=2400:t=o:w=1:g={M.get('pocket', -4)}", "-f", "f32le", "-"], input=m.tobytes(), text=False).stdout, np.float32).reshape(-1, 2).copy()
+    if len(m) < n: m = np.concatenate([m] * (n // len(m) + 1))                       # loops when the reel outlasts the track
+    m = m[:n]
+    lv = lambda z: 20 * np.log10(np.sqrt(np.mean(z ** 2)) + 1e-9)
+    hp = lambda z: np.frombuffer(run(["ffmpeg", "-v", "error", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-af", "highpass=f=150:poles=2,highpass=f=150:poles=2", "-f", "f32le", "-"], input=z.astype(np.float32).tobytes(), text=False).stdout, np.float32).reshape(-1, 2)
+    w = int(.05 * sr); env = np.sqrt(np.convolve(v[:, 0] ** 2, np.ones(w) / w, "same")); talk = env > 10 ** ((lv(v) - 14) / 20)
+    # measured above 150 Hz, as the skill's beds are: a bass-heavy track measured full band sat 21 dB under the voice in what a phone plays
+    # and couldn't be heard at all; level against the speech, not the pauses
+    vh, mh = hp(v), hp(m); vl = lv(vh[talk]) if talk.any() else lv(vh); g = vl + M.get("level", -14.5) - lv(mh)
+    k = int(.25 * sr); duck = np.convolve(talk.astype(float), np.ones(k) / k, "same"); gain = 10 ** ((g - M.get("duck", 2.5) * np.clip(duck * 1.5, 0, 1)) / 20)
+    fi, fo = int(.3 * sr), int(M.get("fade_out", 1.5) * sr); ramp = np.ones(n); ramp[:fi] = np.linspace(0, 1, fi); ramp[-fo:] = np.linspace(1, 0, fo)
+    x = v + m * (gain * ramp)[:, None]
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(sr), "-ac", "2", "-i", "-", "-c:a", "pcm_f32le", pre + ".tmp.wav"], input=x.astype(np.float32).tobytes(), check=True); Path(pre + ".tmp.wav").replace(pre)
+    print(f"music: {src.name} from {M.get('start', 0)} s, {g:+.1f} dB, {M.get('level', -14.5)} dB under the speech above 150 Hz, ducked {M.get('duck', 2.5)} dB while the speaker talks")
+
+
 def audio():
-    silent = PROJ / "work/silent.mp4"; chain = json.loads((ASSETS / "styles/cinematic.json").read_text())["mix"]["voice_chain"]; pre = str(PROJ / "work/voice_pre.wav"); run(["ffmpeg", "-v", "error", "-y", "-i", str(P / "voice.wav"), "-af", chain, "-ar", "48000", "-ac", "2", "-c:a", "pcm_f32le", pre]); add_pops(pre); gain = -12 - float(loud(["-i", pre, "-af", "loudnorm=print_format=json"])["input_i"]); ceil = -1.6; (PROJ / "out").mkdir(exist_ok=True); out = PROJ / f"out/{SLUG}.mp4"
+    silent = PROJ / "work/silent.mp4"; chain = json.loads((ASSETS / "styles/cinematic.json").read_text())["mix"]["voice_chain"]; pre = str(PROJ / "work/voice_pre.wav"); run(["ffmpeg", "-v", "error", "-y", "-i", str(P / "voice.wav"), "-af", chain, "-ar", "48000", "-ac", "2", "-c:a", "pcm_f32le", pre]); add_pops(pre); add_music(pre); gain = -12 - float(loud(["-i", pre, "-af", "loudnorm=print_format=json"])["input_i"]); ceil = -1.6; (PROJ / "out").mkdir(exist_ok=True); out = PROJ / f"out/{SLUG}.mp4"
     for _ in range(5):
         lim = f"aresample=192000,alimiter=limit={10 ** (ceil / 20):.3f}:attack=3:release=60:level=false,aresample=48000"
         for _ in range(4):
@@ -398,23 +570,47 @@ def audio():
         run(["ffmpeg", "-v", "error", "-y", "-i", str(silent), "-i", pre, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-af", f"volume={gain:.2f}dB,{lim},apad", "-shortest", "-c:a", "aac", "-b:a", "256k", "-movflags", "+faststart", str(out)]); tp = float(loud(["-i", str(out), "-vn", "-af", "loudnorm=print_format=json"])["input_tp"])
         if tp <= -1.0: break
         ceil -= tp + 1.15
-    run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-preset", "medium", "-b:v", "3400k", "-maxrate", "4200k", "-bufsize", "8000k", "-c:a", "copy", "-movflags", "+faststart", str(PROJ / f"out/{SLUG}-phone.mp4")])
+    dur = float(run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(out)]).stdout.strip()); kb = int(min(3400, 27.5e6 * 8 / dur / 1000 - 200))   # under 30 MB, so it can be sent to a phone (real footage in the Vector style compresses less than drawings)
+    run(["ffmpeg", "-v", "error", "-y", "-i", str(out), "-c:v", "libx264", "-preset", "medium", "-b:v", f"{kb}k", "-maxrate", f"{int(kb * 1.25)}k", "-bufsize", f"{kb * 2}k", "-c:a", "copy", "-movflags", "+faststart", str(PROJ / f"out/{SLUG}-phone.mp4")])
 
 
 def render():
     pv = panel_video(); a, b, n_p = panel_span(); src = subprocess.Popen(["ffmpeg", "-v", "error", "-i", str(P / "base.mp4"), "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE, bufsize=W * H * 3); pan = subprocess.Popen(["ffmpeg", "-v", "error", "-i", str(pv), "-f", "rawvideo", "-pix_fmt", "rgb24", "-"], stdout=subprocess.PIPE, bufsize=W * PH * 3)
+    msk = subprocess.Popen(["ffmpeg", "-v", "error", "-i", str(mask_path()), "-f", "rawvideo", "-pix_fmt", "gray", "-"], stdout=subprocess.PIPE, bufsize=540 * 960) if CARD and CARD.get("cutout") else None
     enc = subprocess.Popen(["ffmpeg", "-v", "error", "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-", "-vf", "scale=out_color_matrix=bt709:out_range=tv,format=yuv420p", "-c:v", "libx264", "-preset", "medium", "-crf", "15", "-profile:v", "high", "-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", str(PROJ / "work/silent.mp4")], stdin=subprocess.PIPE)
     for n in range(N):
         t = n / FPS; raw = src.stdout.read(W * H * 3)
         if len(raw) < W * H * 3: die(f"base.mp4 ended at frame {n} of {N}")
-        panel = Image.frombytes("RGB", (W, PH), pan.stdout.read(W * PH * 3)) if panel_n(t) is not None else None; enc.stdin.write(frame(Image.frombytes("RGB", (W, H), raw), panel, t).tobytes())
+        mk_ = Image.frombytes("L", (540, 960), msk.stdout.read(540 * 960)) if msk else None
+        panel = Image.frombytes("RGB", (W, PH), pan.stdout.read(W * PH * 3)) if panel_n(t) is not None else None; enc.stdin.write(frame(Image.frombytes("RGB", (W, H), raw), panel, t, mk_).tobytes())
         if n % 300 == 0: print(f"{n} / {N}", flush=True)
-    enc.stdin.close(); enc.wait(); src.kill(); pan.kill(); audio(); qa()
+    enc.stdin.close(); enc.wait(); src.kill(); pan.kill(); msk and msk.kill(); audio(); qa()
 
 
 # ------------------------------------------------------------------ checks
+def balance(path=None):
+    """Clips whose left and right mics disagree more than the rest of the take: a hand or a collar over one mic (the sound comes out of the left
+    side only). It's in the raw take, so the fix is that clip's better channel on both sides."""
+    import wave
+    w = wave.open(str(path or P / "voice.wav")); sr, n = w.getframerate(), w.getnframes()
+    if w.getnchannels() != 2: return []
+    a = np.frombuffer(w.readframes(n), dtype=np.int16).reshape(-1, 2).astype(np.float64); w.close(); rows = []
+    for s in SEG["segs"]:
+        x = a[int(s["t0"] * sr):int(s["t1"] * sr)]
+        if len(x) < sr * .5: continue
+        l, r = x[:, 0], x[:, 1]; el, er = (l * l).sum() + 1, (r * r).sum() + 1
+        rows.append((s["t0"], s["t1"], 10 * math.log10(el / er), (l * r).sum() / math.sqrt(el * er)))
+    rows = [q for q in rows if q[3] < .98]                                                    # already one channel on both sides
+    if len(rows) < 4: return []
+    md, mc = float(np.median([q[2] for q in rows])), float(np.median([q[3] for q in rows]))
+    return [f"voice {a:.2f}-{b:.2f}: left is {d:+.1f} dB over right against {md:+.1f} in the rest, and the mics match {c:.2f} against {mc:.2f}: a covered mic?"
+            f" Listen; the fix is that clip's louder channel on both sides of work/parts/{R.get('part', 'body')}/voice.wav, EQ- and level-matched (references/split-screen.md)"
+            for a, b, d, c in rows if abs(d - md) > 2 or c < min(mc - .5, .2)]
+
+
 def check():
     bad, note = [], []; say = bad.append
+    note += balance()
     for g in groups():
         lim = WSPLIT if g["split"] else WFULL
         if g["px"] > lim: say(f"caption {' '.join(g['txt'])!r} is {g['px']:.0f} px wide, max {lim} ({'split' if g['split'] else 'full shot'})")
@@ -423,19 +619,22 @@ def check():
         wd = max(C.font("bold", 74).getlength(l) for l in HOOK["text"]) + 60
         if wd > 1000: say(f"text hook is {wd:.0f} px wide, max 1000; break it into another line")
         if len(HOOK["text"]) > 2: say("text hook over two lines; it will reach the speaker's hair")
-    else: say("no text hook")
+    else: say("no text hook (Instagram's own text, black on white: hook.text)")
     T = card_times()
-    if T and T[-1] > 2.4: say(f"the last hook card lands at {T[-1]:.2f} s; all of them by about 2 s")
-    for nm, a, b in (("text hook", 0, HOOK["out"]), *(((("App Store card"), STORE["in"], STORE["out"]),) if STORE else ()), *((("follow card", FOLLOW["in"], DUR),) if FOLLOW else ())):
+    if T and T[0] < HOOK["end"] and T[-1] > 2.4: say(f"the last hook card lands at {T[-1]:.2f} s; all of them by about 2 s")
+    if T and cards_span()[1] - T[-1] < 1.0: say(f"the cards are all up for {cards_span()[1] - T[-1]:.1f} s; give them at least 1")
+    if T and cards_span()[1] + .3 > SPLIT["in"] + .02: say("the cards are still leaving when the split opens; set hook.cards_out 0.35 s before split.in")
+    for nm, a, b in (*((("text hook", 0, HOOK["out"]),) if HOOK.get("text") and not SPLIT.get("hook_out") else ()), *(((("App Store card"), STORE["in"], STORE["out"]),) if STORE else ()), *((("follow card", FOLLOW["in"], DUR),) if FOLLOW else ())):
         if max(split(a + .01), split(min(b, DUR - .05) - .01)) > .02: say(f"the {nm} ({a:.2f}-{b:.2f}) runs into the split; move it or the split")
     for sh in SHOTS:
         dx, dy, _, _ = room(sh[0])
         if dx or dy: note.append(f"shot at {sh[0]:.2f}: made {dx} px of room beside the speaker and {dy} px above by stretching the wall; look at it")
         if dx >= 140 or dy >= 130: say(f"shot at {sh[0]:.2f}: the speaker is framed too close for the cards or the thing above the speaker's head; drop the cards (\"cards\": [], face_x 540)")
-    if SPLIT["in"] < HOOK["out"] + .2: say("the split starts before the hook is off the screen")
+    if not SPLIT.get("hook_out"): note.append("the reel opens on the speaker's full face; the default opens in the split: set split.hook_out to the end of the hook")
+    if SPLIT["in"] < HOOK["out"] + .2 and not SPLIT.get("hook_out"): say("the split starts before the hook is off the screen")
     if SPLIT["in"] - HOOK["end"] > 9: say(f"{SPLIT['in'] - HOOK['end']:.1f} s of plain face between the hook and the canvas: start the split earlier, with cells that have no number (head(c, t, null, ...)) for what the speaker says before point one")
     for g in groups():
-        for e, nm in ((SPLIT["in"], "open"), (SPLIT["out"], "close")):
+        for e, nm in [(a, "open") for a, _ in spans() if a > 0] + [(b, "close") for _, b in spans()]:
             if e + .02 < g["t0"] < e + MOVE * .5: say(f"caption {' '.join(g['txt'])!r} starts {g['t0'] - e:.2f} s into the split's {nm}, so it flashes in the wrong place: move split.{'in' if nm == 'open' else 'out'} to {g['t0'] - .23:.2f}")
     if FOLLOW and not FOLLOW.get("name"): say("follow.name is empty: the display name shown on the follow card")
     if FOLLOW and DUR - FOLLOW["in"] < 2.2: say(f"the follow card is up for {DUR - FOLLOW['in']:.1f} s; start it earlier, at least 2.2 s before the end")
@@ -445,9 +644,9 @@ def check():
     inf = subprocess.run(["node", str(PROJ / R.get("scenes", "canvas/scenes.js")), "info"], capture_output=True, text=True)
     if not inf.returncode:
         cs = json.loads(inf.stdout)["cells"]
-        if not SPLIT["in"] - .3 < cs[0][1] < SPLIT["in"] + 1.2: say(f"canvas: the first cell is at {cs[0][1]} s and the split opens at {SPLIT['in']:.2f}")
+        if not spans()[0][0] - .3 < max(0, cs[0][1]) < max(0, spans()[0][0]) + 1.2: say(f"canvas: the first cell is at {cs[0][1]} s and the split opens at {SPLIT['in']:.2f}")
         for q, at in cs:
-            if not SPLIT["in"] - .3 < at < SPLIT["out"]: say(f"canvas: cell {q} at {at} s is outside the split ({SPLIT['in']:.2f}-{SPLIT['out']:.2f})")
+            if not any(a - .3 < at < b for a, b in spans()): say(f"canvas: cell {q} at {at} s is outside the split ({SPLIT['in']:.2f}-{SPLIT['out']:.2f})")
         if cs[-1][0] != "recap": say("canvas: no recap")
         elif SPLIT["out"] - cs[-1][1] < 1.2: say(f"canvas: the recap gets {SPLIT['out'] - cs[-1][1]:.1f} s; give it at least 1.2")
         if SPLIT["out"] - cs[-1][1] > 8: say(f"canvas: the last cell at {cs[-1][1]} s has to carry {SPLIT['out'] - cs[-1][1]:.1f} s; draw what the speaker says there")
